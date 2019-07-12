@@ -1,3 +1,4 @@
+from io import open
 import os
 import signal
 import sys
@@ -5,6 +6,7 @@ import shutil
 import six
 import yaml
 import json
+
 
 from oslo_config import cfg
 from oslo_log import log as logging
@@ -49,8 +51,7 @@ def list_opts():
 
 
 def install_base_centos(target):
-    cmd = ["docker", "cp", CONF.centos_docker_container,
-           "/", target]
+    cmd = ["docker", "cp", CONF.centos_docker_container+":/", target]
     utils.execute(*cmd)
 
 
@@ -70,8 +71,6 @@ def do_post_inst(chroot, hashed_root_password):
         utils.execute('chroot', chroot, 'update-rc.d', 'puppet', 'disable')
     # NOTE(agordeev): disable mcollective to be automatically started on boot
     # to prevent confusing messages in its log (regarding connection errors).
-    with open(os.path.join(chroot, 'etc/init/mcollective.override'), 'w') as f:
-        f.write("manual\n")
     service_link = os.path.join(
         chroot,
         'etc/systemd/system/multi-user.target.wants/mcollective.service')
@@ -93,6 +92,11 @@ def do_post_inst(chroot, hashed_root_password):
     bu.remove_files(chroot, ['usr/sbin/policy-rc.d'])
     # enable mdadm (remove nomdadmddf nomdadmism options from cmdline)
     bu.remove_files(chroot, [bu.GRUB2_DMRAID_SETTINGS])
+
+    # we need /proc to be mounted for apt-get success
+    fu.mount_bind(chroot, '/proc')
+    fu.mount_bind(chroot, '/sys')
+    fu.mount_bind(chroot, '/dev')
     utils.execute('chroot', chroot, 'yum', 'clean', 'all')
 
 
@@ -162,11 +166,7 @@ class Builder(object):
         # we need /proc to be mounted for apt-get success
         LOG.debug('Preventing services from being get started')
         bu.suppress_services_start(chroot)
-        utils.makedirs_if_not_exists(os.path.join(chroot, 'proc'))
 
-        # we need /proc to be mounted for apt-get success
-        fu.mount_bind(chroot, '/proc')
-        bu.populate_basic_dev(chroot)
 
     @property
     def driver(self):
@@ -222,6 +222,8 @@ class Builder(object):
 
             LOG.info('*** Finalizing image space ***')
             fu.umount_fs(os.path.join(chroot, 'proc'))
+            fu.umount_fs(os.path.join(chroot, 'sys'))
+            fu.umount_fs(os.path.join(chroot, 'dev'))
             # umounting all loop devices
             self.manager.umount_target(chroot, pseudo=False)
 
@@ -281,7 +283,8 @@ class Builder(object):
 
             # NOTE(kozhukalov): implement abstract publisher
             LOG.debug('Image metadata: %s', metadata)
-            with open(self.driver.metadata_uri.split('file://', 1)[1], ) as f:
+            with open(self.driver.metadata_uri.split('file://', 1)[1],
+                      'wt', encoding='utf-8') as f:
                 yaml.safe_dump(metadata, stream=f)
             LOG.info('--- Building image END (do_build_image) ---')
         except Exception as exc:
@@ -325,7 +328,7 @@ def preview():
 
 
 def main():
-    preview()
+    build()
 
 
 if __name__ == "__main__":

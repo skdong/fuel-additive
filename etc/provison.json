@@ -1,12 +1,4 @@
 {
-    "glance_glare": {
-        "user_password": "tSdjVm3UpzRtfhltudoMJaXL"
-    }, 
-    "storage_network_range": "192.168.1.0/24", 
-    "use_cow_images": true, 
-    "mongo": {
-        "enabled": false
-    }, 
     "storage": {
         "volumes_ceph": false, 
         "per_pool_pg_nums": {
@@ -103,12 +95,6 @@
         }
     ], 
     "plugins": [], 
-    "murano-cfapi": {
-        "db_password": "TJpyzPcJQMWbMbXvbubqtccd", 
-        "user_password": "qAUaTBjGbEb89t73O3MMr5A7", 
-        "enabled": false, 
-        "rabbit_password": "8KBQkZadiqUO0WdtxpzVcuLK"
-    }, 
     "cluster": {
         "status": "partially_deployed", 
         "mode": "ha_compact", 
@@ -120,27 +106,19 @@
     "cobbler": {
         "profile": "ubuntu_bootstrap"
     }, 
-    "mysql": {
-        "root_password": "XVLyQYJuGmrnYXXZ2qxnWxIw", 
-        "wsrep_password": "2tz8L7h8qApJMTN3PTc2v0jS"
-    }, 
     "image_data": {
         "/boot": {
             "container": "gzip", 
-            "uri": "http://2.6.1.2:8080/targetimages/env_1_ubuntu_1604_amd64-boot.img.gz", 
+            "uri": "http://2.6.1.2:8080/targetimages/env_1_centos_7_amd64-boot.img.gz", 
             "format": "ext2"
         }, 
         "/": {
             "container": "gzip", 
-            "uri": "http://2.6.1.2:8080/targetimages/env_1_ubuntu_1604_amd64.img.gz", 
+            "uri": "http://2.6.1.2:8080/targetimages/env_1_centos_7_amd64.img.gz", 
             "format": "ext4"
         }
     }, 
     "task_deploy": true, 
-    "glance": {
-        "db_password": "860EMnVcGxtHTy5CRwhde3nZ", 
-        "user_password": "80hIwheKfWw7iHDhP37eIsEY"
-    }, 
     "security_groups": "iptables_hybrid", 
     "uid": "master", 
     "quantum_settings": {
