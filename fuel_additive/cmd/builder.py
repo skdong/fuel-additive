@@ -1,23 +1,19 @@
-from io import open
+import json
 import os
+import shutil
 import signal
 import sys
-import shutil
+from io import open
+
 import six
 import yaml
-import json
-
-
-from oslo_config import cfg
-from oslo_log import log as logging
-
-from fuel_agent import manager as manager
-
 from fuel_agent import errors
+from fuel_agent import manager as manager
 from fuel_agent.utils import build as bu
 from fuel_agent.utils import fs as fu
 from fuel_agent.utils import utils
-
+from oslo_config import cfg
+from oslo_log import log as logging
 
 cli_opts = [
     cfg.StrOpt(
@@ -31,7 +27,6 @@ cli_opts = [
         help='Input data (json string)'
     ),
 ]
-
 
 opts = [
     cfg.StrOpt(
@@ -51,7 +46,7 @@ def list_opts():
 
 
 def install_base_centos(target):
-    cmd = ["docker", "cp", CONF.centos_docker_container+":/", target]
+    cmd = ["docker", "cp", CONF.centos_docker_container + ":/", target]
     utils.execute(*cmd)
 
 
@@ -98,7 +93,6 @@ def do_post_inst(chroot, hashed_root_password):
     fu.mount_bind(chroot, '/sys')
     fu.mount_bind(chroot, '/dev')
     utils.execute('chroot', chroot, 'yum', 'clean', 'all')
-
 
 
 class Builder(object):
@@ -166,7 +160,6 @@ class Builder(object):
         # we need /proc to be mounted for apt-get success
         LOG.debug('Preventing services from being get started')
         bu.suppress_services_start(chroot)
-
 
     @property
     def driver(self):
