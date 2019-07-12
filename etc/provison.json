@@ -1,0 +1,945 @@
+{
+    "glance_glare": {
+        "user_password": "tSdjVm3UpzRtfhltudoMJaXL"
+    }, 
+    "storage_network_range": "192.168.1.0/24", 
+    "use_cow_images": true, 
+    "mongo": {
+        "enabled": false
+    }, 
+    "storage": {
+        "volumes_ceph": false, 
+        "per_pool_pg_nums": {
+            "compute": 128, 
+            ".rgw": 128, 
+            "volumes": 128, 
+            "images": 128, 
+            "backups": 128, 
+            "default_pg_num": 128
+        }, 
+        "objects_ceph": false, 
+        "auth_s3_keystone_ceph": false, 
+        "volumes_lvm": true, 
+        "ephemeral_ceph": false, 
+        "volumes_block_device": false, 
+        "mon_key": "AQDgFwJdAAAAABAAQj3SAZdvaY9ghwNm51t/IA==", 
+        "bootstrap_osd_key": "AQDgFwJdAAAAABAAmuh/mrniGlpFBB+byeHwtg==", 
+        "admin_key": "AQDgFwJdAAAAABAA/jsuUYG7mF9rCEQww0TrlA==", 
+        "osd_pool_size": "3", 
+        "pg_num": 128, 
+        "images_ceph": false, 
+        "radosgw_key": "AQDgFwJdAAAAABAAnYHNx5qXBxhxmUjawD3pMQ==", 
+        "fsid": "3cddf013-9765-493b-b934-cb74bdc67538", 
+        "metadata": {
+            "group": "storage", 
+            "weight": 60, 
+            "label": "Storage Backends"
+        }
+    }, 
+    "repos": [
+        {
+            "name": "ubuntu", 
+            "section": "main universe multiverse", 
+            "uri": "http://2.6.1.2:8080/mirrors/ubuntu/", 
+            "priority": null, 
+            "suite": "xenial", 
+            "type": "deb"
+        }, 
+        {
+            "name": "ubuntu-updates", 
+            "section": "main universe multiverse", 
+            "uri": "http://2.6.1.2:8080/mirrors/ubuntu/", 
+            "priority": null, 
+            "suite": "xenial-updates", 
+            "type": "deb"
+        }, 
+        {
+            "name": "ubuntu-security", 
+            "section": "main universe multiverse", 
+            "uri": "http://2.6.1.2:8080/mirrors/ubuntu/", 
+            "priority": null, 
+            "suite": "xenial-security", 
+            "type": "deb"
+        }, 
+        {
+            "name": "mos", 
+            "section": "main restricted", 
+            "uri": "http://2.6.1.2:8080/ocata-11.0/ubuntu/x86_64", 
+            "priority": 1050, 
+            "suite": "mos11.0", 
+            "type": "deb"
+        }, 
+        {
+            "name": "mos-updates", 
+            "section": "main restricted", 
+            "uri": "http://2.6.1.2:8080/mirrors/mos-repos/ubuntu/11.0/", 
+            "priority": 1050, 
+            "suite": "mos11.0-updates", 
+            "type": "deb"
+        }, 
+        {
+            "name": "mos-security", 
+            "section": "main restricted", 
+            "uri": "http://2.6.1.2:8080/mirrors/mos-repos/ubuntu/11.0/", 
+            "priority": 1050, 
+            "suite": "mos11.0-security", 
+            "type": "deb"
+        }, 
+        {
+            "name": "mos-holdback", 
+            "section": "main restricted", 
+            "uri": "http://2.6.1.2:8080/mirrors/mos-repos/ubuntu/11.0/", 
+            "priority": 1100, 
+            "suite": "mos11.0-holdback", 
+            "type": "deb"
+        }, 
+        {
+            "name": "Auxiliary", 
+            "section": "main restricted", 
+            "uri": "http://2.6.1.2:8080/ocata-11.0/ubuntu/auxiliary", 
+            "priority": 1150, 
+            "suite": "auxiliary", 
+            "type": "deb"
+        }
+    ], 
+    "plugins": [], 
+    "murano-cfapi": {
+        "db_password": "TJpyzPcJQMWbMbXvbubqtccd", 
+        "user_password": "qAUaTBjGbEb89t73O3MMr5A7", 
+        "enabled": false, 
+        "rabbit_password": "8KBQkZadiqUO0WdtxpzVcuLK"
+    }, 
+    "cluster": {
+        "status": "partially_deployed", 
+        "mode": "ha_compact", 
+        "fuel_version": "11.0", 
+        "name": "k8s", 
+        "id": 1
+    }, 
+    "libvirt_type": "qemu", 
+    "cobbler": {
+        "profile": "ubuntu_bootstrap"
+    }, 
+    "mysql": {
+        "root_password": "XVLyQYJuGmrnYXXZ2qxnWxIw", 
+        "wsrep_password": "2tz8L7h8qApJMTN3PTc2v0jS"
+    }, 
+    "image_data": {
+        "/boot": {
+            "container": "gzip", 
+            "uri": "http://2.6.1.2:8080/targetimages/env_1_ubuntu_1604_amd64-boot.img.gz", 
+            "format": "ext2"
+        }, 
+        "/": {
+            "container": "gzip", 
+            "uri": "http://2.6.1.2:8080/targetimages/env_1_ubuntu_1604_amd64.img.gz", 
+            "format": "ext4"
+        }
+    }, 
+    "task_deploy": true, 
+    "glance": {
+        "db_password": "860EMnVcGxtHTy5CRwhde3nZ", 
+        "user_password": "80hIwheKfWw7iHDhP37eIsEY"
+    }, 
+    "security_groups": "iptables_hybrid", 
+    "uid": "master", 
+    "quantum_settings": {
+        "default_floating_net": "admin_floating_net", 
+        "L2": {
+            "phys_nets": {
+                "physnet2": {
+                    "bridge": "br-prv", 
+                    "vlan_range": "1000:1030"
+                }, 
+                "physnet1": {
+                    "bridge": "br-floating", 
+                    "vlan_range": null
+                }
+            }, 
+            "base_mac": "fa:16:3e:00:00:00", 
+            "segmentation_type": "vlan"
+        }, 
+        "L3": {
+            "use_namespaces": true
+        }, 
+        "database": {
+            "passwd": "Kn3b1UQzxuVnA0Hh4NG0vdwF"
+        }, 
+        "default_private_net": "admin_internal_net", 
+        "keystone": {
+            "admin_password": "sPN1R2HCf0FcKtWliudl4OjM"
+        }, 
+        "predefined_networks": {
+            "admin_floating_net": {
+                "shared": false, 
+                "L2": {
+                    "segment_id": null, 
+                    "network_type": "flat", 
+                    "physnet": "physnet1", 
+                    "router_ext": true
+                }, 
+                "L3": {
+                    "nameservers": [], 
+                    "subnet": "172.16.0.0/24", 
+                    "floating": [
+                        "172.16.0.130:172.16.0.254"
+                    ], 
+                    "gateway": "172.16.0.1", 
+                    "enable_dhcp": false
+                }, 
+                "tenant": "admin"
+            }, 
+            "admin_internal_net": {
+                "shared": false, 
+                "L2": {
+                    "segment_id": null, 
+                    "network_type": "vlan", 
+                    "physnet": "physnet2", 
+                    "router_ext": false
+                }, 
+                "L3": {
+                    "nameservers": [
+                        "8.8.4.4", 
+                        "8.8.8.8"
+                    ], 
+                    "subnet": "192.168.111.0/24", 
+                    "floating": null, 
+                    "gateway": "192.168.111.1", 
+                    "enable_dhcp": true
+                }, 
+                "tenant": "admin"
+            }
+        }, 
+        "metadata": {
+            "metadata_proxy_shared_secret": "OCOzREOZ6qcj8tP1oNVPsX3Z"
+        }
+    }, 
+    "network_metadata": {
+        "nodes": {
+            "node-1": {
+                "nova_hugepages_enabled": false, 
+                "network_roles": {
+                    "murano/api": "192.168.0.1", 
+                    "keystone/api": "192.168.0.1", 
+                    "neutron/api": "192.168.0.1", 
+                    "mgmt/database": "192.168.0.1", 
+                    "sahara/api": "192.168.0.1", 
+                    "admin/pxe": "2.6.1.4", 
+                    "mongo/db": "192.168.0.1", 
+                    "ceilometer/api": "192.168.0.1", 
+                    "management": "192.168.0.1", 
+                    "neutron/floating": null, 
+                    "ceph/public": "192.168.1.1", 
+                    "neutron/private": null, 
+                    "fw-admin": "2.6.1.4", 
+                    "mgmt/messaging": "192.168.0.1", 
+                    "glance/api": "192.168.0.1", 
+                    "swift/api": "192.168.0.1", 
+                    "heat/api": "192.168.0.1", 
+                    "mgmt/memcache": "192.168.0.1", 
+                    "mgmt/vip": "192.168.0.1", 
+                    "storage": "192.168.1.1", 
+                    "mgmt/corosync": "192.168.0.1", 
+                    "ironic/api": "192.168.0.1", 
+                    "glance/glare": "192.168.0.1", 
+                    "nova/api": "192.168.0.1", 
+                    "murano/cfapi": "192.168.0.1", 
+                    "aodh/api": "192.168.0.1", 
+                    "horizon": "192.168.0.1", 
+                    "nova/migration": "192.168.0.1", 
+                    "swift/replication": "192.168.1.1", 
+                    "cinder/api": "192.168.0.1", 
+                    "cinder/iscsi": "192.168.1.1", 
+                    "ceph/replication": "192.168.1.1"
+                }, 
+                "swift_zone": "1", 
+                "name": "node-1", 
+                "nova_cpu_pinning_enabled": false, 
+                "user_node_name": "node-1", 
+                "node_roles": [
+                    "base-os"
+                ], 
+                "fqdn": "node-1.domain.tld", 
+                "uid": "1"
+            }, 
+            "node-3": {
+                "nova_hugepages_enabled": false, 
+                "network_roles": {
+                    "murano/api": "192.168.0.2", 
+                    "keystone/api": "192.168.0.2", 
+                    "neutron/api": "192.168.0.2", 
+                    "mgmt/database": "192.168.0.2", 
+                    "sahara/api": "192.168.0.2", 
+                    "admin/pxe": "2.6.1.6", 
+                    "mongo/db": "192.168.0.2", 
+                    "ceilometer/api": "192.168.0.2", 
+                    "management": "192.168.0.2", 
+                    "neutron/floating": null, 
+                    "ceph/public": "192.168.1.2", 
+                    "neutron/private": null, 
+                    "fw-admin": "2.6.1.6", 
+                    "mgmt/messaging": "192.168.0.2", 
+                    "glance/api": "192.168.0.2", 
+                    "swift/api": "192.168.0.2", 
+                    "heat/api": "192.168.0.2", 
+                    "mgmt/memcache": "192.168.0.2", 
+                    "mgmt/vip": "192.168.0.2", 
+                    "storage": "192.168.1.2", 
+                    "mgmt/corosync": "192.168.0.2", 
+                    "ironic/api": "192.168.0.2", 
+                    "glance/glare": "192.168.0.2", 
+                    "nova/api": "192.168.0.2", 
+                    "murano/cfapi": "192.168.0.2", 
+                    "aodh/api": "192.168.0.2", 
+                    "horizon": "192.168.0.2", 
+                    "nova/migration": "192.168.0.2", 
+                    "swift/replication": "192.168.1.2", 
+                    "cinder/api": "192.168.0.2", 
+                    "cinder/iscsi": "192.168.1.2", 
+                    "ceph/replication": "192.168.1.2"
+                }, 
+                "swift_zone": "3", 
+                "name": "node-3", 
+                "nova_cpu_pinning_enabled": false, 
+                "user_node_name": "node-3", 
+                "node_roles": [
+                    "base-os"
+                ], 
+                "fqdn": "node-3.domain.tld", 
+                "uid": "3"
+            }, 
+            "node-2": {
+                "nova_hugepages_enabled": false, 
+                "network_roles": {
+                    "murano/api": "192.168.0.3", 
+                    "keystone/api": "192.168.0.3", 
+                    "neutron/api": "192.168.0.3", 
+                    "mgmt/database": "192.168.0.3", 
+                    "sahara/api": "192.168.0.3", 
+                    "admin/pxe": "2.6.1.4", 
+                    "mongo/db": "192.168.0.3", 
+                    "ceilometer/api": "192.168.0.3", 
+                    "management": "192.168.0.3", 
+                    "neutron/floating": null, 
+                    "ceph/public": "192.168.1.3", 
+                    "neutron/private": null, 
+                    "fw-admin": "2.6.1.4", 
+                    "mgmt/messaging": "192.168.0.3", 
+                    "glance/api": "192.168.0.3", 
+                    "swift/api": "192.168.0.3", 
+                    "heat/api": "192.168.0.3", 
+                    "mgmt/memcache": "192.168.0.3", 
+                    "mgmt/vip": "192.168.0.3", 
+                    "storage": "192.168.1.3", 
+                    "mgmt/corosync": "192.168.0.3", 
+                    "ironic/api": "192.168.0.3", 
+                    "glance/glare": "192.168.0.3", 
+                    "nova/api": "192.168.0.3", 
+                    "murano/cfapi": "192.168.0.3", 
+                    "aodh/api": "192.168.0.3", 
+                    "horizon": "192.168.0.3", 
+                    "nova/migration": "192.168.0.3", 
+                    "swift/replication": "192.168.1.3", 
+                    "cinder/api": "192.168.0.3", 
+                    "cinder/iscsi": "192.168.1.3", 
+                    "ceph/replication": "192.168.1.3"
+                }, 
+                "swift_zone": "2", 
+                "name": "node-2", 
+                "nova_cpu_pinning_enabled": false, 
+                "user_node_name": "node-2", 
+                "node_roles": [
+                    "base-os"
+                ], 
+                "fqdn": "node-2.domain.tld", 
+                "uid": "2"
+            }
+        }, 
+        "vips": {}
+    }, 
+    "operator_user": {
+        "name": "fueladmin", 
+        "sudo": "ALL=(ALL) NOPASSWD: ALL", 
+        "metadata": {
+            "group": "general", 
+            "weight": 15, 
+            "label": "Operating System Access"
+        }, 
+        "password": "QgYQypQjUXuFfAIMzjecYZH5", 
+        "authkeys": "", 
+        "homedir": "/home/fueladmin"
+    }, 
+    "cgroups": {
+        "metadata": {
+            "restrictions": [
+                {
+                    "action": "hide", 
+                    "condition": "true"
+                }
+            ], 
+            "group": "general", 
+            "always_editable": true, 
+            "weight": 90, 
+            "label": "Cgroups conguration for services"
+        }
+    }, 
+    "sahara": {
+        "db_password": "5fE6hYVNPLxHOniR8m3wuQAx", 
+        "user_password": "HpPkaXZYblp13wBogDRKazMS", 
+        "enabled": false
+    }, 
+    "output": "/var/www/nailgun/targetimages", 
+    "provision": {
+        "engine": {
+            "url": "http://2.6.1.2:80/cobbler_api", 
+            "username": "cobbler", 
+            "password": "CS7cKrTulMd4LAqaC9ARE4os", 
+            "master_ip": "2.6.1.2"
+        }, 
+        "image_data": {
+            "/boot": {
+                "container": "gzip", 
+                "uri": "http://2.6.1.2:8080/targetimages/env_1_ubuntu_1604_amd64-boot.img.gz", 
+                "format": "ext2"
+            }, 
+            "/": {
+                "container": "gzip", 
+                "uri": "http://2.6.1.2:8080/targetimages/env_1_ubuntu_1604_amd64.img.gz", 
+                "format": "ext4"
+            }
+        }, 
+        "codename": "xenial", 
+        "packages": [
+            "acl", 
+            "anacron", 
+            "bash-completion", 
+            "bridge-utils", 
+            "bsdmainutils", 
+            "build-essential", 
+            "cloud-init", 
+            "curl", 
+            "daemonize", 
+            "debconf-utils", 
+            "gdisk", 
+            "grub-pc", 
+            "hwloc", 
+            "linux-firmware", 
+            "linux-headers-generic-lts-xenial", 
+            "linux-image-generic-lts-xenial", 
+            "lvm2", 
+            "mcollective", 
+            "mdadm", 
+            "multipath-tools", 
+            "multipath-tools-boot", 
+            "nailgun-agent", 
+            "nailgun-mcagents", 
+            "network-checker", 
+            "ntp", 
+            "ntpdate", 
+            "openssh-client", 
+            "openssh-server", 
+            "puppet", 
+            "python-amqp", 
+            "ruby-augeas", 
+            "ruby-ipaddress", 
+            "ruby-json", 
+            "ruby-netaddr", 
+            "ruby-openstack", 
+            "ruby-shadow", 
+            "ruby-stomp", 
+            "telnet", 
+            "ubuntu-minimal", 
+            "ubuntu-standard", 
+            "uuid-runtime", 
+            "vim", 
+            "virt-what", 
+            "vlan"
+        ], 
+        "method": "image", 
+        "metadata": {
+            "restrictions": [
+                {
+                    "action": "hide", 
+                    "condition": "false"
+                }
+            ], 
+            "group": "general", 
+            "weight": 80, 
+            "label": "Provision"
+        }
+    }, 
+    "resume_guests_state_on_host_boot": true, 
+    "aodh": {
+        "db_password": "exyJxwVYlksiAqdBOwURXOmu", 
+        "user_password": "VlJyy32U54hph0P9PHU2K0EL"
+    }, 
+    "nova": {
+        "db_password": "1m4LurCvka9B9wiXv798u14j", 
+        "user_password": "ohgiF2ss7sG6wBTeVJQBRXjZ", 
+        "state_path": "/var/lib/nova"
+    }, 
+    "master_ip": "2.6.1.2", 
+    "access": {
+        "user": "admin", 
+        "password": "admin", 
+        "email": "admin@localhost", 
+        "tenant": "admin", 
+        "metadata": {
+            "group": "general", 
+            "weight": 10, 
+            "label": "OpenStack Access"
+        }
+    }, 
+    "external_dns": {
+        "dns_list": [
+            "2.6.1.1"
+        ], 
+        "metadata": {
+            "group": "network", 
+            "weight": 30, 
+            "label": "Host OS DNS Servers"
+        }
+    }, 
+    "murano": {
+        "db_password": "pCCrPCfsX3Eqcau7PtwlwCLv", 
+        "user_password": "kdDKXEunWOEHyh8y99ANAVA6", 
+        "enabled": false, 
+        "rabbit_password": "HTWnnMbOggKXgOfnyX5GAzh7"
+    }, 
+    "murano_settings": {
+        "murano_glance_artifacts_plugin": true, 
+        "murano_repo_url": "http://storage.apps.openstack.org/", 
+        "metadata": {
+            "restrictions": [
+                {
+                    "action": "hide", 
+                    "message": "Murano is not enabled on the Additional Components section", 
+                    "condition": "settings:additional_components.murano.value == false"
+                }
+            ], 
+            "group": "openstack_services", 
+            "weight": 20, 
+            "label": "Murano Settings"
+        }
+    }, 
+    "keystone": {
+        "db_password": "FfEZHrWMoygCGMLFzJ0swPs9", 
+        "admin_token": "23NvqCz6sfx1qK20MUbFc9x4"
+    }, 
+    "external_mongo": {
+        "mongo_db_name": "ceilometer", 
+        "mongo_replset": "", 
+        "mongo_user": "ceilometer", 
+        "hosts_ip": "", 
+        "mongo_password": "ceilometer", 
+        "metadata": {
+            "restrictions": [
+                {
+                    "action": "hide", 
+                    "message": "Ceilometer and MongoDB are not enabled on the Additional Components section", 
+                    "condition": "settings:additional_components.mongo.value == false"
+                }
+            ], 
+            "group": "openstack_services", 
+            "weight": 30, 
+            "label": "External MongoDB"
+        }
+    }, 
+    "public_network_assignment": {
+        "assign_to_all_nodes": false, 
+        "metadata": {
+            "restrictions": [
+                {
+                    "action": "hide", 
+                    "condition": "cluster:net_provider != 'neutron'"
+                }
+            ], 
+            "group": "network", 
+            "weight": 10, 
+            "label": "Public network assignment"
+        }
+    }, 
+    "codename": "xenial", 
+    "method": "image", 
+    "corosync": {
+        "verified": false, 
+        "group": "226.94.1.1", 
+        "port": "12000", 
+        "metadata": {
+            "restrictions": [
+                {
+                    "action": "hide", 
+                    "condition": "true"
+                }
+            ], 
+            "group": "general", 
+            "weight": 50, 
+            "label": "Corosync"
+        }
+    }, 
+    "metadata": {
+        "weight": 10, 
+        "label": "Common"
+    }, 
+    "engine": {
+        "url": "http://2.6.1.2:80/cobbler_api", 
+        "username": "cobbler", 
+        "password": "CS7cKrTulMd4LAqaC9ARE4os", 
+        "master_ip": "2.6.1.2"
+    }, 
+    "ironic": {
+        "swift_tempurl_key": "Cv8FKueRbdoApfrV0eIEfDdd", 
+        "db_password": "SwyXs8cReQ9UTralvBhhS8Ip", 
+        "user_password": "eO2BTTEuEnrRSfU8N4Er9KjG", 
+        "enabled": false
+    }, 
+    "repo_setup": {
+        "repos": [
+            {
+                "name": "ubuntu", 
+                "section": "main universe multiverse", 
+                "uri": "http://2.6.1.2:8080/mirrors/ubuntu/", 
+                "priority": null, 
+                "suite": "xenial", 
+                "type": "deb"
+            }, 
+            {
+                "name": "ubuntu-updates", 
+                "section": "main universe multiverse", 
+                "uri": "http://2.6.1.2:8080/mirrors/ubuntu/", 
+                "priority": null, 
+                "suite": "xenial-updates", 
+                "type": "deb"
+            }, 
+            {
+                "name": "ubuntu-security", 
+                "section": "main universe multiverse", 
+                "uri": "http://2.6.1.2:8080/mirrors/ubuntu/", 
+                "priority": null, 
+                "suite": "xenial-security", 
+                "type": "deb"
+            }, 
+            {
+                "name": "mos", 
+                "section": "main restricted", 
+                "uri": "http://2.6.1.2:8080/ocata-11.0/ubuntu/x86_64", 
+                "priority": 1050, 
+                "suite": "mos11.0", 
+                "type": "deb"
+            }, 
+            {
+                "name": "mos-updates", 
+                "section": "main restricted", 
+                "uri": "http://2.6.1.2:8080/mirrors/mos-repos/ubuntu/11.0/", 
+                "priority": 1050, 
+                "suite": "mos11.0-updates", 
+                "type": "deb"
+            }, 
+            {
+                "name": "mos-security", 
+                "section": "main restricted", 
+                "uri": "http://2.6.1.2:8080/mirrors/mos-repos/ubuntu/11.0/", 
+                "priority": 1050, 
+                "suite": "mos11.0-security", 
+                "type": "deb"
+            }, 
+            {
+                "name": "mos-holdback", 
+                "section": "main restricted", 
+                "uri": "http://2.6.1.2:8080/mirrors/mos-repos/ubuntu/11.0/", 
+                "priority": 1100, 
+                "suite": "mos11.0-holdback", 
+                "type": "deb"
+            }, 
+            {
+                "name": "Auxiliary", 
+                "section": "main restricted", 
+                "uri": "http://2.6.1.2:8080/ocata-11.0/ubuntu/auxiliary", 
+                "priority": 1150, 
+                "suite": "auxiliary", 
+                "type": "deb"
+            }
+        ], 
+        "metadata": {
+            "group": "general", 
+            "always_editable": true, 
+            "weight": 50, 
+            "label": "Repositories"
+        }
+    }, 
+    "horizon": {
+        "secret_key": "0991bcd8c7e546b6a0b5fabff5dca7402aea66c7e6a75dd930dcb1bf09e51ce4"
+    }, 
+    "mp": [
+        {
+            "weight": "1", 
+            "point": "1"
+        }, 
+        {
+            "weight": "2", 
+            "point": "2"
+        }
+    ], 
+    "puppet": {
+        "modules": "rsync://2.6.1.2:/puppet/ocata-11.0/modules/", 
+        "manifests": "rsync://2.6.1.2:/puppet/ocata-11.0/manifests/"
+    }, 
+    "atop": {
+        "service_enabled": true, 
+        "interval": "20", 
+        "rotate": "7", 
+        "metadata": {
+            "group": "logging", 
+            "enabled": true, 
+            "weight": 60, 
+            "toggleable": false, 
+            "label": "Advanced System & Process Monitor (atop)"
+        }
+    }, 
+    "workloads_collector": {
+        "username": "fuel_stats_user", 
+        "enabled": true, 
+        "create_user": false, 
+        "password": "hclcxHDvQShXzBNcozL5Dpa2", 
+        "tenant": "services", 
+        "metadata": {
+            "restrictions": [
+                {
+                    "action": "hide", 
+                    "condition": "true"
+                }
+            ], 
+            "group": "general", 
+            "weight": 10, 
+            "label": "Workloads Collector User"
+        }
+    }, 
+    "propagate_task_deploy": false, 
+    "release": {
+        "operating_system": "Ubuntu", 
+        "name": "Newton on Ubuntu 16.04", 
+        "version": "ocata-11.0"
+    }, 
+    "heat": {
+        "db_password": "BNxTIpFAlTqZkDhAA7jLDoge", 
+        "user_password": "jyjwu1I6h8FxTNnlb70Ftpi6", 
+        "enabled": true, 
+        "auth_encryption_key": "1943d67480761846216ad590e21b3696", 
+        "rabbit_password": "gvxPA3peZXMQ7eqtOThcDjLU"
+    }, 
+    "ceilometer": {
+        "db_password": "BIKNG7D9eXeeqlZWNsCdkhRf", 
+        "user_password": "RYNRz3IesaF66dVt50QL9jXn", 
+        "metering_secret": "s44w6iIQs4BwBbnIF15wHFyq", 
+        "enabled": false
+    }, 
+    "fuel_version": "11.0", 
+    "rabbit": {
+        "password": "pcWxyhlSRFmUROvUMX7sAlam"
+    }, 
+    "nova_quota": false, 
+    "openstack_version": "ocata-11.0", 
+    "packages": [
+        "acl", 
+        "anacron", 
+        "bash-completion", 
+        "bridge-utils", 
+        "bsdmainutils", 
+        "build-essential", 
+        "cloud-init", 
+        "curl", 
+        "daemonize", 
+        "debconf-utils", 
+        "gdisk", 
+        "grub-pc", 
+        "hwloc", 
+        "linux-firmware", 
+        "linux-headers-generic-lts-xenial", 
+        "linux-image-generic-lts-xenial", 
+        "lvm2", 
+        "mcollective", 
+        "mdadm", 
+        "multipath-tools", 
+        "multipath-tools-boot", 
+        "nailgun-agent", 
+        "nailgun-mcagents", 
+        "network-checker", 
+        "ntp", 
+        "ntpdate", 
+        "openssh-client", 
+        "openssh-server", 
+        "puppet", 
+        "python-amqp", 
+        "ruby-augeas", 
+        "ruby-ipaddress", 
+        "ruby-json", 
+        "ruby-netaddr", 
+        "ruby-openstack", 
+        "ruby-shadow", 
+        "ruby-stomp", 
+        "telnet", 
+        "ubuntu-minimal", 
+        "ubuntu-standard", 
+        "uuid-runtime", 
+        "vim", 
+        "virt-what", 
+        "vlan"
+    ], 
+    "management_network_range": "192.168.0.0/24", 
+    "nodes": [
+        {
+            "user_node_name": "node-1", 
+            "swift_zone": "1", 
+            "role": "base-os", 
+            "name": "node-1", 
+            "internal_address": "192.168.0.1", 
+            "storage_address": "192.168.1.1", 
+            "internal_netmask": "255.255.255.0", 
+            "storage_netmask": "255.255.255.0", 
+            "fqdn": "node-1.domain.tld", 
+            "uid": "1"
+        }, 
+        {
+            "user_node_name": "node-2", 
+            "swift_zone": "2", 
+            "role": "base-os", 
+            "name": "node-2", 
+            "internal_address": "192.168.0.3", 
+            "storage_address": "192.168.1.3", 
+            "internal_netmask": "255.255.255.0", 
+            "storage_netmask": "255.255.255.0", 
+            "fqdn": "node-2.domain.tld", 
+            "uid": "2"
+        }, 
+        {
+            "user_node_name": "node-3", 
+            "swift_zone": "3", 
+            "role": "base-os", 
+            "name": "node-3", 
+            "internal_address": "192.168.0.2", 
+            "storage_address": "192.168.1.2", 
+            "internal_netmask": "255.255.255.0", 
+            "storage_netmask": "255.255.255.0", 
+            "fqdn": "node-3.domain.tld", 
+            "uid": "3"
+        }
+    ], 
+    "ssh": {
+        "security_enabled": false, 
+        "security_networks": [
+            "2.6.1.2"
+        ], 
+        "brute_force_protection": false, 
+        "metadata": {
+            "group": "security", 
+            "enabled": true, 
+            "weight": 120, 
+            "toggleable": false, 
+            "label": "SSH security"
+        }
+    }, 
+    "neutron_advanced_configuration": {
+        "neutron_qos": false, 
+        "neutron_l3_ha": false, 
+        "neutron_dvr": false, 
+        "neutron_l2_pop": false, 
+        "metadata": {
+            "restrictions": [
+                {
+                    "action": "hide", 
+                    "condition": "cluster:net_provider != 'neutron'"
+                }
+            ], 
+            "group": "network", 
+            "weight": 20, 
+            "label": "Neutron Advanced Configuration"
+        }
+    }, 
+    "service_user": {
+        "homedir": "/var/lib/fuel", 
+        "sudo": "ALL=(ALL) NOPASSWD: ALL", 
+        "metadata": {
+            "restrictions": [
+                {
+                    "action": "hide", 
+                    "condition": "true"
+                }
+            ], 
+            "group": "general", 
+            "weight": 10, 
+            "label": "Service user account"
+        }, 
+        "root_password": "r00tme", 
+        "password": "K4SWFEsIX7S72XxGTvrbSYtv", 
+        "name": "fuel"
+    }, 
+    "base_syslog": {
+        "syslog_port": "514", 
+        "syslog_server": "2.6.1.2"
+    }, 
+    "auto_assign_floating_ip": false, 
+    "swift": {
+        "user_password": "94kUz9khvOqA0OqEyQuOr2p5"
+    }, 
+    "roles": [
+        "master"
+    ], 
+    "auth_key": "", 
+    "syslog": {
+        "syslog_port": "514", 
+        "syslog_transport": "tcp", 
+        "syslog_server": "", 
+        "metadata": {
+            "group": "logging", 
+            "enabled": false, 
+            "weight": 50, 
+            "toggleable": true, 
+            "label": "Syslog"
+        }
+    }, 
+    "puppet_debug": true, 
+    "last_controller": null, 
+    "public_ssl": {
+        "hostname": "public.fuel.local", 
+        "horizon": false, 
+        "services": false, 
+        "cert_data": "", 
+        "cert_source": "self_signed", 
+        "metadata": {
+            "group": "security", 
+            "weight": 110, 
+            "label": "Public TLS"
+        }
+    }, 
+    "deployed_before": {
+        "value": false
+    }, 
+    "kernel_params": {
+        "kernel": "console=tty0 net.ifnames=1 biosdevname=0 rootdelay=90 nomodeset", 
+        "metadata": {
+            "group": "general", 
+            "weight": 60, 
+            "label": "Kernel parameters"
+        }
+    }, 
+    "external_ntp": {
+        "ntp_list": [
+            "2.6.1.2"
+        ], 
+        "metadata": {
+            "group": "network", 
+            "weight": 40, 
+            "label": "Host OS NTP Servers"
+        }
+    }, 
+    "deployment_mode": "ha_compact", 
+    "debug": false, 
+    "cinder": {
+        "db_password": "s2JqNNMCCuoyVBHhiEio3fID", 
+        "user_password": "KHaqk3bzalW3zrWNp8fNvNzi", 
+        "fixed_key": "cbd9a36d62d1d363919634cb9d733cbd4716299f9f92131c475b09a83548aecb"
+    }, 
+    "deployment_id": 1, 
+    "run_ping_checker": true, 
+    "quantum": true
+}
