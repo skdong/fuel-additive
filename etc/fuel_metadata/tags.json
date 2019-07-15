@@ -1,0 +1,41 @@
+{
+    "compute": {
+        "has_primary": false
+    }, 
+    "mongo": {
+        "has_primary": true
+    }, 
+    "database": {
+        "has_primary": true
+    }, 
+    "virt": {
+        "has_primary": false
+    }, 
+    "rabbitmq": {
+        "has_primary": true
+    }, 
+    "base-os": {
+        "has_primary": false
+    }, 
+    "controller": {
+        "has_primary": true
+    }, 
+    "keystone": {
+        "has_primary": true
+    }, 
+    "cinder-block-device": {
+        "has_primary": false
+    }, 
+    "ironic": {
+        "has_primary": false
+    }, 
+    "ceph-osd": {
+        "has_primary": false
+    }, 
+    "cinder": {
+        "has_primary": false
+    }, 
+    "neutron": {
+        "has_primary": true
+    }
+}

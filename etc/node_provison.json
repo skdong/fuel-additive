@@ -1,0 +1,317 @@
+{
+    "engine": {
+        "url": "http://2.6.1.2:80/cobbler_api", 
+        "username": "cobbler", 
+        "password": "CS7cKrTulMd4LAqaC9ARE4os", 
+        "master_ip": "2.6.1.2"
+    }, 
+    "name_servers_search": "\"domain.tld\"", 
+    "uid": "2", 
+    "power_type": "ssh", 
+    "power_user": "root", 
+    "kernel_options": {
+        "udevrules": "00:50:56:bd:41:b8_ens192", 
+        "netcfg/choose_interface": "00:50:56:bd:41:b8"
+    }, 
+    "image_data": {
+        "/boot": {
+            "container": "gzip", 
+            "uri": "http://2.6.1.2:8080/targetimages/env_1_ubuntu_1604_amd64-boot.img.gz", 
+            "format": "ext2"
+        }, 
+        "/": {
+            "container": "gzip", 
+            "uri": "http://2.6.1.2:8080/targetimages/env_1_ubuntu_1604_amd64.img.gz", 
+            "format": "ext4"
+        }
+    }, 
+    "ks_meta": {
+        "gw": "2.6.1.254", 
+        "mco_enable": 1, 
+        "mco_identity": 2, 
+        "mco_user": "mcollective", 
+        "install_log_2_syslog": 1, 
+        "image_data": {
+            "/boot": {
+                "container": "gzip", 
+                "uri": "http://2.6.1.2:8080/targetimages/env_1_ubuntu_1604_amd64-boot.img.gz", 
+                "format": "ext2"
+            }, 
+            "/": {
+                "container": "gzip", 
+                "uri": "http://2.6.1.2:8080/targetimages/env_1_ubuntu_1604_amd64.img.gz", 
+                "format": "ext4"
+            }
+        }, 
+        "timezone": "Etc/UTC", 
+        "puppet_master": "localhost", 
+        "user_accounts": [
+            {
+                "password": "QgYQypQjUXuFfAIMzjecYZH5", 
+                "sudo": [
+                    "ALL=(ALL) NOPASSWD: ALL"
+                ], 
+                "ssh_keys": [
+                    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBGQJcUvdtnoX/6TZ9D9DDSaI46jfcu6GiKDccv0EPOzAw3Sq6bOHKQIILp2b1WyLL2LGDz83Q7TDXgM0rJAclgcCYXjCZQ8ezdSXdLZPtVkg7/gAglJc1fJPsgcSxjuPLsQ5S0mBWzRI4YMsGsSD+0mr4Kw/GvOt2ZhP++rLqvtkTdchkih8grgHJ9o6jyl1TGSfVqEaFz+9a48YtrUcyD5vNvcwsnZv8T6YT2IBz8VlHNluwa2aUDsVQPN7q3bhBH33hpWMP6m1m0ozeVVWYNDHxDuYRsb+x75SwrUu3KWx0fDfygqUBTO8kswDauC3vxh74VZu0Et3tIv1XVF81 root@fuel.domain.tld"
+                ], 
+                "homedir": "/home/fueladmin", 
+                "name": "fueladmin"
+            }, 
+            {
+                "password": "K4SWFEsIX7S72XxGTvrbSYtv", 
+                "sudo": [
+                    "ALL=(ALL) NOPASSWD: ALL"
+                ], 
+                "ssh_keys": [
+                    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBGQJcUvdtnoX/6TZ9D9DDSaI46jfcu6GiKDccv0EPOzAw3Sq6bOHKQIILp2b1WyLL2LGDz83Q7TDXgM0rJAclgcCYXjCZQ8ezdSXdLZPtVkg7/gAglJc1fJPsgcSxjuPLsQ5S0mBWzRI4YMsGsSD+0mr4Kw/GvOt2ZhP++rLqvtkTdchkih8grgHJ9o6jyl1TGSfVqEaFz+9a48YtrUcyD5vNvcwsnZv8T6YT2IBz8VlHNluwa2aUDsVQPN7q3bhBH33hpWMP6m1m0ozeVVWYNDHxDuYRsb+x75SwrUu3KWx0fDfygqUBTO8kswDauC3vxh74VZu0Et3tIv1XVF81 root@fuel.domain.tld"
+                ], 
+                "homedir": "/var/lib/fuel", 
+                "name": "fuel"
+            }, 
+            {
+                "password": "r00tme", 
+                "ssh_keys": [
+                    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBGQJcUvdtnoX/6TZ9D9DDSaI46jfcu6GiKDccv0EPOzAw3Sq6bOHKQIILp2b1WyLL2LGDz83Q7TDXgM0rJAclgcCYXjCZQ8ezdSXdLZPtVkg7/gAglJc1fJPsgcSxjuPLsQ5S0mBWzRI4YMsGsSD+0mr4Kw/GvOt2ZhP++rLqvtkTdchkih8grgHJ9o6jyl1TGSfVqEaFz+9a48YtrUcyD5vNvcwsnZv8T6YT2IBz8VlHNluwa2aUDsVQPN7q3bhBH33hpWMP6m1m0ozeVVWYNDHxDuYRsb+x75SwrUu3KWx0fDfygqUBTO8kswDauC3vxh74VZu0Et3tIv1XVF81 root@fuel.domain.tld"
+                ], 
+                "homedir": "/root", 
+                "name": "root"
+            }
+        ], 
+        "pm_data": {
+            "kernel_params": "console=tty0 net.ifnames=1 biosdevname=0 rootdelay=90 nomodeset", 
+            "ks_spaces": [
+                {
+                    "name": "sda", 
+                    "volumes": [
+                        {
+                            "type": "boot", 
+                            "size": 300
+                        }, 
+                        {
+                            "mount": "/boot", 
+                            "size": 200, 
+                            "type": "partition", 
+                            "file_system": "ext2", 
+                            "name": "Boot"
+                        }, 
+                        {
+                            "type": "lvm_meta_pool", 
+                            "size": 0
+                        }, 
+                        {
+                            "size": 23616, 
+                            "type": "pv", 
+                            "lvm_meta_size": 64, 
+                            "vg": "os"
+                        }
+                    ], 
+                    "extra": [], 
+                    "bootable": true, 
+                    "size": 51200, 
+                    "type": "disk", 
+                    "id": "disk/by-path/pci-0000:03:00.0-scsi-0:0:0:0", 
+                    "free_space": 50636
+                }, 
+                {
+                    "_allocate_size": "min", 
+                    "label": "Base System", 
+                    "min_size": 23552, 
+                    "volumes": [
+                        {
+                            "mount": "/", 
+                            "size": 15360, 
+                            "type": "lv", 
+                            "name": "root", 
+                            "file_system": "ext4"
+                        }, 
+                        {
+                            "mount": "swap", 
+                            "size": 8192, 
+                            "type": "lv", 
+                            "name": "swap", 
+                            "file_system": "swap"
+                        }
+                    ], 
+                    "type": "vg", 
+                    "id": "os"
+                }
+            ]
+        }, 
+        "master_ip": "2.6.1.2", 
+        "cloud_init_templates": {
+            "cloud_config": "cloud_config_fuel_11.0_ubuntu.jinja2", 
+            "meta_data": "meta_data_fuel_11.0_ubuntu.jinja2", 
+            "boothook": "boothook_fuel_11.0_ubuntu.jinja2"
+        }, 
+        "admin_net": "2.6.1.0/24", 
+        "mco_host": "2.6.1.2", 
+        "authorized_keys": [
+            "\"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBGQJcUvdtnoX/6TZ9D9DDSaI46jfcu6GiKDccv0EPOzAw3Sq6bOHKQIILp2b1WyLL2LGDz83Q7TDXgM0rJAclgcCYXjCZQ8ezdSXdLZPtVkg7/gAglJc1fJPsgcSxjuPLsQ5S0mBWzRI4YMsGsSD+0mr4Kw/GvOt2ZhP++rLqvtkTdchkih8grgHJ9o6jyl1TGSfVqEaFz+9a48YtrUcyD5vNvcwsnZv8T6YT2IBz8VlHNluwa2aUDsVQPN7q3bhBH33hpWMP6m1m0ozeVVWYNDHxDuYRsb+x75SwrUu3KWx0fDfygqUBTO8kswDauC3vxh74VZu0Et3tIv1XVF81 root@fuel.domain.tld\""
+        ], 
+        "mco_vhost": "mcollective", 
+        "repo_setup": {
+            "repos": [
+                {
+                    "name": "ubuntu", 
+                    "section": "main universe multiverse", 
+                    "uri": "http://2.6.1.2:8080/mirrors/ubuntu/", 
+                    "priority": null, 
+                    "suite": "xenial", 
+                    "type": "deb"
+                }, 
+                {
+                    "name": "ubuntu-updates", 
+                    "section": "main universe multiverse", 
+                    "uri": "http://2.6.1.2:8080/mirrors/ubuntu/", 
+                    "priority": null, 
+                    "suite": "xenial-updates", 
+                    "type": "deb"
+                }, 
+                {
+                    "name": "ubuntu-security", 
+                    "section": "main universe multiverse", 
+                    "uri": "http://2.6.1.2:8080/mirrors/ubuntu/", 
+                    "priority": null, 
+                    "suite": "xenial-security", 
+                    "type": "deb"
+                }, 
+                {
+                    "name": "mos", 
+                    "section": "main restricted", 
+                    "uri": "http://2.6.1.2:8080/ocata-11.0/ubuntu/x86_64", 
+                    "priority": 1050, 
+                    "suite": "mos11.0", 
+                    "type": "deb"
+                }, 
+                {
+                    "name": "mos-updates", 
+                    "section": "main restricted", 
+                    "uri": "http://2.6.1.2:8080/mirrors/mos-repos/ubuntu/11.0/", 
+                    "priority": 1050, 
+                    "suite": "mos11.0-updates", 
+                    "type": "deb"
+                }, 
+                {
+                    "name": "mos-security", 
+                    "section": "main restricted", 
+                    "uri": "http://2.6.1.2:8080/mirrors/mos-repos/ubuntu/11.0/", 
+                    "priority": 1050, 
+                    "suite": "mos11.0-security", 
+                    "type": "deb"
+                }, 
+                {
+                    "name": "mos-holdback", 
+                    "section": "main restricted", 
+                    "uri": "http://2.6.1.2:8080/mirrors/mos-repos/ubuntu/11.0/", 
+                    "priority": 1100, 
+                    "suite": "mos11.0-holdback", 
+                    "type": "deb"
+                }, 
+                {
+                    "name": "Auxiliary", 
+                    "section": "main restricted", 
+                    "uri": "http://2.6.1.2:8080/ocata-11.0/ubuntu/auxiliary", 
+                    "priority": 1150, 
+                    "suite": "auxiliary", 
+                    "type": "deb"
+                }
+            ], 
+            "metadata": {
+                "group": "general", 
+                "always_editable": true, 
+                "weight": 50, 
+                "label": "Repositories"
+            }
+        }, 
+        "mco_pskey": "unset", 
+        "puppet_enable": 0, 
+        "fuel_version": "11.0", 
+        "puppet_auto_setup": 1, 
+        "mco_auto_setup": 1, 
+        "mco_password": "sbr0nyi5gNHTU31GawRcOltT", 
+        "auth_key": "\"\"", 
+        "mco_connector": "rabbitmq"
+    }, 
+    "hostname": "node-2.domain.tld", 
+    "codename": "xenial", 
+    "power_pass": "/root/.ssh/id_rsa", 
+    "netboot_enabled": "1", 
+    "method": "image", 
+    "metadata": {
+        "restrictions": [
+            {
+                "action": "hide", 
+                "condition": "false"
+            }
+        ], 
+        "group": "general", 
+        "weight": 80, 
+        "label": "Provision"
+    }, 
+    "profile": "ubuntu_bootstrap", 
+    "interfaces": {
+        "ens192": {
+            "dns_name": "node-2.domain.tld", 
+            "netmask": "255.255.255.0", 
+            "mac_address": "00:50:56:bd:41:b8", 
+            "ip_address": "2.6.1.4", 
+            "static": "0"
+        }
+    }, 
+    "interfaces_extra": {
+        "ens192": {
+            "onboot": "yes", 
+            "peerdns": "no"
+        }
+    }, 
+    "power_address": "2.6.1.4", 
+    "name_servers": "\"2.6.1.2\"", 
+    "packages": [
+        "acl", 
+        "anacron", 
+        "bash-completion", 
+        "bridge-utils", 
+        "bsdmainutils", 
+        "build-essential", 
+        "cloud-init", 
+        "curl", 
+        "daemonize", 
+        "debconf-utils", 
+        "gdisk", 
+        "grub-pc", 
+        "hwloc", 
+        "linux-firmware", 
+        "linux-headers-generic-lts-xenial", 
+        "linux-image-generic-lts-xenial", 
+        "lvm2", 
+        "mcollective", 
+        "mdadm", 
+        "multipath-tools", 
+        "multipath-tools-boot", 
+        "nailgun-agent", 
+        "nailgun-mcagents", 
+        "network-checker", 
+        "ntp", 
+        "ntpdate", 
+        "openssh-client", 
+        "openssh-server", 
+        "puppet", 
+        "python-amqp", 
+        "ruby-augeas", 
+        "ruby-ipaddress", 
+        "ruby-json", 
+        "ruby-netaddr", 
+        "ruby-openstack", 
+        "ruby-shadow", 
+        "ruby-stomp", 
+        "telnet", 
+        "ubuntu-minimal", 
+        "ubuntu-standard", 
+        "uuid-runtime", 
+        "vim", 
+        "virt-what", 
+        "vlan"
+    ], 
+    "name": "node-2", 
+    "slave_name": "node-2"
+}

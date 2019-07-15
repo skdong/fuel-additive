@@ -1,0 +1,344 @@
+{
+    "bonding": {
+        "availability": [
+            {
+                "dpdkovs": "'experimental' in version:feature_groups and interface:pxe == false and nic_attributes:dpdk.enabled.value and not nic_attributes:sriov.enabled.value"
+            }, 
+            {
+                "linux": "not nic_attributes:sriov.enabled.value"
+            }
+        ], 
+        "properties": {
+            "dpdkovs": {
+                "lacp": [
+                    {
+                        "for_modes": [
+                            "balance-tcp"
+                        ], 
+                        "values": [
+                            "active", 
+                            "passive"
+                        ]
+                    }
+                ], 
+                "lacp_rate": [
+                    {
+                        "for_modes": [
+                            "balance-tcp"
+                        ], 
+                        "values": [
+                            "slow", 
+                            "fast"
+                        ]
+                    }
+                ], 
+                "mode": [
+                    {
+                        "values": [
+                            "active-backup", 
+                            "balance-slb", 
+                            "balance-tcp"
+                        ]
+                    }
+                ], 
+                "xmit_hash_policy": [
+                    {
+                        "for_modes": [
+                            "balance-tcp"
+                        ], 
+                        "values": [
+                            "layer2", 
+                            "layer2+3", 
+                            "layer3+4", 
+                            "encap2+3", 
+                            "encap3+4"
+                        ]
+                    }
+                ]
+            }, 
+            "linux": {
+                "lacp_rate": [
+                    {
+                        "for_modes": [
+                            "802.3ad"
+                        ], 
+                        "values": [
+                            "slow", 
+                            "fast"
+                        ]
+                    }
+                ], 
+                "mode": [
+                    {
+                        "values": [
+                            "balance-rr", 
+                            "active-backup"
+                        ]
+                    }, 
+                    {
+                        "values": [
+                            "802.3ad"
+                        ], 
+                        "condition": "'experimental' in version:feature_groups or interface:pxe == false"
+                    }, 
+                    {
+                        "values": [
+                            "balance-xor", 
+                            "broadcast", 
+                            "balance-tlb", 
+                            "balance-alb"
+                        ], 
+                        "condition": "'experimental' in version:feature_groups"
+                    }
+                ], 
+                "xmit_hash_policy": [
+                    {
+                        "for_modes": [
+                            "802.3ad", 
+                            "balance-xor", 
+                            "balance-tlb", 
+                            "balance-alb"
+                        ], 
+                        "values": [
+                            "layer2", 
+                            "layer2+3", 
+                            "layer3+4", 
+                            "encap2+3", 
+                            "encap3+4"
+                        ]
+                    }
+                ]
+            }
+        }
+    }, 
+    "nova_network": {
+        "config": {
+            "floating_ranges": [
+                [
+                    "172.16.0.128", 
+                    "172.16.0.254"
+                ]
+            ], 
+            "net_manager": "FlatDHCPManager", 
+            "fixed_networks_vlan_start": 103, 
+            "fixed_networks_amount": 1, 
+            "fixed_network_size": 256, 
+            "fixed_networks_cidr": "10.0.0.0/16"
+        }, 
+        "networks": [
+            {
+                "vips": [
+                    "haproxy", 
+                    "vrouter"
+                ], 
+                "name": "public", 
+                "notation": "ip_ranges", 
+                "render_type": null, 
+                "map_priority": 1, 
+                "configurable": true, 
+                "use_gateway": true, 
+                "vlan_start": null, 
+                "render_addr_mask": "public", 
+                "cidr": "172.16.0.0/24", 
+                "gateway": "172.16.0.1", 
+                "ip_range": [
+                    "172.16.0.2", 
+                    "172.16.0.127"
+                ]
+            }, 
+            {
+                "vips": [
+                    "haproxy", 
+                    "vrouter"
+                ], 
+                "name": "management", 
+                "notation": "cidr", 
+                "render_type": "cidr", 
+                "map_priority": 2, 
+                "configurable": true, 
+                "use_gateway": false, 
+                "vlan_start": 101, 
+                "render_addr_mask": "internal", 
+                "cidr": "192.168.0.0/24"
+            }, 
+            {
+                "name": "storage", 
+                "notation": "cidr", 
+                "render_type": "cidr", 
+                "map_priority": 2, 
+                "configurable": true, 
+                "use_gateway": false, 
+                "vlan_start": 102, 
+                "render_addr_mask": "storage", 
+                "cidr": "192.168.1.0/24"
+            }, 
+            {
+                "ext_net_data": [
+                    "fixed_networks_vlan_start", 
+                    "fixed_networks_amount"
+                ], 
+                "name": "fixed", 
+                "notation": null, 
+                "render_type": null, 
+                "map_priority": 2, 
+                "configurable": false, 
+                "use_gateway": false, 
+                "vlan_start": null, 
+                "render_addr_mask": null
+            }
+        ]
+    }, 
+    "neutron": {
+        "config": {
+            "parameters": {
+                "metadata": {
+                    "metadata_proxy_shared_secret": ""
+                }, 
+                "keystone": {
+                    "admin_user": null, 
+                    "admin_password": ""
+                }, 
+                "amqp": {
+                    "username": null, 
+                    "passwd": "", 
+                    "hosts": "hostname1:5672, hostname2:5672", 
+                    "provider": "rabbitmq"
+                }, 
+                "database": {
+                    "username": null, 
+                    "passwd": "", 
+                    "database": null, 
+                    "port": "3306", 
+                    "provider": "mysql"
+                }
+            }, 
+            "baremetal_gateway": "192.168.3.51", 
+            "internal_cidr": "192.168.111.0/24", 
+            "floating_ranges": [
+                [
+                    "172.16.0.130", 
+                    "172.16.0.254"
+                ]
+            ], 
+            "floating_name": "admin_floating_net", 
+            "base_mac": "fa:16:3e:00:00:00", 
+            "internal_gateway": "192.168.111.1", 
+            "internal_name": "admin_internal_net", 
+            "baremetal_range": [
+                "192.168.3.52", 
+                "192.168.3.254"
+            ], 
+            "gre_id_range": [
+                2, 
+                65535
+            ], 
+            "vlan_range": [
+                1000, 
+                1030
+            ]
+        }, 
+        "networks": [
+            {
+                "vips": [
+                    "haproxy", 
+                    "vrouter"
+                ], 
+                "name": "public", 
+                "notation": "ip_ranges", 
+                "render_type": null, 
+                "map_priority": 1, 
+                "configurable": true, 
+                "floating_range_var": "floating_ranges", 
+                "use_gateway": true, 
+                "vlan_start": null, 
+                "render_addr_mask": "public", 
+                "cidr": "172.16.0.0/24", 
+                "ip_range": [
+                    "172.16.0.2", 
+                    "172.16.0.126"
+                ]
+            }, 
+            {
+                "vips": [
+                    "haproxy", 
+                    "vrouter"
+                ], 
+                "name": "management", 
+                "notation": "cidr", 
+                "render_type": "cidr", 
+                "map_priority": 2, 
+                "configurable": true, 
+                "use_gateway": false, 
+                "vlan_start": 101, 
+                "render_addr_mask": "internal", 
+                "cidr": "192.168.0.0/24"
+            }, 
+            {
+                "name": "storage", 
+                "notation": "cidr", 
+                "render_type": "cidr", 
+                "map_priority": 2, 
+                "configurable": true, 
+                "use_gateway": false, 
+                "vlan_start": 102, 
+                "render_addr_mask": "storage", 
+                "cidr": "192.168.1.0/24"
+            }, 
+            {
+                "name": "private", 
+                "notation": null, 
+                "render_type": null, 
+                "map_priority": 2, 
+                "neutron_vlan_range": true, 
+                "use_gateway": false, 
+                "vlan_start": null, 
+                "render_addr_mask": null, 
+                "configurable": false, 
+                "seg_type": "vlan"
+            }, 
+            {
+                "name": "private", 
+                "notation": "cidr", 
+                "render_type": "cidr", 
+                "map_priority": 2, 
+                "configurable": true, 
+                "use_gateway": false, 
+                "vlan_start": 103, 
+                "render_addr_mask": null, 
+                "cidr": "192.168.2.0/24", 
+                "seg_type": "gre"
+            }, 
+            {
+                "name": "private", 
+                "notation": "cidr", 
+                "render_type": "cidr", 
+                "map_priority": 2, 
+                "configurable": true, 
+                "use_gateway": false, 
+                "vlan_start": 103, 
+                "render_addr_mask": null, 
+                "cidr": "192.168.2.0/24", 
+                "seg_type": "tun"
+            }, 
+            {
+                "restrictions": [
+                    {
+                        "condition": "settings:additional_components.ironic.value == false"
+                    }
+                ], 
+                "name": "baremetal", 
+                "notation": "ip_ranges", 
+                "render_type": null, 
+                "map_priority": 2, 
+                "configurable": true, 
+                "use_gateway": false, 
+                "vlan_start": 104, 
+                "cidr": "192.168.3.0/24", 
+                "ip_range": [
+                    "192.168.3.2", 
+                    "192.168.3.50"
+                ]
+            }
+        ]
+    }
+}

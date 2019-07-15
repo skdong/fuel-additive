@@ -1,0 +1,109 @@
+[
+    {
+        "name": "hypervisor:docker", 
+        "weight": 5, 
+        "default": true, 
+        "bind": [
+            [
+                "settings:common.libvirt_type.value", 
+                "qemu"
+            ]
+        ], 
+        "label": "docker", 
+        "compatible": [
+            {
+                "name": "hypervisor:*"
+            }
+        ], 
+        "description": "kubernetes backend"
+    }, 
+    {
+        "default": true, 
+        "compatible": [
+            {
+                "name": "hypervisor:*"
+            }, 
+            {
+                "name": "network:docker:*"
+            }
+        ], 
+        "name": "network:docker:calico", 
+        "weight": 1000, 
+        "label": "calico"
+    }, 
+    {
+        "compatible": [
+            {
+                "name": "hypervisor:docker"
+            }, 
+            {
+                "name": "network:docker"
+            }, 
+            {
+                "name": "network:docker:calico"
+            }
+        ], 
+        "bind": [
+            [
+                "settings:storage.volumes_ceph.value", 
+                true
+            ], 
+            [
+                "settings:storage.volumes_lvm.value", 
+                false
+            ]
+        ], 
+        "name": "storage:block:ceph", 
+        "weight": 10, 
+        "label": "dialog.create_cluster_wizard.storage.ceph"
+    }, 
+    {
+        "compatible": [
+            {
+                "name": "hypervisor:docker"
+            }, 
+            {
+                "name": "network:docker"
+            }, 
+            {
+                "name": "network:docker:calico"
+            }
+        ], 
+        "bind": [
+            [
+                "settings:storage.volumes_ceph.value", 
+                true
+            ], 
+            [
+                "settings:storage.volumes_lvm.value", 
+                false
+            ]
+        ], 
+        "name": "storage:block:ceph", 
+        "weight": 10, 
+        "label": "dialog.create_cluster_wizard.storage.ceph"
+    }, 
+    {
+        "compatible": [
+            {
+                "name": "hypervisor:docker"
+            }, 
+            {
+                "name": "network:docker"
+            }, 
+            {
+                "name": "network:docker:calico"
+            }, 
+            {
+                "name": "storage:block:ceph"
+            }
+        ], 
+        "bind": [
+            "settings:additional_components.helm.value", 
+            true
+        ], 
+        "name": "additional_service:helm", 
+        "weight": 10, 
+        "label": "helm"
+    }
+]

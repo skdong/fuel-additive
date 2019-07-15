@@ -1,0 +1,106 @@
+- {id: provision_start, task_name: provision_start, type: stage, version: 1.0.0}
+- id: provision_end
+  requires: [provision_start]
+  task_name: provision_end
+  type: stage
+  version: 1.0.0
+- id: upload_provision_info_master
+  parameters:
+    data: {yaql_exp: ($.provision).toYaml()}
+    path: /tmp/bright/provision.yaml
+    timeout: 180
+  required_for: [build_deploy_image]
+  requires: [provision_start]
+  role: master
+  roles: master
+  task_name: upload_provision_info_master
+  type: upload_file
+  version: 2.1.0
+- id: repo_setup
+  parameters:
+    data: {yaql_exp: ($.repo_setup).toYaml()}
+    path: /tmp/bright/repo_setup.yaml
+    timeout: 180
+  required_for: [build_deploy_image]
+  requires: [provision_start]
+  role: master
+  roles: master
+  task_name: repo_setup
+  type: upload_file
+  version: 2.1.0
+- id: items
+  parameters:
+    data: {yaql_exp: (dict($.items())).toYaml()}
+    path: /tmp/bright/items.yaml
+    timeout: 180
+  required_for: [build_deploy_image]
+  requires: [provision_start]
+  role: master
+  roles: master
+  task_name: items
+  type: upload_file
+  version: 2.1.0
+- condition: {yaql_exp: $.ironic.enabled}
+  id: generate_ironic_bootstrap_keys
+  parameters: {cmd: 'sh /etc/puppet/modules/osnailyfacter/modular/astute/generate_keys.sh
+      -i {CLUSTER_ID} -s ''ironic'' -p /var/lib/fuel/keys/', retries: 1, timeout: 180}
+  required_for: [build_deploy_image]
+  requires: [provision_start]
+  role: master
+  roles: master
+  task_name: generate_ironic_bootstrap_keys
+  type: shell
+  version: 2.1.0
+
+- id: upload_provision_info
+  parameters:
+    data: {yaql_exp: $.provision.toJson()}
+    path: /tmp/provision.json
+    timeout: 180
+  required_for: [system_provision]
+  requires: [provision_start]
+  role: [/.*/]
+  roles: [/.*/]
+  task_name: upload_provision_info
+  type: upload_file
+  version: 2.1.0
+
+- id: fix_package_bug
+  type: copy_files
+  parameters:
+    files:
+      - src: /etc/fuel/additive/fs.py
+        dst: /usr/lib/python2.7/dist-packages/fuel_agent/utils/fs.py
+      - src: /etc/fuel/additive/boothook_centos.jinja2
+        dst: /usr/share/fuel-agent/cloud-init-templates/boothook_centos.jinja2
+      - src: /etc/fuel/additive/cloud_config_centos.jinja2
+        dst: /usr/share/fuel-agent/cloud-init-templates/cloud_config_centos.jinja2
+    dir_permissions: '0750'
+    permission: '0640'
+  roles: ['/.*/']
+  version: 2.1.0
+  requires:
+    - provision_start
+  required_for:
+    - system_provision
+
+- id: system_provision
+  type: shell
+  version: 2.1.0
+  role: ['/.*/']
+  requires: [move_to_bootstrap, upload_provision_info]
+  required_for: [cobbler_disable_netboot]
+  cross-depends:
+    - name: build_deploy_image
+      role: master
+  parameters:
+    cmd: sh /usr/bin/provision
+    timeout: 3600
+
+- id: update_initramfs
+  type: shell
+  role: ['/.*.']
+  requires: [system_provision]
+  required_for: [cobbler_disable_netboot]
+  parameters:
+    cmd: sh

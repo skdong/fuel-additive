@@ -1,0 +1,11 @@
+{
+    "node": {
+        "has_primary": false
+    }, 
+    "base-os": {
+        "has_primary": false
+    },
+    "master": {
+        "has_primary": true
+    }
+}

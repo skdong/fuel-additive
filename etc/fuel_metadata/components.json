@@ -1,0 +1,386 @@
+[
+    {
+        "name": "hypervisor:qemu", 
+        "weight": 5, 
+        "default": true, 
+        "bind": [
+            [
+                "settings:common.libvirt_type.value", 
+                "qemu"
+            ]
+        ], 
+        "label": "dialog.create_cluster_wizard.compute.qemu", 
+        "compatible": [
+            {
+                "name": "hypervisor:*"
+            }
+        ], 
+        "description": "dialog.create_cluster_wizard.compute.qemu_description"
+    }, 
+    {
+        "description": "dialog.create_cluster_wizard.network.neutron_ml2_description", 
+        "weight": 1000, 
+        "default": true, 
+        "label": "dialog.create_cluster_wizard.network.neutron_ml2", 
+        "compatible": [
+            {
+                "name": "hypervisor:*"
+            }, 
+            {
+                "name": "network:neutron:ml2:*"
+            }
+        ], 
+        "name": "network:neutron:core:ml2"
+    }, 
+    {
+        "description": "dialog.create_cluster_wizard.network.neutron_vlan_description", 
+        "weight": 5, 
+        "incompatible": [
+            {
+                "message": "dialog.create_cluster_wizard.network.vlan_tun_alert", 
+                "name": "network:neutron:ml2:tun"
+            }
+        ], 
+        "default": true, 
+        "bind": [
+            [
+                "cluster:net_provider", 
+                "neutron"
+            ], 
+            [
+                "cluster:net_segment_type", 
+                "vlan"
+            ]
+        ], 
+        "label": "common.network.neutron_vlan", 
+        "compatible": [
+            {
+                "name": "network:neutron:core:ml2"
+            }, 
+            {
+                "name": "hypervisor:qemu"
+            }
+        ], 
+        "requires": [
+            {
+                "one_of": {
+                    "items": [
+                        "network:neutron:core:ml2"
+                    ]
+                }
+            }
+        ], 
+        "name": "network:neutron:ml2:vlan"
+    }, 
+    {
+        "description": "dialog.create_cluster_wizard.network.neutron_tun_description", 
+        "weight": 10, 
+        "incompatible": [
+            {
+                "message": "dialog.create_cluster_wizard.network.vlan_tun_alert", 
+                "name": "network:neutron:ml2:vlan"
+            }, 
+            {
+                "message": "dialog.create_cluster_wizard.additional.ironic_network_mode_alert", 
+                "name": "additional_service:ironic"
+            }
+        ], 
+        "bind": [
+            [
+                "cluster:net_provider", 
+                "neutron"
+            ], 
+            [
+                "cluster:net_segment_type", 
+                "tun"
+            ]
+        ], 
+        "label": "common.network.neutron_tun", 
+        "compatible": [
+            {
+                "name": "network:neutron:core:ml2"
+            }, 
+            {
+                "name": "hypervisor:qemu"
+            }
+        ], 
+        "requires": [
+            {
+                "one_of": {
+                    "items": [
+                        "network:neutron:core:ml2"
+                    ]
+                }
+            }
+        ], 
+        "name": "network:neutron:ml2:tun"
+    }, 
+    {
+        "description": "dialog.create_cluster_wizard.storage.default_provider", 
+        "weight": 5, 
+        "incompatible": [
+            {
+                "message": "LVM not compatible with Ceph", 
+                "name": "storage:block:ceph"
+            }
+        ], 
+        "default": true, 
+        "bind": [
+            "settings:storage.volumes_lvm.value"
+        ], 
+        "label": "dialog.create_cluster_wizard.storage.lvm", 
+        "compatible": [
+            {
+                "name": "hypervisor:qemu"
+            }, 
+            {
+                "name": "network:neutron:core:ml2"
+            }, 
+            {
+                "name": "network:neutron:ml2:vlan"
+            }, 
+            {
+                "name": "network:neutron:ml2:tun"
+            }
+        ], 
+        "name": "storage:block:lvm"
+    }, 
+    {
+        "name": "storage:block:ceph", 
+        "weight": 10, 
+        "incompatible": [
+            {
+                "message": "Ceph not compatible with LVM", 
+                "name": "storage:block:lvm"
+            }
+        ], 
+        "bind": [
+            [
+                "settings:storage.volumes_ceph.value", 
+                true
+            ], 
+            [
+                "settings:storage.volumes_lvm.value", 
+                false
+            ]
+        ], 
+        "label": "dialog.create_cluster_wizard.storage.ceph", 
+        "compatible": [
+            {
+                "name": "hypervisor:qemu"
+            }, 
+            {
+                "name": "network:neutron:core:ml2"
+            }, 
+            {
+                "name": "network:neutron:ml2:vlan"
+            }, 
+            {
+                "name": "network:neutron:ml2:tun"
+            }, 
+            {
+                "name": "storage:object:ceph"
+            }, 
+            {
+                "name": "storage:ephemeral:ceph"
+            }, 
+            {
+                "name": "storage:image:ceph"
+            }
+        ], 
+        "description": "dialog.create_cluster_wizard.storage.ceph_block"
+    }, 
+    {
+        "description": "dialog.create_cluster_wizard.storage.ceph_object", 
+        "weight": 10, 
+        "bind": [
+            "settings:storage.objects_ceph.value"
+        ], 
+        "label": "dialog.create_cluster_wizard.storage.ceph", 
+        "compatible": [
+            {
+                "name": "hypervisor:qemu"
+            }, 
+            {
+                "name": "network:neutron:core:ml2"
+            }, 
+            {
+                "name": "network:neutron:ml2:vlan"
+            }, 
+            {
+                "name": "network:neutron:ml2:tun"
+            }, 
+            {
+                "name": "storage:block:lvm"
+            }, 
+            {
+                "name": "storage:block:ceph"
+            }, 
+            {
+                "name": "storage:ephemeral:ceph"
+            }, 
+            {
+                "name": "storage:image:ceph"
+            }
+        ], 
+        "name": "storage:object:ceph"
+    }, 
+    {
+        "description": "dialog.create_cluster_wizard.storage.ceph_ephemeral", 
+        "weight": 10, 
+        "bind": [
+            "settings:storage.ephemeral_ceph.value"
+        ], 
+        "label": "dialog.create_cluster_wizard.storage.ceph", 
+        "compatible": [
+            {
+                "name": "hypervisor:qemu"
+            }, 
+            {
+                "name": "network:neutron:core:ml2"
+            }, 
+            {
+                "name": "network:neutron:ml2:vlan"
+            }, 
+            {
+                "name": "network:neutron:ml2:tun"
+            }, 
+            {
+                "name": "storage:block:lvm"
+            }, 
+            {
+                "name": "storage:block:ceph"
+            }, 
+            {
+                "name": "storage:object:ceph"
+            }, 
+            {
+                "name": "storage:image:ceph"
+            }
+        ], 
+        "name": "storage:ephemeral:ceph"
+    }, 
+    {
+        "description": "dialog.create_cluster_wizard.storage.ceph_image", 
+        "weight": 10, 
+        "bind": [
+            "settings:storage.images_ceph.value"
+        ], 
+        "label": "dialog.create_cluster_wizard.storage.ceph", 
+        "compatible": [
+            {
+                "name": "hypervisor:qemu"
+            }, 
+            {
+                "name": "network:neutron:core:ml2"
+            }, 
+            {
+                "name": "network:neutron:ml2:vlan"
+            }, 
+            {
+                "name": "network:neutron:ml2:tun"
+            }, 
+            {
+                "name": "storage:block:lvm"
+            }, 
+            {
+                "name": "storage:block:ceph"
+            }, 
+            {
+                "name": "storage:object:ceph"
+            }, 
+            {
+                "name": "storage:ephemeral:ceph"
+            }
+        ], 
+        "name": "storage:image:ceph"
+    }, 
+    {
+        "description": "dialog.create_cluster_wizard.additional.install_sahara_description", 
+        "weight": 10, 
+        "bind": [
+            "settings:additional_components.sahara.value"
+        ], 
+        "label": "dialog.create_cluster_wizard.additional.install_sahara", 
+        "compatible": [
+            {
+                "name": "hypervisor:qemu"
+            }, 
+            {
+                "name": "network:neutron:core:ml2"
+            }, 
+            {
+                "name": "network:neutron:ml2:vlan"
+            }, 
+            {
+                "name": "network:neutron:ml2:tun"
+            }, 
+            {
+                "name": "storage:block:lvm"
+            }, 
+            {
+                "name": "storage:block:ceph"
+            }, 
+            {
+                "name": "storage:object:ceph"
+            }, 
+            {
+                "name": "storage:ephemeral:ceph"
+            }, 
+            {
+                "name": "storage:image:ceph"
+            }, 
+            {
+                "name": "additional_service:sahara"
+            }, 
+            {
+                "name": "additional_service:ironic"
+            }
+        ], 
+        "name": "additional_service:sahara"
+    }, 
+    {
+        "name": "additional_service:ironic", 
+        "weight": 40, 
+        "incompatible": [
+            {
+                "message": "dialog.create_cluster_wizard.additional.ironic_network_mode_alert", 
+                "name": "network:neutron:ml2:tun"
+            }
+        ], 
+        "bind": [
+            "settings:additional_components.ironic.value"
+        ], 
+        "label": "dialog.create_cluster_wizard.additional.install_ironic", 
+        "compatible": [
+            {
+                "name": "hypervisor:qemu"
+            }, 
+            {
+                "name": "network:neutron:core:ml2"
+            }, 
+            {
+                "name": "network:neutron:ml2:vlan"
+            }, 
+            {
+                "name": "storage:block:lvm"
+            }, 
+            {
+                "name": "storage:block:ceph"
+            }, 
+            {
+                "name": "storage:object:ceph"
+            }, 
+            {
+                "name": "storage:ephemeral:ceph"
+            }, 
+            {
+                "name": "storage:image:ceph"
+            }, 
+            {
+                "name": "additional_service:sahara"
+            }
+        ], 
+        "description": "dialog.create_cluster_wizard.additional.install_ironic_description"
+    }
+]
