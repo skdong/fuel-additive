@@ -78,6 +78,7 @@ class RPMManager(object):
     def execute_post_trans(self):
         cmd_path = os.path.join('/', 'tmp', 'posttrun.sh')
         scripts = Scripts(self._get_scripts())
+        scripts.parser()
         with open(os.path.join(self._chroot, cmd_path), 'w') as fp:
             fp.write(scripts.get_trans_post())
         os.chmod(os.path.join(self._chroot, cmd_path), 0700)
@@ -90,14 +91,18 @@ class Provisoner(object):
         self.manager = manager
         super(Provisoner, self)
 
-    def provison(self):
+    def provision(self):
         # TODO rebuild initramfs
         # TODO relink /etc/mtab
         LOG.debug('--- fix bug ---')
         chroot = '/tmp/target'
         self.manager.mount_target(chroot, treat_mtab=False)
-        _relink_mtab(chroot)
-        _rebuild_initramfs(chroot)
+        try:
+            _relink_mtab(chroot)
+            _rebuild_initramfs(chroot)
+        except Exception as err:
+            LOG.error(err)
+            self.manager.umount_target()
         self.manager.umount_target()
 
     @classmethod
@@ -109,7 +114,7 @@ class Provisoner(object):
 
 def _relink_mtab(chroot):
     mtab_path = os.path.join(chroot,  '/etc/mtab')
-    if os.path.islink(mtab_path):
+    if not os.path.islink(mtab_path):
         os.remove(mtab_path)
         utils.execute('chroot', chroot,
                       'ln', '-s', '/proc/self/mounts', '/etc/mtab')
