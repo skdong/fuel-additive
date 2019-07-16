@@ -11,7 +11,7 @@ from oslo_log import log as logging
 
 CONF = cfg.CONF
 LOG = logging.getLogger(__name__)
-PROJECT = 'fuel-agent'
+PROJECT = 'fuel-additive'
 
 cli_opts = [
     cfg.StrOpt(
@@ -108,7 +108,7 @@ class Provisoner(object):
 
 
 def _relink_mtab(chroot):
-    mtab_path = chroot + '/etc/mtab'
+    mtab_path = os.path.join(chroot,  '/etc/mtab')
     if os.path.islink(mtab_path):
         os.remove(mtab_path)
         utils.execute('chroot', chroot,

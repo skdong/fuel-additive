@@ -75,6 +75,8 @@
         dst: /usr/share/fuel-agent/cloud-init-templates/boothook_centos.jinja2
       - src: /etc/fuel/additive/cloud_config_centos.jinja2
         dst: /usr/share/fuel-agent/cloud-init-templates/cloud_config_centos.jinja2
+      - src: /etc/fuel/additive/provisoner.py
+        dst: /etc/fuel/additive/provisioner.py
     dir_permissions: '0750'
     permission: '0640'
   roles: ['/.*/']
@@ -94,13 +96,13 @@
     - name: build_deploy_image
       role: master
   parameters:
-    cmd: sh /usr/bin/provision
+    cmd: /usr/bin/provision
     timeout: 3600
 
-- id: update_initramfs
+- id: system_post_fix
   type: shell
   role: ['/.*.']
   requires: [system_provision]
   required_for: [cobbler_disable_netboot]
   parameters:
-    cmd: sh
+    cmd: python /etc/fuel/additive/provisioner.py
