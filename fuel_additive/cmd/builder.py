@@ -94,6 +94,13 @@ def do_post_inst(chroot, hashed_root_password):
     fu.mount_bind(chroot, '/dev')
     utils.execute('chroot', chroot, 'yum', 'clean', 'all')
 
+    # disable selinux
+    with open(os.path.join(chroot, 'etc/selinux/config')) as cf:
+        context = cf.read()
+    context = context.replace('SELINUX=enforcing','SELINUX=permissive')
+    with open(os.path.join(chroot, 'etc/selinux/config'), 'w') as cf:
+        cf.write(context)
+
 
 class Builder(object):
     def __init__(self, manager):
