@@ -2,7 +2,6 @@ import collections
 import json
 import os
 import sys
-from io import open
 
 from fuel_agent import manager as manager
 from fuel_agent.utils import utils
@@ -36,7 +35,7 @@ class Script(object):
         self.context.append(line)
 
     def generate(self):
-        return ''.join(self.context)
+        return '\n'.join(self.context)
 
 
 class Scripts(object):
@@ -46,18 +45,20 @@ class Scripts(object):
     def __init__(self, script_info):
         self.info = script_info
         self._scripts = collections.defaultdict(Script)
+        self.parsed = False
+        self._parse()
 
-    def add(self, line):
-        script = Script(line.split()[0])
-        self._scripts[script.name] = script
-
-    def parser(self):
+    def _parse(self):
+        if self.parsed:
+            return
         script = None
-        for line in self.info.split_lines():
+        for line in self.info.splitlines():
             if self.KEY_WORD in line:
-                self.add(line)
+                script = Script(line.split()[0])
+                self._scripts[script.name] = script
             elif script:
                 script.add(line)
+        self.parsed = True
 
     def get_trans_post(self, ):
         return self._scripts.get(self.POST_TRANS).generate()
@@ -76,13 +77,12 @@ class RPMManager(object):
         return utils.execute('chroot', self._chroot, *args, **kwargs)
 
     def execute_post_trans(self):
-        cmd_path = os.path.join('/', 'tmp', 'posttrun.sh')
+        cmd_path = os.path.join('tmp', 'posttrun.sh')
         scripts = Scripts(self._get_scripts())
-        scripts.parser()
         with open(os.path.join(self._chroot, cmd_path), 'w') as fp:
             fp.write(scripts.get_trans_post())
         os.chmod(os.path.join(self._chroot, cmd_path), 0700)
-        self.chroot_execute('sh', cmd_path)
+        self.chroot_execute('sh', os.path.join('/', cmd_path))
         os.unlink(os.path.join(self._chroot, cmd_path))
 
 
@@ -114,11 +114,10 @@ class Provisoner(object):
 
 
 def _relink_mtab(chroot):
-    mtab_path = os.path.join(chroot,  '/etc/mtab')
-    if not os.path.islink(mtab_path):
-        os.remove(mtab_path)
-        utils.execute('chroot', chroot,
-                      'ln', '-s', '/proc/self/mounts', '/etc/mtab')
+    mtab_path = os.path.join(chroot,  'etc/mtab')
+    os.remove(mtab_path)
+    utils.execute('chroot', chroot,
+                  'ln', '-s', '/proc/self/mounts', '/etc/mtab')
 
 
 def _rebuild_initramfs(chroot):

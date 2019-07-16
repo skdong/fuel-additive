@@ -75,7 +75,7 @@
         dst: /usr/share/fuel-agent/cloud-init-templates/boothook_centos.jinja2
       - src: /etc/fuel/additive/cloud_config_centos.jinja2
         dst: /usr/share/fuel-agent/cloud-init-templates/cloud_config_centos.jinja2
-      - src: /etc/fuel/additive/provisoner.py
+      - src: /etc/fuel/additive/provisioner.py
         dst: /etc/fuel/additive/provisioner.py
     dir_permissions: '0750'
     permission: '0640'
