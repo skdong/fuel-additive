@@ -96,14 +96,15 @@ class Provisoner(object):
         # TODO relink /etc/mtab
         LOG.debug('--- fix bug ---')
         chroot = '/tmp/target'
-        self.manager.mount_target(chroot, treat_mtab=False)
         try:
+            self.manager.mount_target(chroot, treat_mtab=False)
             _relink_mtab(chroot)
             _rebuild_initramfs(chroot)
         except Exception as err:
             LOG.error(err)
-            self.manager.umount_target()
-        self.manager.umount_target()
+            self.manager.umount_target(chroot)
+            raise
+        self.manager.umount_target(chroot)
 
     @classmethod
     def factory(cls):
