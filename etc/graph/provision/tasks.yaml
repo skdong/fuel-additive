@@ -108,3 +108,25 @@
   parameters:
     cmd: python /etc/fuel/additive/provisioner.py
     timeout: 3600
+
+- id: cobbler_disable_netboot
+  type: master_shell
+  version: 2.1.0
+  role: ['/.*/']
+  requires: [system_provision]
+  required_for: [node_reboot]
+  parameters:
+    strategy:
+      type: one_by_one
+    cmd:
+      yaql_exp: 'concat("sh /etc/puppet/modules/osnailyfacter/modular/provision/netboot disable ", $.provision.name)'
+    timeout: 180
+
+- id: node_reboot
+  type: reboot
+  version: 2.1.0
+  role: ['/.*/']
+  requires: [cobbler_disable_netboot]
+  required_for: [set_status_provisioned]
+  parameters:
+    timeout: 900
