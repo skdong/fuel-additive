@@ -127,6 +127,8 @@ def _rebuild_initramfs(chroot):
 
 def provision():
     load_opts()
+    provisioner = Provisoner.factory()
+    provisioner.provision()
 
 
 def load_opts():
