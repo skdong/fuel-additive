@@ -101,8 +101,10 @@
 
 - id: system_post_fix
   type: shell
-  role: ['/.*.']
+  version: 2.1.0
+  role: ['/.*/']
   requires: [system_provision]
   required_for: [cobbler_disable_netboot]
   parameters:
     cmd: python /etc/fuel/additive/provisioner.py
+    timeout: 3600
