@@ -31,7 +31,7 @@ cli_opts = [
 opts = [
     cfg.StrOpt(
         "centos_docker_container",
-        default="os-image",
+        default="os_image",
         help="Centos Base Os Dcoker Container"
     )
 ]
@@ -87,12 +87,6 @@ def do_post_inst(chroot, hashed_root_password):
     bu.remove_files(chroot, ['usr/sbin/policy-rc.d'])
     # enable mdadm (remove nomdadmddf nomdadmism options from cmdline)
     bu.remove_files(chroot, [bu.GRUB2_DMRAID_SETTINGS])
-
-    # we need /proc to be mounted for apt-get success
-    fu.mount_bind(chroot, '/proc')
-    fu.mount_bind(chroot, '/sys')
-    fu.mount_bind(chroot, '/dev')
-    utils.execute('chroot', chroot, 'yum', 'clean', 'all')
 
     # disable selinux
     with open(os.path.join(chroot, 'etc/selinux/config')) as cf:
@@ -200,10 +194,6 @@ class Builder(object):
             packages = driver_os.packages
             metadata['packages'] = packages
 
-            # TODO generate centos repos
-
-            # TODO install centos packages
-
             LOG.debug('Post-install OS configuration')
             root = driver_os.get_user_by_name('root')
 
@@ -221,11 +211,8 @@ class Builder(object):
                         chroot)
 
             LOG.info('*** Finalizing image space ***')
-            fu.umount_fs(os.path.join(chroot, 'proc'))
-            fu.umount_fs(os.path.join(chroot, 'sys'))
-            fu.umount_fs(os.path.join(chroot, 'dev'))
             # umounting all loop devices
-            self.manager.umount_target(chroot, pseudo=False)
+            self.manager.umount_target(chroot)
 
             for image in self.driver.image_scheme.images:
                 # find fs with the same loop device object

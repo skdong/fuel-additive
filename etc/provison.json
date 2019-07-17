@@ -109,12 +109,12 @@
     "image_data": {
         "/boot": {
             "container": "gzip", 
-            "uri": "http://2.6.1.2:8080/targetimages/env_1_centos_7_amd64-boot.img.gz", 
+            "uri": "http://2.6.1.2:8080/targetimages/centos_7_x86_64-boot.img.gz", 
             "format": "ext2"
         }, 
         "/": {
             "container": "gzip", 
-            "uri": "http://2.6.1.2:8080/targetimages/env_1_centos_7_amd64.img.gz", 
+            "uri": "http://2.6.1.2:8080/targetimages/centos_7_x86_64.img.gz", 
             "format": "ext4"
         }
     }, 
