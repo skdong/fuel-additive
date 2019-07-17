@@ -1,45 +1,23 @@
 - {id: provision_start, task_name: provision_start, type: stage, version: 1.0.0}
+
 - id: provision_end
   requires: [provision_start]
   task_name: provision_end
   type: stage
   version: 1.0.0
+
 - id: upload_provision_info_master
-  parameters:
-    data: {yaql_exp: ($.provision).toYaml()}
-    path: /tmp/bright/provision.yaml
-    timeout: 180
-  required_for: [build_deploy_image]
-  requires: [provision_start]
-  role: master
-  roles: master
-  task_name: upload_provision_info_master
   type: upload_file
   version: 2.1.0
-- id: repo_setup
-  parameters:
-    data: {yaql_exp: ($.repo_setup).toYaml()}
-    path: /tmp/bright/repo_setup.yaml
-    timeout: 180
-  required_for: [build_deploy_image]
+  role: ['master']
   requires: [provision_start]
-  role: master
-  roles: master
-  task_name: repo_setup
-  type: upload_file
-  version: 2.1.0
-- id: items
-  parameters:
-    data: {yaql_exp: (dict($.items())).toYaml()}
-    path: /tmp/bright/items.yaml
-    timeout: 180
   required_for: [build_deploy_image]
-  requires: [provision_start]
-  role: master
-  roles: master
-  task_name: items
-  type: upload_file
-  version: 2.1.0
+  parameters:
+    path: /tmp/provision.yaml
+    timeout: 180
+    data:
+      yaql_exp: "($.provision.set('packages', $.provision.packages) + $.repo_setup + dict('output' => '/var/www/nailgun/targetimages') + dict($.items())).toYaml()"
+
 - condition: {yaql_exp: $.ironic.enabled}
   id: generate_ironic_bootstrap_keys
   parameters: {cmd: 'sh /etc/puppet/modules/osnailyfacter/modular/astute/generate_keys.sh
@@ -52,13 +30,23 @@
   type: shell
   version: 2.1.0
 
+- id: build_deploy_image
+  type: shell
+  version: 2.1.0
+  role: ['master']
+  requires: [upload_provision_info_master, generate_ironic_bootstrap_keys]
+  required_for: [provision_end]
+  parameters:
+    cmd: fuel_additive_builder
+    timeout: 3600
+
 - id: upload_provision_info
   parameters:
     data: {yaql_exp: $.provision.toJson()}
     path: /tmp/provision.json
     timeout: 180
   required_for: [system_provision]
-  requires: [provision_start]
+  requires: [build_deploy_image]
   role: [/.*/]
   roles: [/.*/]
   task_name: upload_provision_info
@@ -82,7 +70,7 @@
   roles: ['/.*/']
   version: 2.1.0
   requires:
-    - provision_start
+    - upload_provision_info
   required_for:
     - system_provision
 

@@ -7,13 +7,19 @@ from io import open
 
 import six
 import yaml
+
+from oslo_config import cfg
+from oslo_log import log as logging
+
 from fuel_agent import errors
 from fuel_agent import manager as manager
 from fuel_agent.utils import build as bu
 from fuel_agent.utils import fs as fu
 from fuel_agent.utils import utils
-from oslo_config import cfg
-from oslo_log import log as logging
+from fuel_agent.objects import repo
+
+from fuel_additive.utils import build as add_build
+
 
 cli_opts = [
     cfg.StrOpt(
@@ -38,67 +44,18 @@ opts = [
 
 CONF = cfg.CONF
 LOG = logging.getLogger(__name__)
-PROJECT = 'fuel-agent'
+PROJECT = 'fuel-additive'
+
+class ReopTypeError(error.BaseError):
+    pass
 
 
 def list_opts():
     return [("CLI", cli_opts)]
 
 
-def install_base_centos(target):
-    cmd = ["docker", "cp", CONF.centos_docker_container + ":/", target]
-    utils.execute(*cmd)
-
-
-def do_post_inst(chroot, hashed_root_password):
-    # NOTE(agordeev): set up password for root
-    utils.execute('sed', '-i',
-                  's%root:[\*,\!]%root:' + hashed_root_password + '%',
-                  os.path.join(chroot, 'etc/shadow'))
-    # NOTE(agordeev): backport from bash-script:
-    # in order to prevent the later puppet workflow outage, puppet service
-    # should be disabled on a node startup.
-    # Being enabled by default, sometimes it leads to puppet service hanging
-    # and recognizing the deployment as failed.
-    # TODO(agordeev): take care of puppet service for other distros, once
-    # fuel-agent will be capable of building images for them too.
-    if os.path.exists(os.path.join(chroot, 'etc/init.d/puppet')):
-        utils.execute('chroot', chroot, 'update-rc.d', 'puppet', 'disable')
-    # NOTE(agordeev): disable mcollective to be automatically started on boot
-    # to prevent confusing messages in its log (regarding connection errors).
-    service_link = os.path.join(
-        chroot,
-        'etc/systemd/system/multi-user.target.wants/mcollective.service')
-    if os.path.exists(service_link):
-        os.unlink(service_link)
-    cloud_cfg = os.path.join(chroot, 'etc/cloud/cloud.cfg.d/')
-    utils.makedirs_if_not_exists(os.path.dirname(cloud_cfg))
-    with open(os.path.join(
-            chroot,
-            'etc/cloud/cloud.cfg.d/99-disable-network-config.cfg'), 'w') as cf:
-        yaml.safe_dump({'network': {'config': 'disabled'}}, cf,
-                       encoding='utf-8',
-                       default_flow_style=False)
-    cloud_init_conf = os.path.join(chroot, 'etc/cloud/cloud.cfg')
-    if os.path.exists(cloud_init_conf):
-        bu.fix_cloud_init_config(cloud_init_conf)
-    # NOTE(agordeev): remove custom policy-rc.d which is needed to disable
-    # execution of post/pre-install package hooks and start of services
-    bu.remove_files(chroot, ['usr/sbin/policy-rc.d'])
-    # enable mdadm (remove nomdadmddf nomdadmism options from cmdline)
-    bu.remove_files(chroot, [bu.GRUB2_DMRAID_SETTINGS])
-
-    # disable selinux
-    with open(os.path.join(chroot, 'etc/selinux/config')) as cf:
-        context = cf.read()
-    context = context.replace('SELINUX=enforcing','SELINUX=permissive')
-    with open(os.path.join(chroot, 'etc/selinux/config'), 'w') as cf:
-        cf.write(context)
-
-
 class Builder(object):
     def __init__(self, manager):
-        super(Builder, self)
         self.manager = manager
 
     def make_temp_space(self, chroot):
@@ -165,6 +122,24 @@ class Builder(object):
     @property
     def driver(self):
         return self.manager.driver
+    
+    @property
+    def driver_os(self):
+        return self.driver.operating_system
+
+    def _do_post_install(self, chroot):
+        # TODO change root password
+        add_build.set_root_password(
+            chroot, self.driver_os.get_user_by_name('root'))
+        # TODO set puppet 
+        add_build.set_puppet(chroot)
+        # TODO set mcollective
+        add_build.set_mcollective(chroot)
+        # TODO set selinux
+        add_build.set_selinux(chroot)
+        # TODO set repos
+        add_build.set_repos(chroot, self.driver_os.repos)
+
 
     def build(self):
         global chroot
@@ -190,15 +165,14 @@ class Builder(object):
             # TODO make tempspace
             self.make_temp_space(chroot)
             # TODO install centos base os
-            install_base_centos(chroot)
+            add_build.install_base_centos(chroot)
             packages = driver_os.packages
             metadata['packages'] = packages
 
             LOG.debug('Post-install OS configuration')
-            root = driver_os.get_user_by_name('root')
 
             # TODO centos psot install
-            do_post_inst(chroot, hashed_root_password=root.hashed_password)
+            self._do_post_install(chroot)
 
             LOG.debug('Making sure there are no running processes '
                       'inside chroot before trying to umount chroot')

@@ -31,12 +31,6 @@
         "deployed_before": {
             "value": false
         }, 
-        "horizon": {
-            "secret_key": {
-                "generator": "hexstring", 
-                "generator_arg": "64"
-            }
-        }, 
         "cobbler": {
             "profile": {
                 "generator": "identical", 
@@ -126,94 +120,6 @@
             }
         }, 
         "additional_components": {
-            "ceilometer": {
-                "restrictions": [
-                    {
-                        "action": "hide", 
-                        "condition": "not ('experimental' in version:feature_groups)"
-                    }
-                ], 
-                "description": "If selected, Ceilometer and Aodh components will be installed", 
-                "weight": 60, 
-                "value": false, 
-                "label": "Install Ceilometer and Aodh", 
-                "type": "checkbox"
-            }, 
-            "mongo": {
-                "restrictions": [
-                    {
-                        "action": "hide", 
-                        "condition": "not ('experimental' in version:feature_groups)"
-                    }, 
-                    {
-                        "settings:additional_components.ceilometer.value == false": "External Mongo aims to be an external backend for Ceilometer. Without Ceilometer enabled, External Mongo is useless and should not be installed."
-                    }
-                ], 
-                "description": "If selected, You can use external Mongo DB as ceilometer backend", 
-                "weight": 70, 
-                "value": false, 
-                "label": "Use external Mongo DB", 
-                "type": "checkbox"
-            }, 
-            "heat": {
-                "weight": 50, 
-                "type": "hidden", 
-                "description": "", 
-                "value": true, 
-                "label": ""
-            }, 
-            "murano-cfapi": {
-                "restrictions": [
-                    {
-                        "message": "Murano should be enabled", 
-                        "condition": "settings:additional_components.murano.value == false"
-                    }, 
-                    {
-                        "action": "hide", 
-                        "condition": "not ('experimental' in version:feature_groups)"
-                    }
-                ], 
-                "description": "If selected, Murano service broker will be installed", 
-                "weight": 30, 
-                "value": false, 
-                "label": "Install Murano service broker for Cloud Foundry", 
-                "type": "checkbox"
-            }, 
-            "murano": {
-                "restrictions": [
-                    {
-                        "action": "hide", 
-                        "condition": "not ('experimental' in version:feature_groups)"
-                    }
-                ], 
-                "description": "If selected, Murano component will be installed", 
-                "weight": 20, 
-                "value": false, 
-                "label": "Install Murano", 
-                "type": "checkbox"
-            }, 
-            "sahara": {
-                "weight": 10, 
-                "type": "checkbox", 
-                "description": "If selected, Sahara component will be installed", 
-                "value": false, 
-                "label": "Install Sahara"
-            }, 
-            "ironic": {
-                "restrictions": [
-                    {
-                        "cluster:net_provider != 'neutron' or networking_parameters:segmentation_type != 'vlan'": "Ironic requires Neutron with VLAN segmentation."
-                    }, 
-                    {
-                        "settings:storage.images_ceph.value == true and settings:storage.objects_ceph.value == false": "Ironic requires Swift or RadosGW for Glance images."
-                    }
-                ], 
-                "description": "If selected, Ironic component will be installed", 
-                "weight": 80, 
-                "value": false, 
-                "label": "Install Ironic", 
-                "type": "checkbox"
-            }, 
             "metadata": {
                 "group": "openstack_services", 
                 "weight": 10, 
@@ -419,99 +325,6 @@
                 "label": "Host OS DNS Servers"
             }
         }, 
-        "murano_settings": {
-            "murano_glance_artifacts_plugin": {
-                "weight": 40, 
-                "type": "checkbox", 
-                "description": "If selected glance artifact repository will be enabled", 
-                "value": true, 
-                "label": "Enable glance artifact repository"
-            }, 
-            "murano_repo_url": {
-                "weight": 10, 
-                "type": "text", 
-                "description": "", 
-                "value": "http://storage.apps.openstack.org/", 
-                "label": "Murano Repository URL"
-            }, 
-            "metadata": {
-                "restrictions": [
-                    {
-                        "action": "hide", 
-                        "message": "Murano is not enabled on the Additional Components section", 
-                        "condition": "settings:additional_components.murano.value == false"
-                    }
-                ], 
-                "group": "openstack_services", 
-                "weight": 20, 
-                "label": "Murano Settings"
-            }
-        }, 
-        "external_mongo": {
-            "mongo_db_name": {
-                "regex": {
-                    "source": "^\\w+$", 
-                    "error": "Invalid database name"
-                }, 
-                "description": "Mongo database name", 
-                "weight": 30, 
-                "value": "ceilometer", 
-                "label": "Database name", 
-                "type": "text"
-            }, 
-            "mongo_replset": {
-                "weight": 30, 
-                "type": "text", 
-                "description": "Name for Mongo replication set", 
-                "value": "", 
-                "label": "Replset"
-            }, 
-            "mongo_user": {
-                "regex": {
-                    "source": "^\\w+$", 
-                    "error": "Empty username"
-                }, 
-                "description": "Mongo database username", 
-                "weight": 30, 
-                "value": "ceilometer", 
-                "label": "Username", 
-                "type": "text"
-            }, 
-            "hosts_ip": {
-                "regex": {
-                    "source": "^(((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?),)*((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", 
-                    "error": "Invalid hosts ip sequence"
-                }, 
-                "description": "IP Addresses of MongoDB. Use comma to split IPs", 
-                "weight": 30, 
-                "value": "", 
-                "label": "MongoDB hosts IP", 
-                "type": "text"
-            }, 
-            "mongo_password": {
-                "regex": {
-                    "source": "^\\S*$", 
-                    "error": "Password contains spaces"
-                }, 
-                "description": "Mongo database password", 
-                "weight": 30, 
-                "value": "ceilometer", 
-                "label": "Password", 
-                "type": "password"
-            }, 
-            "metadata": {
-                "restrictions": [
-                    {
-                        "action": "hide", 
-                        "message": "Ceilometer and MongoDB are not enabled on the Additional Components section", 
-                        "condition": "settings:additional_components.mongo.value == false"
-                    }
-                ], 
-                "group": "openstack_services", 
-                "weight": 30, 
-                "label": "External MongoDB"
-            }
-        }, 
         "use_fedora_lt": {
             "kernel": {
                 "type": "radio", 
@@ -536,60 +349,6 @@
                 "label": "Use Fedora longterm kernel"
             }
         }, 
-        "public_network_assignment": {
-            "assign_to_all_nodes": {
-                "weight": 10, 
-                "type": "checkbox", 
-                "description": "When disabled, public network will be assigned to controllers only", 
-                "value": false, 
-                "label": "Assign public network to all nodes"
-            }, 
-            "metadata": {
-                "restrictions": [
-                    {
-                        "action": "hide", 
-                        "condition": "cluster:net_provider != 'neutron'"
-                    }
-                ], 
-                "group": "network", 
-                "weight": 10, 
-                "label": "Public network assignment"
-            }
-        }, 
-        "corosync": {
-            "verified": {
-                "weight": 10, 
-                "type": "checkbox", 
-                "description": "Set True only if multicast is configured correctly on router.", 
-                "value": false, 
-                "label": "Need to pass network verification."
-            }, 
-            "group": {
-                "weight": 10, 
-                "type": "text", 
-                "description": "", 
-                "value": "226.94.1.1", 
-                "label": "Group"
-            }, 
-            "port": {
-                "weight": 20, 
-                "type": "text", 
-                "description": "", 
-                "value": "12000", 
-                "label": "Port"
-            }, 
-            "metadata": {
-                "restrictions": [
-                    {
-                        "action": "hide", 
-                        "condition": "true"
-                    }
-                ], 
-                "group": "general", 
-                "weight": 50, 
-                "label": "Corosync"
-            }
-        }, 
         "repo_setup": {
             "repos": {
                 "type": "custom_repo_configuration", 
@@ -604,14 +363,26 @@
                     {
                         "priority": null, 
                         "type": "rpm", 
-                        "name": "mos-updates", 
-                        "uri": "http://mirror.fuel-infra.org/mos-repos/centos/mos{cluster.release.environment_version}-centos7/updates/x86_64"
+                        "name": "centos-base", 
+                        "uri": "http://{settings.MASTER_IP}:8080/mirrors/centos/$releasever/os/$basearch/"
                     }, 
                     {
                         "priority": null, 
                         "type": "rpm", 
-                        "name": "mos-security", 
-                        "uri": "http://mirror.fuel-infra.org/mos-repos/centos/mos{cluster.release.environment_version}-centos7/security/x86_64"
+                        "name": "centos-update", 
+                        "uri": "http://{settings.MASTER_IP}:8080/mirrors/centos/$releasever/updates/$basearch/"
+                    }, 
+                    {
+                        "priority": null, 
+                        "type": "rpm", 
+                        "name": "centos-extras", 
+                        "uri": "http://{settings.MASTER_IP}:8080/mirrors/centos/$releasever/extras/$basearch/"
+                    }, 
+                    {
+                        "priority": null, 
+                        "type": "rpm", 
+                        "name": "centos-centosplus", 
+                        "uri": "http://{settings.MASTER_IP}:8080/mirrors/centos/$releasever/centosplus/$basearch/"
                     }, 
                     {
                         "priority": 15, 
@@ -800,64 +571,6 @@
                 "label": "Provision"
             }
         }, 
-        "neutron_advanced_configuration": {
-            "neutron_qos": {
-                "weight": 40, 
-                "type": "checkbox", 
-                "description": "Enable Neutron QoS advanced service plug-in", 
-                "value": false, 
-                "label": "Neutron QoS"
-            }, 
-            "neutron_l3_ha": {
-                "restrictions": [
-                    {
-                        "message": "Neutron DVR must be disabled in order to use Neutron L3 HA", 
-                        "condition": "settings:neutron_advanced_configuration.neutron_dvr.value == true"
-                    }
-                ], 
-                "description": "Enable High Availability features for Virtual Routers in Neutron\nRequires at least 2 Controller nodes to function properly\n", 
-                "weight": 30, 
-                "value": false, 
-                "label": "Neutron L3 HA", 
-                "type": "checkbox"
-            }, 
-            "neutron_dvr": {
-                "restrictions": [
-                    {
-                        "networking_parameters:segmentation_type != 'vlan' and settings:neutron_advanced_configuration.neutron_l2_pop.value == false": "DVR requires L2 population to be enabled."
-                    }
-                ], 
-                "description": "Enable Distributed Virtual Routers in Neutron", 
-                "weight": 20, 
-                "value": false, 
-                "label": "Neutron DVR", 
-                "type": "checkbox"
-            }, 
-            "neutron_l2_pop": {
-                "restrictions": [
-                    {
-                        "action": "hide", 
-                        "condition": "networking_parameters:segmentation_type == 'vlan'"
-                    }
-                ], 
-                "description": "Enable L2 population mechanism in Neutron", 
-                "weight": 10, 
-                "value": false, 
-                "label": "Neutron L2 population", 
-                "type": "checkbox"
-            }, 
-            "metadata": {
-                "restrictions": [
-                    {
-                        "action": "hide", 
-                        "condition": "cluster:net_provider != 'neutron'"
-                    }
-                ], 
-                "group": "network", 
-                "weight": 20, 
-                "label": "Neutron Advanced Configuration"
-            }
-        }, 
         "service_user": {
             "name": {
                 "type": "hidden", 
@@ -910,18 +623,6 @@
                 "value": "public.fuel.local", 
                 "label": "DNS hostname for public TLS endpoints", 
                 "type": "text"
-            }, 
-            "horizon": {
-                "restrictions": [
-                    {
-                        "settings:public_ssl.services.value == false": "TLS for OpenStack public endpoints should be enabled"
-                    }
-                ], 
-                "description": "Secure access to Horizon enabling HTTPS instead of HTTP", 
-                "weight": 20, 
-                "value": false, 
-                "label": "HTTPS for Horizon", 
-                "type": "checkbox"
             }, 
             "services": {
                 "weight": 10, 
@@ -1028,47 +729,12 @@
                 "label": "Puppet debug logging", 
                 "type": "checkbox"
             }, 
-            "libvirt_type": {
-                "group": "compute", 
-                "weight": 30, 
-                "value": "qemu", 
-                "label": "Hypervisor type", 
-                "values": [
-                    {
-                        "data": "kvm", 
-                        "description": "Choose this type of hypervisor if you run OpenStack on hardware", 
-                        "label": "KVM"
-                    }, 
-                    {
-                        "data": "qemu", 
-                        "description": "Choose this type of hypervisor if you run OpenStack on virtual hosts.", 
-                        "label": "QEMU"
-                    }
-                ], 
-                "type": "radio"
-            }, 
-            "resume_guests_state_on_host_boot": {
-                "group": "compute", 
-                "description": "Whether to resume previous guests state when the host reboots. If enabled, this option causes guests assigned to the host to resume their previous state. If the guest was running a restart will be attempted when nova-compute starts. If the guest was not running previously, a restart will not be attempted.", 
-                "weight": 50, 
-                "value": true, 
-                "label": "Resume guests state on host boot", 
-                "type": "checkbox"
-            }, 
             "debug": {
                 "group": "logging", 
                 "description": "Debug logging mode provides more information, but requires more disk space.", 
                 "weight": 20, 
                 "value": false, 
                 "label": "OpenStack debug logging", 
-                "type": "checkbox"
-            }, 
-            "use_cow_images": {
-                "group": "storage", 
-                "description": "For most cases you will want qcow format. If it's disabled, raw image format will be used to run VMs. OpenStack with raw format currently does not support snapshotting.", 
-                "weight": 60, 
-                "value": true, 
-                "label": "Use qcow format for images", 
                 "type": "checkbox"
             }, 
             "run_ping_checker": {
@@ -1078,33 +744,6 @@
                 "value": true, 
                 "label": "Public Gateway is Available", 
                 "type": "checkbox"
-            }, 
-            "nova_quota": {
-                "group": "compute", 
-                "description": "Quotas are used to limit CPU and memory usage for tenants. Enabling quotas will increase load on the Nova database.", 
-                "weight": 30, 
-                "value": false, 
-                "label": "Nova quotas", 
-                "type": "checkbox"
-            }, 
-            "security_groups": {
-                "group": "security", 
-                "weight": 20, 
-                "value": "iptables_hybrid", 
-                "label": "Security Groups", 
-                "values": [
-                    {
-                        "data": "openvswitch", 
-                        "description": "Choose this driver for OVS based security groups implementation. NOTE: Open vSwitch Firewall Driver requires kernel version >= 4.3 for non-dpdk case.", 
-                        "label": "Open vSwitch Firewall Driver"
-                    }, 
-                    {
-                        "data": "iptables_hybrid", 
-                        "description": "Choose this driver for iptables/linux bridge based security groups implementation.", 
-                        "label": "Iptables-based Firewall Driver (No firewall for DPDK case)"
-                    }
-                ], 
-                "type": "radio"
             }, 
             "metadata": {
                 "weight": 10, 
