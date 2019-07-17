@@ -1,0 +1,7 @@
+FROM centos:latest
+RUN rm -f /etc/yum.repos.d/*
+ADD config/CentOS-Base.repo /etc/yum.repos.d/
+ADD config/Docker.repo /etc/yum.repos.d/
+ADD config/Fuel.repo /etc/yum.repos.d/
+ADD conf/packages /tmp
+RUN yum update -y && yum install -y $(cat packages)
