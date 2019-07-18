@@ -7,7 +7,6 @@ from fuel_agent import manager as manager
 from fuel_agent.utils import utils
 from oslo_config import cfg
 from oslo_log import log as logging
-from typing import Union
 
 CONF = cfg.CONF
 LOG = logging.getLogger(__name__)
