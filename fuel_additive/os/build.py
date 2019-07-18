@@ -6,7 +6,7 @@ from fuel_agent.utils import build as bu
 from fuel_agent.utils import utils
 from oslo_config import cfg
 
-from fuel_additive.utils.repo import create_repo
+from fuel_additive.os.repo import RPMRepo
 
 CONF = cfg.CONF
 
@@ -75,8 +75,5 @@ def set_selinux(chroot):
 
 def set_repos(chroot, repos):
     for repo_raw in repos:
-        repo = create_repo(repo_raw)
+        repo = RPMRepo(repo_raw)
         repo.inject_to_os(chroot)
-
-
-

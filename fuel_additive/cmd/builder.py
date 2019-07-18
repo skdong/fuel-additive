@@ -17,8 +17,7 @@ from fuel_agent.utils import build as bu
 from fuel_agent.utils import fs as fu
 from fuel_agent.utils import utils
 
-from fuel_additive.utils import build as add_build
-
+from fuel_additive.os import build as add_build
 
 cli_opts = [
     cfg.StrOpt(
@@ -44,8 +43,6 @@ opts = [
 CONF = cfg.CONF
 LOG = logging.getLogger(__name__)
 PROJECT = 'fuel-additive'
-
-
 
 
 def list_opts():
@@ -120,7 +117,7 @@ class Builder(object):
     @property
     def driver(self):
         return self.manager.driver
-    
+
     @property
     def driver_os(self):
         return self.driver.operating_system
@@ -137,7 +134,6 @@ class Builder(object):
         add_build.set_selinux(chroot)
         # TODO set repos
         add_build.set_repos(chroot, self.driver_os.repos)
-
 
     def build(self):
         global chroot

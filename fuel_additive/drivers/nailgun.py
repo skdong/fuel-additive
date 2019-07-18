@@ -4,7 +4,7 @@ from oslo_config import cfg
 from fuel_agent.drivers.nailgun import NailgunBuildImage
 from fuel_agent import objects
 
-from fuel_additive.objects.repo import RPMRepo
+from fuel_additive.objects.repo import create_repo
 
 CONF = cfg.CONF
 
@@ -16,9 +16,7 @@ class NailgunBuildCentOSImage(NailgunBuildImage):
 
         repos = []
         for repo in self.data['repos']:
-            repos.append(RPMRepo(name=repo['name'],
-                                 uri=repo['uri'],
-                                 priority=repo['priority']))
+            repos.append(create_repo(repo))
 
         proxies = objects.RepoProxies()
 
