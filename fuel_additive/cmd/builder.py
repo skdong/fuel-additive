@@ -257,7 +257,7 @@ class Builder(object):
 
 
 def over_ride_opts():
-    CONF.data_driver = 'nailgun_build_image'
+    CONF.data_driver = 'nailgun_build_centos_image'
 
 
 def build():

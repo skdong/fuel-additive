@@ -18,9 +18,8 @@ def install_base_centos(target):
 
 def set_root_password(chroot, root):
     # NOTE(agordeev): set up password for root
-    password = root.set_root_password
     utils.execute('sed', '-i',
-                  's%root:[\*,\!]%root:' + password + '%',
+                  's%root:[\*,\!]%root:' + root.hashed_password + '%',
                   os.path.join(chroot, 'etc/shadow'))
 
 
