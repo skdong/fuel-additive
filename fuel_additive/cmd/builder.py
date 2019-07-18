@@ -126,12 +126,15 @@ class Builder(object):
         # TODO change root password
         add_build.set_root_password(
             chroot, self.driver_os.get_user_by_name('root'))
+        add_build.set_cloud_init(chroot)
         # TODO set puppet 
         add_build.set_puppet(chroot)
         # TODO set mcollective
         add_build.set_mcollective(chroot)
         # TODO set selinux
         add_build.set_selinux(chroot)
+        add_build.set_policy(chroot)
+        add_build.set_grub2(chroot)
         # TODO set repos
         add_build.set_repos(chroot, self.driver_os.repos)
 
