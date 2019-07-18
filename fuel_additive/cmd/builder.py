@@ -23,7 +23,7 @@ from fuel_additive.utils import build as add_build
 cli_opts = [
     cfg.StrOpt(
         'input_data_file',
-        default='/tmp/provision.json',
+        default='/tmp/provision.yaml',
         help='Input data file'
     ),
     cfg.StrOpt(
@@ -256,7 +256,7 @@ class Builder(object):
     @classmethod
     def factory(cls):
         with open(CONF.input_data_file) as fp:
-            data = json.load(fp)
+            data = yaml.load(fp)
         return cls(manager.Manager(data))
 
 
