@@ -35,10 +35,10 @@ def upload_release_graps():
 
 def reload_release_graph(release_id):
     try:
-        utils.execute('fuel2 graph delete', '-r', release_id, '-t provision')
+        utils.execute('fuel2 graph delete', '-r', str(release_id), '-t provision')
     except errors.ProcessExecutionError as err:
         LOG.warn(err)
-    utils.execute('fuel2 graph uplaod -r', release_id, '-d', os.path.join(PATH, graph),'-t provision')
+    utils.execute('fuel2 graph uplaod -r', str(release_id), '-d', os.path.join(PATH, graph),'-t provision')
 
 
 def init():
