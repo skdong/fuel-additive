@@ -7,6 +7,7 @@ from fuel_agent import manager as manager
 from fuel_agent.utils import utils
 from oslo_config import cfg
 from oslo_log import log as logging
+from typing import Union
 
 CONF = cfg.CONF
 LOG = logging.getLogger(__name__)
@@ -86,14 +87,12 @@ class RPMManager(object):
         os.unlink(os.path.join(self._chroot, cmd_path))
 
 
-class Provisoner(object):
+class Provisioner(object):
     def __init__(self, manager):
         self.manager = manager
-        super(Provisoner, self)
+        super(Provisioner, self)
 
     def provision(self):
-        # TODO rebuild initramfs
-        # TODO relink /etc/mtab
         LOG.debug('--- fix bug ---')
         chroot = '/tmp/target'
         try:
@@ -107,7 +106,7 @@ class Provisoner(object):
         self.manager.umount_target(chroot)
 
     @classmethod
-    def factory(cls):
+    def create(cls):
         with open(CONF.input_data_file) as fp:
             data = json.load(fp)
         return cls(manager.Manager(data))
@@ -127,7 +126,7 @@ def _rebuild_initramfs(chroot):
 
 def provision():
     load_opts()
-    provisioner = Provisoner.factory()
+    provisioner = Provisioner.create()
     provisioner.provision()
 
 

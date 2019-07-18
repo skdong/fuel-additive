@@ -16,7 +16,6 @@ from fuel_agent import manager as manager
 from fuel_agent.utils import build as bu
 from fuel_agent.utils import fs as fu
 from fuel_agent.utils import utils
-from fuel_agent.objects import repo
 
 from fuel_additive.utils import build as add_build
 
@@ -46,8 +45,7 @@ CONF = cfg.CONF
 LOG = logging.getLogger(__name__)
 PROJECT = 'fuel-additive'
 
-class ReopTypeError(error.BaseError):
-    pass
+
 
 
 def list_opts():

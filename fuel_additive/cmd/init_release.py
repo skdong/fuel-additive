@@ -1,13 +1,14 @@
 import os
 import json
 
+from oslo_log import log
 from nailgun.db import db
-from nailgun.db.sqlalchemy.models import release
 from nailgun.db.sqlalchemy.models.release import Release
 
-from fuel_agent import error
+from fuel_agent import errors
 from fuel_agent.utils import utils
 
+LOG = log.getLogger(__name__)
 
 PATH = "/etc/fuel/additive"
 METADATA_PATH = os.path.join(PATH, 'kubernetes_metadata')
@@ -34,10 +35,10 @@ def upload_release_graps():
 
 def reload_release_graph(release_id):
     try:
-        utils.exec('fuel2 graph delete', '-r', release_id, '-t provision')
+        utils.execute('fuel2 graph delete', '-r', release_id, '-t provision')
     except errors.ProcessExecutionError as err:
         LOG.warn(err)
-    utils.exec('fuel2 graph uplaod -r', release_id, '-d', os.path.join(PATH, graph),'-t provision')
+    utils.execute('fuel2 graph uplaod -r', release_id, '-d', os.path.join(PATH, graph),'-t provision')
 
 
 def init():
@@ -49,9 +50,6 @@ def reset_release(release_id):
     session = db()
     q = session.query(Release)
     release = q.get(release_id)
-    release.roles_metadata = roles
-    release.attributes_metadata = attributes
-    release.tags_metadata = tags
 
     with open(os.path.join(METADATA_PATH,'attributes.json')) as fp:
         release.attributes_metadata = json.load(fp)
@@ -65,7 +63,6 @@ def reset_release(release_id):
     session.add(release)
     session.commit()
     session.close()
-
 
 
 def main():
