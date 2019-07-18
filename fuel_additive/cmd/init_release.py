@@ -42,8 +42,8 @@ def reload_release_graph(release_id):
     try:
         utils.execute('fuel2 graph delete', '-r', str(release_id), '-t provision')
     except errors.ProcessExecutionError as err:
-        LOG.warn(err)
-    utils.execute('fuel2 graph uplaod -r', str(release_id), '-d', os.path.join(PATH, graph),'-t provision')
+        pass
+    utils.execute('fuel2 graph upload -r', str(release_id), '-d', os.path.join(PATH, 'graph'),'-t provision')
 
 
 def load_config():
@@ -56,6 +56,19 @@ def init():
     release = 5
     reload_release_graph(release)
     reset_release(release)
+    show_release_metadata(release)
+
+def show_release_metadata(release_id):
+    session = db()
+    q = session.query(Release)
+    release = q.get(release_id)
+    LOG.debug("metadata")
+    LOG.debug(json.dumps(release.attributes_metadata, indent=4))
+
+    LOG.debug("roles")
+    LOG.debug(json.dumps(release.roles_metadata, indent=4))
+    session.close()
+
 
 def reset_release(release_id):
     session = db()
