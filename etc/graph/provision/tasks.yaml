@@ -37,7 +37,7 @@
   requires: [upload_provision_info_master, generate_ironic_bootstrap_keys]
   required_for: [provision_end]
   parameters:
-    cmd: fuel_additive_builder
+    cmd: fuel_additive_build
     timeout: 3600
 
 - id: upload_provision_info

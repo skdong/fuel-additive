@@ -282,7 +282,7 @@ def load_opts():
 def preview():
     load_opts()
     print CONF.data_driver
-    CONF.data_driver = 'nailgun_build_image'
+    CONF.data_driver = 'nailgun_build_centos_image'
     print CONF.data_driver
 
 
