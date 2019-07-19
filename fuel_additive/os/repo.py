@@ -14,7 +14,7 @@ class RPMRepo(Resource):
 
     @property
     def repo_path(self):
-        return os.path.join(self.repos_path, self.name, self.suffix)
+        return os.path.join(self.repos_path, self.name+self.suffix)
 
     def inject_to_os(self, root='/'):
         path = os.path.join(root, self.repo_path)

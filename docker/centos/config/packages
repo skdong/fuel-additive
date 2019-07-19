@@ -28,6 +28,7 @@ acl
 daemonize
 virt-what
 mcollective
+puppet
 pciutils
 cloud-init
 docker-ce

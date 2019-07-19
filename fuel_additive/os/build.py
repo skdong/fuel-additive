@@ -17,7 +17,7 @@ def install_base_centos(target):
 
 
 def set_hosts(chroot):
-    with open(os.path.join(chroot, 'etc/hosts')) as fp:
+    with open(os.path.join(chroot, 'etc/hosts'), 'w') as fp:
         fp.write("127.0.0.1	localhost\n::1	localhost ip6-localhost ip6-loopback")
 
 

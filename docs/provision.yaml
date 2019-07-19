@@ -1,0 +1,569 @@
+access:
+  email: admin@localhost
+  metadata:
+    group: general
+    label: OpenStack Access
+    weight: 10
+  password: admin
+  tenant: admin
+  user: admin
+atop:
+  interval: '20'
+  metadata:
+    enabled: true
+    group: logging
+    label: Advanced System & Process Monitor (atop)
+    toggleable: false
+    weight: 60
+  rotate: '7'
+  service_enabled: true
+auth_key: ''
+auto_assign_floating_ip: false
+base_syslog:
+  syslog_port: '514'
+  syslog_server: 2.6.1.2
+ceilometer:
+  enabled: false
+cgroups:
+  metadata:
+    always_editable: true
+    group: general
+    label: Cgroups conguration for services
+    restrictions:
+    - action: hide
+      condition: 'true'
+    weight: 90
+cluster:
+  fuel_version: '11.0'
+  id: 25
+  mode: ha_compact
+  name: test
+  status: new
+cobbler:
+  profile: centos-x86_64
+corosync:
+  group: 226.94.1.1
+  metadata:
+    group: general
+    label: Corosync
+    restrictions:
+    - action: hide
+      condition: 'true'
+    weight: 50
+  port: '12000'
+  verified: false
+debug: false
+deployed_before:
+  value: false
+deployment_id: 25
+deployment_mode: ha_compact
+engine:
+  master_ip: 2.6.1.2
+  password: CS7cKrTulMd4LAqaC9ARE4os
+  url: http://2.6.1.2:80/cobbler_api
+  username: cobbler
+external_dns:
+  dns_list:
+  - 2.6.1.1
+  metadata:
+    group: network
+    label: Host OS DNS Servers
+    weight: 30
+external_ntp:
+  metadata:
+    group: network
+    label: Host OS NTP Servers
+    weight: 40
+  ntp_list:
+  - 2.6.1.2
+fuel_version: '11.0'
+heat:
+  enabled: true
+image_data:
+  /:
+    container: gzip
+    format: ext4
+    uri: http://2.6.1.2:8080/targetimages/centos_7_x86_64.img.gz
+  /boot:
+    container: gzip
+    format: ext2
+    uri: http://2.6.1.2:8080/targetimages/centos_7_x86_64-boot.img.gz
+ironic:
+  enabled: false
+kernel_params:
+  kernel: console=tty0 biosdevname=0 crashkernel=none rootdelay=90 nomodeset
+  metadata:
+    group: general
+    label: Kernel parameters
+    weight: 60
+last_controller: null
+libvirt_type: qemu
+management_network_range: 192.168.0.0/24
+master_ip: 2.6.1.2
+metadata:
+  label: Common
+  weight: 10
+method: image
+mongo:
+  enabled: false
+mp:
+- point: '1'
+  weight: '1'
+- point: '2'
+  weight: '2'
+murano:
+  enabled: false
+murano-cfapi:
+  enabled: false
+network_metadata:
+  nodes:
+    node-5:
+      fqdn: node-5.domain.tld
+      name: node-5
+      network_roles:
+        admin/pxe: 2.6.1.4
+        aodh/api: 192.168.0.3
+        ceilometer/api: 192.168.0.3
+        ceph/public: 192.168.1.3
+        ceph/replication: 192.168.1.3
+        cinder/api: 192.168.0.3
+        cinder/iscsi: 192.168.1.3
+        fw-admin: 2.6.1.4
+        glance/api: 192.168.0.3
+        glance/glare: 192.168.0.3
+        heat/api: 192.168.0.3
+        horizon: 192.168.0.3
+        ironic/api: 192.168.0.3
+        keystone/api: 192.168.0.3
+        management: 192.168.0.3
+        mgmt/corosync: 192.168.0.3
+        mgmt/database: 192.168.0.3
+        mgmt/memcache: 192.168.0.3
+        mgmt/messaging: 192.168.0.3
+        mgmt/vip: 192.168.0.3
+        mongo/db: 192.168.0.3
+        murano/api: 192.168.0.3
+        murano/cfapi: 192.168.0.3
+        neutron/api: 192.168.0.3
+        neutron/floating: null
+        neutron/private: null
+        nova/api: 192.168.0.3
+        nova/migration: 192.168.0.3
+        sahara/api: 192.168.0.3
+        storage: 192.168.1.3
+        swift/api: 192.168.0.3
+        swift/replication: 192.168.1.3
+      node_roles:
+      - node
+      - primary-master
+      nova_cpu_pinning_enabled: false
+      nova_hugepages_enabled: false
+      swift_zone: '5'
+      uid: '5'
+      user_node_name: node-5
+    node-6:
+      fqdn: node-6.domain.tld
+      name: node-6
+      network_roles:
+        admin/pxe: 2.6.1.5
+        aodh/api: 192.168.0.2
+        ceilometer/api: 192.168.0.2
+        ceph/public: 192.168.1.2
+        ceph/replication: 192.168.1.2
+        cinder/api: 192.168.0.2
+        cinder/iscsi: 192.168.1.2
+        fw-admin: 2.6.1.5
+        glance/api: 192.168.0.2
+        glance/glare: 192.168.0.2
+        heat/api: 192.168.0.2
+        horizon: 192.168.0.2
+        ironic/api: 192.168.0.2
+        keystone/api: 192.168.0.2
+        management: 192.168.0.2
+        mgmt/corosync: 192.168.0.2
+        mgmt/database: 192.168.0.2
+        mgmt/memcache: 192.168.0.2
+        mgmt/messaging: 192.168.0.2
+        mgmt/vip: 192.168.0.2
+        mongo/db: 192.168.0.2
+        murano/api: 192.168.0.2
+        murano/cfapi: 192.168.0.2
+        neutron/api: 192.168.0.2
+        neutron/floating: null
+        neutron/private: null
+        nova/api: 192.168.0.2
+        nova/migration: 192.168.0.2
+        sahara/api: 192.168.0.2
+        storage: 192.168.1.2
+        swift/api: 192.168.0.2
+        swift/replication: 192.168.1.2
+      node_roles:
+      - master
+      - node
+      nova_cpu_pinning_enabled: false
+      nova_hugepages_enabled: false
+      swift_zone: '6'
+      uid: '6'
+      user_node_name: node-6
+    node-7:
+      fqdn: node-7.domain.tld
+      name: node-7
+      network_roles:
+        admin/pxe: 2.6.1.6
+        aodh/api: 192.168.0.1
+        ceilometer/api: 192.168.0.1
+        ceph/public: 192.168.1.1
+        ceph/replication: 192.168.1.1
+        cinder/api: 192.168.0.1
+        cinder/iscsi: 192.168.1.1
+        fw-admin: 2.6.1.6
+        glance/api: 192.168.0.1
+        glance/glare: 192.168.0.1
+        heat/api: 192.168.0.1
+        horizon: 192.168.0.1
+        ironic/api: 192.168.0.1
+        keystone/api: 192.168.0.1
+        management: 192.168.0.1
+        mgmt/corosync: 192.168.0.1
+        mgmt/database: 192.168.0.1
+        mgmt/memcache: 192.168.0.1
+        mgmt/messaging: 192.168.0.1
+        mgmt/vip: 192.168.0.1
+        mongo/db: 192.168.0.1
+        murano/api: 192.168.0.1
+        murano/cfapi: 192.168.0.1
+        neutron/api: 192.168.0.1
+        neutron/floating: null
+        neutron/private: null
+        nova/api: 192.168.0.1
+        nova/migration: 192.168.0.1
+        sahara/api: 192.168.0.1
+        storage: 192.168.1.1
+        swift/api: 192.168.0.1
+        swift/replication: 192.168.1.1
+      node_roles:
+      - master
+      - node
+      nova_cpu_pinning_enabled: false
+      nova_hugepages_enabled: false
+      swift_zone: '7'
+      uid: '7'
+      user_node_name: node-7
+  vips: {}
+neutron_advanced_configuration:
+  metadata:
+    group: network
+    label: Neutron Advanced Configuration
+    restrictions:
+    - action: hide
+      condition: cluster:net_provider != 'neutron'
+    weight: 20
+  neutron_dvr: false
+  neutron_l2_pop: false
+  neutron_l3_ha: false
+  neutron_qos: false
+nodes:
+- fqdn: node-5.domain.tld
+  internal_address: 192.168.0.3
+  internal_netmask: 255.255.255.0
+  name: node-5
+  role: node
+  storage_address: 192.168.1.3
+  storage_netmask: 255.255.255.0
+  swift_zone: '5'
+  uid: '5'
+  user_node_name: node-5
+- fqdn: node-5.domain.tld
+  internal_address: 192.168.0.3
+  internal_netmask: 255.255.255.0
+  name: node-5
+  role: primary-master
+  storage_address: 192.168.1.3
+  storage_netmask: 255.255.255.0
+  swift_zone: '5'
+  uid: '5'
+  user_node_name: node-5
+- fqdn: node-6.domain.tld
+  internal_address: 192.168.0.2
+  internal_netmask: 255.255.255.0
+  name: node-6
+  role: master
+  storage_address: 192.168.1.2
+  storage_netmask: 255.255.255.0
+  swift_zone: '6'
+  uid: '6'
+  user_node_name: node-6
+- fqdn: node-6.domain.tld
+  internal_address: 192.168.0.2
+  internal_netmask: 255.255.255.0
+  name: node-6
+  role: node
+  storage_address: 192.168.1.2
+  storage_netmask: 255.255.255.0
+  swift_zone: '6'
+  uid: '6'
+  user_node_name: node-6
+- fqdn: node-7.domain.tld
+  internal_address: 192.168.0.1
+  internal_netmask: 255.255.255.0
+  name: node-7
+  role: master
+  storage_address: 192.168.1.1
+  storage_netmask: 255.255.255.0
+  swift_zone: '7'
+  uid: '7'
+  user_node_name: node-7
+- fqdn: node-7.domain.tld
+  internal_address: 192.168.0.1
+  internal_netmask: 255.255.255.0
+  name: node-7
+  role: node
+  storage_address: 192.168.1.1
+  storage_netmask: 255.255.255.0
+  swift_zone: '7'
+  uid: '7'
+  user_node_name: node-7
+nova_quota: false
+openstack_version: kube-11.0
+operator_user:
+  authkeys: ''
+  homedir: /home/fueladmin
+  metadata:
+    group: general
+    label: Operating System Access
+    weight: 15
+  name: fueladmin
+  password: xZ75WaDA1zMlPRMkEA8MUlUZ
+  sudo: 'ALL=(ALL) NOPASSWD: ALL'
+output: /var/www/nailgun/targetimages
+packages: []
+plugins: []
+propagate_task_deploy: false
+provision:
+  engine:
+    master_ip: 2.6.1.2
+    password: CS7cKrTulMd4LAqaC9ARE4os
+    url: http://2.6.1.2:80/cobbler_api
+    username: cobbler
+  image_data:
+    /:
+      container: gzip
+      format: ext4
+      uri: http://2.6.1.2:8080/targetimages/centos_7_x86_64.img.gz
+    /boot:
+      container: gzip
+      format: ext2
+      uri: http://2.6.1.2:8080/targetimages/centos_7_x86_64-boot.img.gz
+  metadata:
+    group: general
+    label: Provision
+    restrictions:
+    - action: hide
+      condition: 'true'
+    weight: 80
+  method: image
+  packages: []
+public_network_assignment:
+  assign_to_all_nodes: false
+  metadata:
+    group: network
+    label: Public network assignment
+    restrictions:
+    - action: hide
+      condition: cluster:net_provider != 'neutron'
+    weight: 10
+public_ssl:
+  cert_data: ''
+  cert_source: self_signed
+  horizon: false
+  hostname: public.fuel.local
+  metadata:
+    group: security
+    label: Public TLS
+    weight: 110
+  services: false
+puppet:
+  manifests: rsync://2.6.1.2:/puppet/kube-11.0/manifests/
+  modules: rsync://2.6.1.2:/puppet/kube-11.0/modules/
+puppet_debug: true
+quantum: true
+quantum_settings:
+  L2:
+    base_mac: fa:16:3e:00:00:00
+    phys_nets:
+      physnet1:
+        bridge: br-floating
+        vlan_range: null
+      physnet2:
+        bridge: br-prv
+        vlan_range: 1000:1030
+    segmentation_type: vlan
+  L3:
+    use_namespaces: true
+  default_floating_net: admin_floating_net
+  default_private_net: admin_internal_net
+  predefined_networks:
+    admin_floating_net:
+      L2:
+        network_type: flat
+        physnet: physnet1
+        router_ext: true
+        segment_id: null
+      L3:
+        enable_dhcp: false
+        floating:
+        - 172.16.0.130:172.16.0.254
+        gateway: 172.16.0.1
+        nameservers: []
+        subnet: 172.16.0.0/24
+      shared: false
+      tenant: admin
+    admin_internal_net:
+      L2:
+        network_type: vlan
+        physnet: physnet2
+        router_ext: false
+        segment_id: null
+      L3:
+        enable_dhcp: true
+        floating: null
+        gateway: 192.168.111.1
+        nameservers:
+        - 8.8.4.4
+        - 8.8.8.8
+        subnet: 192.168.111.0/24
+      shared: false
+      tenant: admin
+release:
+  name: Kubernetes on CentOS 7
+  operating_system: CentOS
+  version: kube-11.0
+repo_setup:
+  metadata:
+    always_editable: true
+    group: general
+    label: Repositories
+    weight: 50
+  repos:
+  - name: centos-base
+    priority: null
+    type: rpm
+    uri: http://2.6.1.2:8080/mirrors/centos/7/os/x86_64
+  - name: centos-update
+    priority: null
+    type: rpm
+    uri: http://2.6.1.2:8080/mirrors/centos/7/updates/x86_64
+  - name: centos-extras
+    priority: null
+    type: rpm
+    uri: http://2.6.1.2:8080/mirrors/centos/7/extras/x86_64
+  - name: centos-centosplus
+    priority: null
+    type: rpm
+    uri: http://2.6.1.2:8080/mirrors/centos/7/centosplus/x86_64
+repos:
+- name: centos-base
+  priority: null
+  type: rpm
+  uri: http://2.6.1.2:8080/mirrors/centos/7/os/x86_64
+- name: centos-update
+  priority: null
+  type: rpm
+  uri: http://2.6.1.2:8080/mirrors/centos/7/updates/x86_64
+- name: centos-extras
+  priority: null
+  type: rpm
+  uri: http://2.6.1.2:8080/mirrors/centos/7/extras/x86_64
+- name: centos-centosplus
+  priority: null
+  type: rpm
+  uri: http://2.6.1.2:8080/mirrors/centos/7/centosplus/x86_64
+resume_guests_state_on_host_boot: true
+roles:
+- master
+run_ping_checker: true
+sahara:
+  enabled: false
+security_groups: iptables_hybrid
+service_user:
+  homedir: /var/lib/fuel
+  metadata:
+    group: general
+    label: Service user account
+    restrictions:
+    - action: hide
+      condition: 'true'
+    weight: 10
+  name: fuel
+  password: mbSoKpfz9ThRRRkW9i1gjPO0
+  root_password: r00tme
+  sudo: 'ALL=(ALL) NOPASSWD: ALL'
+ssh:
+  brute_force_protection: false
+  metadata:
+    enabled: true
+    group: security
+    label: SSH security
+    toggleable: false
+    weight: 120
+  security_enabled: false
+  security_networks:
+  - 2.6.1.2
+storage:
+  admin_key: AQADWTBdAAAAABAAn/mhnGpuRqYDsE5PUAIITQ==
+  auth_s3_keystone_ceph: false
+  bootstrap_osd_key: AQADWTBdAAAAABAA6gbqnk+WcbzTpsjH1LW2JQ==
+  ephemeral_ceph: false
+  fsid: 55ee96ea-fe79-4220-8287-d40f5826c90f
+  images_ceph: false
+  metadata:
+    group: storage
+    label: Storage Backends
+    weight: 60
+  mon_key: AQADWTBdAAAAABAALF7fv4cFRxOfg3rDjNkYBQ==
+  objects_ceph: false
+  osd_pool_size: '3'
+  per_pool_pg_nums:
+    .rgw: 128
+    backups: 128
+    compute: 128
+    default_pg_num: 128
+    images: 128
+    volumes: 128
+  pg_num: 128
+  radosgw_key: AQADWTBdAAAAABAAGh2vpSYalfJomJrnsrlsGw==
+  volumes_block_device: false
+  volumes_ceph: false
+  volumes_lvm: true
+storage_network_range: 192.168.1.0/24
+syslog:
+  metadata:
+    enabled: false
+    group: logging
+    label: Syslog
+    toggleable: true
+    weight: 50
+  syslog_port: '514'
+  syslog_server: ''
+  syslog_transport: tcp
+task_deploy: true
+uid: master
+use_cow_images: true
+use_fedora_lt:
+  kernel: fedora_lt_kernel
+  metadata:
+    label: Use Fedora longterm kernel
+    weight: 50
+workloads_collector:
+  create_user: false
+  enabled: true
+  metadata:
+    group: general
+    label: Workloads Collector User
+    restrictions:
+    - action: hide
+      condition: 'true'
+    weight: 10
+  password: BOedpgeYeNDvadEu7Xl67y8W
+  tenant: services
+  username: fuel_stats_user
