@@ -16,6 +16,11 @@ def install_base_centos(target):
     utils.execute(*cmd)
 
 
+def set_hosts(chroot):
+    with open(os.path.join(chroot, 'etc/hosts')) as fp:
+        fp.write("127.0.0.1	localhost\n::1	localhost ip6-localhost ip6-loopback")
+
+
 def set_root_password(chroot, root):
     # NOTE(agordeev): set up password for root
     utils.execute('sed', '-i',

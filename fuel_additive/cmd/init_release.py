@@ -1,6 +1,6 @@
 import os
 import json
-import sys
+
 
 from oslo_config import cfg
 from oslo_log import log as logging
@@ -10,10 +10,11 @@ from nailgun.db.sqlalchemy.models.release import Release
 from fuel_agent import errors
 from fuel_agent.utils import utils
 
+from fuel_additive.cmd.base import load_config
+
 LOG = logging.getLogger(__name__)
 CONF = cfg.CONF
 
-PROJECT = 'fuel_additive'
 
 PATH = "/etc/fuel/additive"
 METADATA_PATH = os.path.join(PATH, 'kubernetes_metadata')
@@ -38,6 +39,7 @@ def upload_release_graps():
     #TODO delete
     pass
 
+
 def reload_release_graph(release_id):
     try:
         utils.execute('fuel2 graph delete', '-r', str(release_id), '-t provision')
@@ -46,10 +48,7 @@ def reload_release_graph(release_id):
     utils.execute('fuel2 graph upload -r', str(release_id), '-d', os.path.join(PATH, 'graph'),'-t provision')
 
 
-def load_config():
-    logging.register_options(CONF)
-    CONF(sys.argv[1:], project=PROJECT)
-    logging.setup(CONF, PROJECT)
+
 
 def init():
     load_config()
@@ -57,6 +56,7 @@ def init():
     reload_release_graph(release)
     reset_release(release)
     show_release_metadata(release)
+
 
 def show_release_metadata(release_id):
     session = db()

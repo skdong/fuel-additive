@@ -127,15 +127,19 @@ class Builder(object):
         add_build.set_root_password(
             chroot, self.driver_os.get_user_by_name('root'))
         add_build.set_cloud_init(chroot)
-        # TODO set puppet 
+        #  set puppet
         add_build.set_puppet(chroot)
-        # TODO set mcollective
+        #  set mcollective
         add_build.set_mcollective(chroot)
-        # TODO set selinux
+        #  set selinux
         add_build.set_selinux(chroot)
+        # set policy
         add_build.set_policy(chroot)
+        # set grub2
         add_build.set_grub2(chroot)
-        # TODO set repos
+        # set hosts
+        add_build.set_hosts(chroot)
+        #  set repos
         add_build.set_repos(chroot, self.driver_os.repos)
 
     def build(self):
@@ -159,16 +163,12 @@ class Builder(object):
         try:
             chroot = bu.mkdtemp_smart(
                 CONF.image_build_dir, CONF.image_build_suffix)
-            # TODO make tempspace
+            # make tempspace
             self.make_temp_space(chroot)
-            # TODO install centos base os
+            # install centos base os
             add_build.install_base_centos(chroot)
-            packages = driver_os.packages
-            metadata['packages'] = packages
 
-            LOG.debug('Post-install OS configuration')
-
-            # TODO centos psot install
+            # centos psot install
             self._do_post_install(chroot)
 
             LOG.debug('Making sure there are no running processes '
