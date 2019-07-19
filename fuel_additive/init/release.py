@@ -1,7 +1,6 @@
 import os
 import json
 
-
 from oslo_config import cfg
 from oslo_log import log as logging
 from nailgun.db import db
@@ -15,7 +14,6 @@ from fuel_additive.cmd.base import load_config
 LOG = logging.getLogger(__name__)
 CONF = cfg.CONF
 
-
 PATH = "/etc/fuel/additive"
 METADATA_PATH = os.path.join(PATH, 'kubernetes_metadata')
 NAME = "Kubernetes on CentOS 7"
@@ -28,15 +26,15 @@ ATTRIBUTES_METADATE = None
 
 
 def add_kubernetes_release():
-    #TODO add release
-    #TODO set attr
-    #TODO add deployment sequence
+    # TODO add release
+    # TODO set attr
+    # TODO add deployment sequence
     pass
 
 
 def upload_release_graps():
-    #TODO provision
-    #TODO delete
+    # TODO provision
+    # TODO delete
     pass
 
 
@@ -45,17 +43,7 @@ def reload_release_graph(release_id):
         utils.execute('fuel2 graph delete', '-r', str(release_id), '-t provision')
     except errors.ProcessExecutionError as err:
         pass
-    utils.execute('fuel2 graph upload -r', str(release_id), '-d', os.path.join(PATH, 'graph'),'-t provision')
-
-
-
-
-def init():
-    load_config()
-    release = 5
-    reload_release_graph(release)
-    reset_release(release)
-    show_release_metadata(release)
+    utils.execute('fuel2 graph upload -r', str(release_id), '-d', os.path.join(PATH, 'graph'), '-t provision')
 
 
 def show_release_metadata(release_id):
@@ -75,23 +63,22 @@ def reset_release(release_id):
     q = session.query(Release)
     release = q.get(release_id)
 
-    with open(os.path.join(METADATA_PATH,'attributes.json')) as fp:
+    with open(os.path.join(METADATA_PATH, 'attributes.json')) as fp:
         release.attributes_metadata = json.load(fp)
-    
-    with open(os.path.join(METADATA_PATH,'roles.json')) as fp:
+
+    with open(os.path.join(METADATA_PATH, 'roles.json')) as fp:
         release.roles_metadata = json.load(fp)
 
     with open(os.path.join(METADATA_PATH, 'tags.json')) as fp:
         release.tags_metadata = json.load(fp)
-    
+
     session.add(release)
     session.commit()
     session.close()
 
 
-def main():
-    init()
-
-
-if __name__ == '__main__':
-    main()
+def init_release():
+    release = 5
+    reload_release_graph(release)
+    reset_release(release)
+    show_release_metadata(release)
