@@ -5,9 +5,12 @@ from fuel_additive.init.docker import init as init_docker
 from fuel_additive.init.dire import init as init_dire
 
 
-def init():
+def additive_init():
     set_cobbler()
     init_release()
+
+
+def dire_init():
     init_docker()
     init_dire()
 
