@@ -145,7 +145,7 @@
                     }
                 }
             ],
-            "label": "Virtual Storage"
+            "label": "Docker Work Storage"
         }
     ]
 }
