@@ -72,6 +72,9 @@ def reset_release(release_id):
     with open(os.path.join(METADATA_PATH, 'tags.json')) as fp:
         release.tags_metadata = json.load(fp)
 
+    with open(os.path.join(METADATA_PATH, 'volumes.json')) as fp:
+        release.volumes_metadata = json.load(fp)
+
     session.add(release)
     session.commit()
     session.close()

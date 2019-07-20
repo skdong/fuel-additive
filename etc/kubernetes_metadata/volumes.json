@@ -13,43 +13,7 @@
         }
     ], 
     "volumes_roles_mapping": {
-        "compute": [
-            {
-                "id": "os", 
-                "allocate_size": "min"
-            }, 
-            {
-                "id": "vm", 
-                "allocate_size": "all"
-            }
-        ], 
-        "mongo": [
-            {
-                "id": "os", 
-                "allocate_size": "min"
-            }, 
-            {
-                "id": "mongo", 
-                "allocate_size": "all"
-            }
-        ], 
-        "virt": [
-            {
-                "id": "os", 
-                "allocate_size": "min"
-            }, 
-            {
-                "id": "vm", 
-                "allocate_size": "all"
-            }
-        ], 
-        "base-os": [
-            {
-                "id": "os", 
-                "allocate_size": "min"
-            }
-        ], 
-        "controller": [
+        "master": [
             {
                 "id": "os", 
                 "allocate_size": "min"
@@ -59,22 +23,18 @@
                 "allocate_size": "min"
             }, 
             {
-                "id": "image", 
-                "allocate_size": "all"
-            }, 
-            {
-                "id": "mysql", 
-                "allocate_size": "min"
-            }, 
-            {
-                "id": "horizon", 
+                "id": "docker",
                 "allocate_size": "min"
             }
         ], 
         "other": [
             {
                 "id": "os", 
-                "allocate_size": "all"
+                "allocate_size": "min"
+            },
+            {
+                "id": "docker",
+                "allocate_size": "min"
             }
         ], 
         "ceph-osd": [
@@ -89,36 +49,10 @@
             {
                 "id": "ceph", 
                 "allocate_size": "full-disk"
-            }
-        ], 
-        "ironic": [
+            },
             {
-                "id": "os", 
+                "id": "docker",
                 "allocate_size": "min"
-            }, 
-            {
-                "id": "logs", 
-                "allocate_size": "min"
-            }
-        ], 
-        "cinder-block-device": [
-            {
-                "id": "os", 
-                "allocate_size": "min"
-            }, 
-            {
-                "id": "cinder-block-device", 
-                "allocate_size": "full-disk"
-            }
-        ], 
-        "cinder": [
-            {
-                "id": "os", 
-                "allocate_size": "min"
-            }, 
-            {
-                "id": "cinder", 
-                "allocate_size": "all"
             }
         ]
     }, 
@@ -137,15 +71,6 @@
                     "file_system": "ext4", 
                     "size": {
                         "generator": "calc_total_root_vg"
-                    }
-                }, 
-                {
-                    "mount": "swap", 
-                    "type": "lv", 
-                    "name": "swap", 
-                    "file_system": "swap", 
-                    "size": {
-                        "generator": "calc_swap_size"
                     }
                 }
             ], 
@@ -175,29 +100,7 @@
                 }
             ], 
             "label": "Logs"
-        }, 
-        {
-            "min_size": {
-                "generator": "calc_min_mongo_size"
-            }, 
-            "type": "vg", 
-            "id": "mongo", 
-            "volumes": [
-                {
-                    "mount": "/var/lib/mongo", 
-                    "type": "lv", 
-                    "name": "mongodb", 
-                    "file_system": "ext4", 
-                    "size": {
-                        "generator_args": [
-                            "mongo"
-                        ], 
-                        "generator": "calc_total_vg"
-                    }
-                }
-            ], 
-            "label": "MongoDB"
-        }, 
+        },
         {
             "partition_guid": "4fbd7e29-9d25-41b8-afd0-062c0ceff05d", 
             "name": "Ceph", 
@@ -221,116 +124,28 @@
             "type": "partition", 
             "id": "cephjournal", 
             "file_system": "none"
-        }, 
-        {
-            "min_size": {
-                "generator": "calc_min_mysql_size"
-            }, 
-            "type": "vg", 
-            "id": "mysql", 
-            "volumes": [
-                {
-                    "mount": "/var/lib/mysql", 
-                    "type": "lv", 
-                    "name": "root", 
-                    "file_system": "ext4", 
-                    "size": {
-                        "generator_args": [
-                            "mysql"
-                        ], 
-                        "generator": "calc_total_vg"
-                    }
-                }
-            ], 
-            "label": "Mysql Database"
-        }, 
+        },
         {
             "min_size": {
                 "generator": "calc_min_vm_size"
-            }, 
-            "type": "vg", 
-            "id": "vm", 
+            },
+            "type": "vg",
+            "id": "docker",
             "volumes": [
                 {
-                    "mount": "/var/lib/nova", 
-                    "type": "lv", 
-                    "name": "nova", 
-                    "file_system": "xfs", 
+                    "mount": "/var/lib/docker",
+                    "type": "lv",
+                    "name": "docker",
+                    "file_system": "xfs",
                     "size": {
                         "generator_args": [
                             "vm"
-                        ], 
+                        ],
                         "generator": "calc_total_vg"
                     }
                 }
-            ], 
+            ],
             "label": "Virtual Storage"
-        }, 
-        {
-            "min_size": {
-                "generator": "calc_min_glance_size"
-            }, 
-            "type": "vg", 
-            "id": "image", 
-            "volumes": [
-                {
-                    "mount": "/var/lib/glance", 
-                    "type": "lv", 
-                    "name": "glance", 
-                    "file_system": "xfs", 
-                    "size": {
-                        "generator_args": [
-                            "image"
-                        ], 
-                        "generator": "calc_total_vg"
-                    }
-                }
-            ], 
-            "label": "Image Storage"
-        }, 
-        {
-            "min_size": {
-                "generator_args": [
-                    11
-                ], 
-                "generator": "calc_gb_to_mb"
-            }, 
-            "type": "vg", 
-            "id": "horizon", 
-            "volumes": [
-                {
-                    "mount": "/var/lib/horizon", 
-                    "type": "lv", 
-                    "name": "horizontmp", 
-                    "file_system": "xfs", 
-                    "size": {
-                        "generator_args": [
-                            "horizon"
-                        ], 
-                        "generator": "calc_total_vg"
-                    }
-                }
-            ], 
-            "label": "Horizon Temp Storage"
-        }, 
-        {
-            "min_size": {
-                "generator": "calc_min_cinder_size"
-            }, 
-            "type": "vg", 
-            "id": "cinder", 
-            "volumes": [], 
-            "label": "Cinder"
-        }, 
-        {
-            "mount": "none", 
-            "label": "Cinder Block Device", 
-            "min_size": {
-                "generator": "calc_min_cinder_size"
-            }, 
-            "volumes": [], 
-            "type": "vg", 
-            "id": "cinder-block-device"
         }
     ]
 }

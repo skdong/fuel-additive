@@ -1,4 +1,5 @@
 from oslo_config import cfg
+from fuel_agent.utils import utils
 from fuel_additive.init.httpd import restart_httpd
 
 CONF = cfg.CONF
@@ -26,7 +27,17 @@ def set_cobbler():
     _set_http_port()
     restart_httpd()
     _set_cobbler_settings()
+    _set_nailgun_setting()
 
+
+def _set_nailgun_setting():
+    conf_path = u"/etc/nailgun/settings.yaml"
+    with open(conf_path) as fp:
+        conf_info = fp.read()
+    conf_info = conf_info.replace(":80/cobbler_api", ":"+CONF.cobbler_http_port+"/cobbler_api")
+    with open(conf_path, "w") as fp:
+        fp.write(conf_info)
+    utils.execute("systemctl restart nailgun")
 
 def _set_http_port():
     conf_path = u"/etc/httpd/conf.ports.d/cobbler.conf"
