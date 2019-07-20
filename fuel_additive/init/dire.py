@@ -20,13 +20,13 @@ CONF.register_cli_opts(cli_opts)
 def _load_envs():
     envs = {"HOST":SETTINGS["ADMIN_NETWORK"]["ipaddress"],
             "DOMAIN":SETTINGS["DNS_DOMAIN"],
-            "HOST_NAME": '.'.join(SETTINGS["HOSTNAME"], SETTINGS["DNS_DOMAIN"])}
+            "HOST_NAME": '.'.join([SETTINGS["HOSTNAME"], SETTINGS["DNS_DOMAIN"]])}
     for variate in envs:
         os.putenv(variate, envs[variate])
 
 
 def _init_servers():
-    utils.execute("python", os.path.join(CONF.dire_boot_path, "boot/servers/sit.sh"))
+    utils.execute("bash", os.path.join(CONF.dire_boot_path, "boot/servers/sit.sh"))
 
 
 def init():

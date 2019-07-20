@@ -18,7 +18,7 @@ cli_opts = [
                help="docker package path get from https://download.docker.com/linux/static/stable/x86_64/"
                ),
     cfg.StrOpt(name="docker_images",
-               default="/opt/dire/packages/images/docker.tar.gz",
+               default="/var/dire/packages/images/docker.tar.gz",
                help="build by dire/boot project"
                ),
 ]
@@ -31,7 +31,7 @@ DOCKER_INIT_PATH = os.path.join(contants.RUN_PATH, "docker")
 
 
 def _exists():
-    return os.path.isfile("/usr/local/dockerd")
+    return os.path.isfile("/usr/local/sbin/dockerd")
 
 
 def _uninstall_docker():
@@ -43,7 +43,7 @@ def _uninstall_docker():
 
 
 def _uncompres_package():
-    utils.execute("tar -zxvf", CONF.docker_pacakge, "-C /tmp")
+    utils.execute("tar -zxvf", CONF.docker_package, "-C /tmp")
 
 
 def _move_binary():
@@ -84,7 +84,7 @@ def _load_images():
 
 
 def init():
-    if _exists():
+    if not _exists():
         _uninstall_docker()
         _uncompres_package()
         _move_binary()

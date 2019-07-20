@@ -6,11 +6,15 @@ from fuel_additive.init.dire import init as init_dire
 
 
 def init():
-    base.load_config()
     set_cobbler()
     init_release()
     init_docker()
     init_dire()
+
+
+def run():
+    base.load_config()
+    init()
 
 
 def main():
