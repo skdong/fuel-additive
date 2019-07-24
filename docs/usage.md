@@ -14,6 +14,7 @@ deployer:
 		- kubespray
 		- steam
 		- boot
+	install.sh
 
 ```
 
@@ -30,3 +31,18 @@ install additvie
 - push packages
 - install additive
 - additvie init
+
+# version list
+
+- fuel 11
+- kubernetes 1.14.3
+- centos 7.6
+- python 2.7
+- docker-ce 18
+- docker-compose
+- nexus
+- fuel-mirror 11
+- ansible
+- ubuntu 16.04
+
+
