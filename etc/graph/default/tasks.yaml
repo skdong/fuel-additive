@@ -1,0 +1,58 @@
+- {id: deploy_start, task_name: deploy_start, type: stage, version: 1.0.0}
+
+- id: deploy_end
+  requires: [deploy_end]
+  task_name: deploy_end
+  type: stage
+  version: 1.0.0
+
+- id: inventory
+  type: upload_file
+  version: 2.1.0
+  role: ['master']
+  requires: [deploy_start]
+  required_for: [build_deploy_image]
+  parameters:
+    path: /tmp/dire/inventory
+    timeout: 180
+    data:
+      yaql_exp: "($.provision.set('packages', $.provision.packages) + $.repo_setup + dict('output' => '/var/www/nailgun/targetimages') + dict($.items())).toYaml()"
+
+- id: steam_start
+  requires: inventory
+  task_name: steam_start
+  type: stage
+  version: 1.0.0
+
+- id: steam_end
+  requires: [steam_start]
+  task_name: steam_end
+  type: stage
+  version: 1.0.0
+
+- id: kubespray_start
+  requires: steam_end
+  task_name: kubespray_start
+  type: stage
+  version: 1.0.0
+
+- id: kubespary_end
+  requires: [kubespary_start]
+  task_name: kubespary_end
+  type: stage
+  version: 1.0.0
+
+- id: steam
+  type: master_shell
+  version: 2.1.0
+  role: ['/.*/']
+  requires: [inventory]
+  required_for: [kubespray]
+  parameters:
+    strategy:
+      type: one_by_one
+    cmd:
+      yaql_exp: 'concat("sh /etc/puppet/modules/osnailyfacter/modular/provision/netboot disable ", $.provision.name)'
+    timeout: 180
+
+- id: kubespray
