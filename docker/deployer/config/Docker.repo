@@ -1,0 +1,5 @@
+[docker-ce-stable]
+name=Docker CE Stable - $basearch
+baseurl=http://127.0.0.1:8080/mirrors/linux/centos/7/$basearch/stable
+enabled=1
+gpgcheck=0

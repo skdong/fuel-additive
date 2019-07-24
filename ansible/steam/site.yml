@@ -1,0 +1,11 @@
+---
+- name: update os
+  hosts:
+    - all
+  gather_facts: false
+  roles:
+    - {role: hosts, kolla_action: deploy, tags: hosts }
+    - {role: timezone, tags: timezone }
+    - {role: repository, action: hosts, tags: repository }
+    - {role: docker, action: registry, tags: docker }
+    - {role: python, tags: python }

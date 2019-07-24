@@ -1,0 +1,10 @@
+kernel
+openssh-clients
+vim
+curl
+rsync
+ntpdate
+yum-utils
+bash-completion
+util-linux
+python-pip

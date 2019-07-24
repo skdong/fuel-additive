@@ -1,0 +1,43 @@
+---
+deploy_container_engine: false
+kube_image_repo: "fuel.domain.tld/google-containers"
+kube_version: v1.14.3
+
+kube_network_plugin: calico
+
+kube_pods_subnet: 10.233.64.0/18
+kube_service_addresses: 10.233.0.0/18
+cluster_name: cluster.local
+dns_mode: coredns
+
+etcd_deployment_type: docker
+kubelet_deployment_type: host
+helm_deployment_type: host
+
+dnsautoscaler_version: 1.4.0
+etcd_version: v3.2.26
+coredns_version: "1.5.0"
+kubeadm_version: "{{ kube_version }}"
+calico_ctl_version: "v3.4.4"
+cni_version: "v0.6.0"
+calico_policy_version: v3.4.0
+calico_version: v3.4.0
+calico_cni_version: v3.4.0
+
+coredns_image_repo: "fuel.domain.tld/coredns/coredns"
+nodelocaldns_image_repo: "fuel.domain.tld/k8s/k8s-dns-node-cache"
+etcd_image_repo: "fuel.domain.tld/coreos/etcd"
+dashboard_image_repo: "fuel.domain.tld/google_containers/kubernetes-dashboard-{{ image_arch }}"
+calico_node_image_repo: "fuel.domain.tld/calico/node"
+calico_cni_image_repo: "fuel.domain.tld/calico/cni"
+calico_policy_image_repo: "fuel.domain.tld/calico/kube-controllers"
+pod_infra_image_repo: "fuel.domain.tld/google_containers/pause-{{ image_arch }}"
+nginx_image_repo: "fuel.domain.tld/hub/nginx"
+dnsautoscaler_image_repo: "fuel.domain.tld/k8s/cluster-proportional-autoscaler-{{ image_arch }}"
+
+cni_binary_checksum: f04339a21b8edf76d415e7f17b620e63b8f37a76b2f706671587ab6464411f2d
+
+kubeadm_download_url: "http://fuel.domain.tld/repository/files/{{ kube_version }}/kubeadm"
+hyperkube_download_url: "http://fuel.domain.tld/repository/files/{{ kube_version }}/hyperkube"
+calicoctl_download_url: "http://fuel.domain.tld/repository/files/{{ kube_version }}/calicoctl-linux-{{ image_arch }}"
+cni_download_url: "http://fuel.domain.tld/repository/files/{{ kube_version }}/cni-plugins-{{ image_arch }}-{{ cni_version }}.tgz"

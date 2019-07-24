@@ -1,0 +1,10 @@
+- file:
+    path: "/tmp/dire"
+    state: directory
+    mode: '0755'
+  delegate_to: localhost
+
+- template:
+    src: "all_vars.json.j2"
+    dest: "/tmp/dire/{{ inventory_hostname }}.json"
+  delegate_to: localhost

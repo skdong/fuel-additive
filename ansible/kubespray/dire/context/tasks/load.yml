@@ -1,0 +1,2 @@
+- include_vars:
+   file: "/tmp/dire/{{ inventory_hostname }}.json"

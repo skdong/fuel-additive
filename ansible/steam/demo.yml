@@ -1,0 +1,11 @@
+---
+- name: update os
+  hosts:
+    - all
+  gather_facts: false
+  tasks:
+    - copy:
+        src: "eple.repo"
+        dest: "/etc/yum.repos.d"
+    - yum:
+        name: python-pip

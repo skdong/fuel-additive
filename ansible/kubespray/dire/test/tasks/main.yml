@@ -1,0 +1,5 @@
+- include_vars:
+   file: "/tmp/dire/{{ inventory_hostname }}.json"
+
+- debug:
+    msg: "{{ etcd_client_cert_serial }}"

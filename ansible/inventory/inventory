@@ -1,0 +1,21 @@
+[master]
+node-5 ansible_host=2.6.1.4 ansible_user=fueladmin ansible_become=True
+
+[node]
+node-6 ansible_host=2.6.1.5 ansible_user=fueladmin ansible_become=True
+node-7 ansible_host=2.6.1.6 ansible_user=fueladmin ansible_become=True
+node-9 ansible_host=2.6.1.7 ansible_user=fueladmin ansible_become=True
+
+[kube-master:children]
+master
+
+[etcd:children]
+master
+
+[kube-node:children]
+node
+
+[k8s-cluster:children]
+kube-master
+kube-node
+
