@@ -1,0 +1,23 @@
+{
+    "action": "coreui_Repository",
+    "type": "rpc",
+    "tid": 0,
+    "data": [
+        {
+            "name": "pypi",
+            "format": "",
+            "url": "",
+            "recipe": "pypi-hosted",
+            "online": true,
+            "attributes": {
+                "storage": {
+                    "blobStoreName": "default",
+                    "strictContentTypeValidation": true,
+                    "writePolicy": "ALLOW"
+                }
+            },
+            "type": ""
+        }
+    ],
+    "method": "create"
+}

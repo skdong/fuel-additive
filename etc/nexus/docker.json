@@ -1,0 +1,30 @@
+{
+    "action": "coreui_Repository",
+    "type": "rpc",
+    "tid": 1,
+    "data": [
+        {
+            "name": "docker",
+            "format": "",
+            "url": "",
+            "recipe": "docker-hosted",
+            "checkbox-1738-inputEl": true,
+            "online": true,
+            "attributes": {
+                "docker": {
+                    "forceBasicAuth": false,
+                    "v1Enabled": true,
+                    "httpsPort": 9443
+                },
+                "storage": {
+                    "blobStoreName": "default",
+                    "strictContentTypeValidation": true,
+                    "writePolicy": "ALLOW"
+                }
+            },
+            "type": "",
+            "checkbox-1735-inputEl": false
+        }
+    ],
+    "method": "create"
+}

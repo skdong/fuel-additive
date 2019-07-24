@@ -1,0 +1,27 @@
+{
+    "action": "coreui_Repository",
+    "type": "rpc",
+    "tid": 3,
+    "data": [
+        {
+            "name": "yum",
+            "format": "",
+            "url": "",
+            "recipe": "yum-hosted",
+            "online": true,
+            "attributes": {
+                "storage": {
+                    "blobStoreName": "default",
+                    "strictContentTypeValidation": true,
+                    "writePolicy": "ALLOW"
+                },
+                "yum": {
+                    "deployPolicy": "STRICT",
+                    "repodataDepth": 0
+                }
+            },
+            "type": ""
+        }
+    ],
+    "method": "create"
+}

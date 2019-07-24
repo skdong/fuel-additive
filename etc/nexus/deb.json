@@ -1,0 +1,23 @@
+{
+    "action": "coreui_Repository", 
+    "type": "rpc", 
+    "tid": 5,
+    "data": [
+        {
+            "name": "deb",
+            "format": "", 
+            "url": "", 
+            "recipe": "raw-hosted", 
+            "online": true, 
+            "attributes": {
+                "storage": {
+                    "blobStoreName": "default", 
+                    "strictContentTypeValidation": true,
+                    "writePolicy": "ALLOW"
+                }
+            }, 
+            "type": ""
+        }
+    ], 
+    "method": "create"
+}

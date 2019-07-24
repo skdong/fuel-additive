@@ -1,0 +1,23 @@
+{
+    "action": "coreui_Repository", 
+    "type": "rpc", 
+    "tid": 4,
+    "data": [
+        {
+            "name": "files",
+            "format": "", 
+            "url": "", 
+            "recipe": "raw-hosted", 
+            "online": true, 
+            "attributes": {
+                "storage": {
+                    "blobStoreName": "default", 
+                    "strictContentTypeValidation": false, 
+                    "writePolicy": "ALLOW"
+                }
+            }, 
+            "type": ""
+        }
+    ], 
+    "method": "create"
+}
