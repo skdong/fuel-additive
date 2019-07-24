@@ -1,0 +1,32 @@
+base-os:
+  description: Install base Operating System without additional packages and configuration.
+  group: other
+  name: Operating System
+  tags: [base-os]
+  weight: 70
+master:
+  description: The master initiates orchestration activities and provides an external
+    API.  Other components like Glance (image storage), Keystone (identity management),
+    Horizon (OpenStack dashboard) and Nova-Scheduler are installed on the controller
+    as well.
+  group: base
+  limits:
+    min: 1
+    overrides:
+    - {condition: 'settings:neutron_advanced_configuration.neutron_l3_ha.value ==
+        true', message: Neutron L3 HA requires at least 2 Controller nodes to function
+        properly., min: 2}
+    recommended: 3
+  name: Master
+  tags: [node, master]
+  update_required: [node]
+  weight: 10
+node:
+  description: A node creates, manages, and terminates virtual machine instances.
+  fault_tolerance: 2%
+  group: node
+  limits: {recommended: 1}
+  name: Node
+  public_for_dvr_required: true
+  tags: [node]
+  weight: 20

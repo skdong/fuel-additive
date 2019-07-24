@@ -1,0 +1,65 @@
+dpdk:
+  enabled:
+    description: The Data Plane Development Kit (DPDK) provides high-performance packet
+      processing libraries and user space drivers.
+    label: Enable DPDK
+    restrictions:
+    - {'settings:common.libvirt_type.value != ''kvm''': Only KVM hypervisor works
+        with DPDK}
+    type: checkbox
+    value: false
+    weight: 10
+  metadata:
+    label: DPDK
+    restrictions:
+    - {action: hide, condition: 'not (''experimental'' in version:feature_groups)'}
+    weight: 40
+mtu:
+  metadata: {label: MTU, weight: 20}
+  value: {label: Use Custom MTU, max: 65536, min: 42, nullable: true, type: number,
+    value: null, weight: 10}
+offloading:
+  disable: {label: Disable Offloading, type: checkbox, value: false, weight: 10}
+  metadata: {label: Offloading, weight: 10}
+  modes:
+    label: Offloading Modes
+    type: offloading_modes
+    value: {}
+    weight: 20
+sriov:
+  enabled:
+    description: Single-root I/O Virtualization (SR-IOV) is a specification that,
+      when implemented by a physical PCIe device, enables it to appear as multiple
+      separate PCIe devices. This enables multiple virtualized guests to share direct
+      access to the physical device, offering improved performance over an equivalent
+      virtual device.
+    label: Enable SR-IOV
+    restrictions:
+    - {'settings:common.libvirt_type.value != ''kvm''': Only KVM hypervisor works
+        with SR-IOV}
+    type: checkbox
+    value: false
+    weight: 10
+  metadata: {label: SR-IOV, weight: 30}
+  numvfs:
+    label: Custom Number of Virtual Functions
+    min: 1
+    nullable: true
+    restrictions: ['nic_attributes:sriov.enabled.value == false']
+    type: number
+    value: null
+    weight: 20
+  physnet:
+    label: Physical Network Name
+    regex: {error: Invalid physical network name, source: '^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9
+        _]*$'}
+    restrictions:
+    - nic_attributes:sriov.enabled.value == false
+    - {action: none, condition: 'nic_attributes:sriov.physnet.value != ''physnet2''',
+      message: Only "physnet2" will be configured by Fuel in Neutron. Configuration
+        of other physical networks is up to Operator or plugin. Fuel will just configure
+        appropriate pci_passthrough_whitelist option in nova.conf for such interface
+        and physical networks.}
+    type: text
+    value: ''
+    weight: 30

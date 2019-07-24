@@ -1,0 +1,74 @@
+rule_to_pick_boot_disk:
+- {description: 'NVMe drives should be skipped as accessing such drives during the
+    boot typically requires using UEFI which is still not supported by fuel-agent
+    (it always installs BIOS variant of  grub). grub bug (http://savannah.gnu.org/bugs/?41883)',
+  regex: ^nvme, type: exclude_disks_by_name}
+- {description: 'If we have /root on fake raid, then /boot partition should land on
+    to it too. We can''t proceed with grub-install otherwise.', regex: ^md, root_mount: /,
+  type: pick_root_disk_if_disk_name_match}
+volumes:
+- id: os
+  label: Base System
+  min_size: {generator: calc_min_os_size}
+  type: vg
+  volumes:
+  - file_system: ext4
+    mount: /
+    name: root
+    size: {generator: calc_total_root_vg}
+    type: lv
+- id: logs
+  label: Logs
+  min_size:
+    generator: calc_gb_to_mb
+    generator_args: [10]
+  type: vg
+  volumes:
+  - file_system: ext4
+    mount: /var/log
+    name: log
+    size:
+      generator: calc_total_vg
+      generator_args: [logs]
+    type: lv
+- file_system: none
+  id: ceph
+  label: Ceph
+  min_size: {generator: calc_min_ceph_size}
+  mount: none
+  name: Ceph
+  partition_guid: 4fbd7e29-9d25-41b8-afd0-062c0ceff05d
+  type: partition
+- file_system: none
+  id: cephjournal
+  label: Ceph Journal
+  min_size: {generator: calc_min_ceph_journal_size}
+  mount: none
+  name: Ceph Journal
+  partition_guid: 45b0969e-9b03-4f30-b4c6-b4b80ceff106
+  type: partition
+- id: docker
+  label: Docker Work Storage
+  min_size: {generator: calc_min_vm_size}
+  type: vg
+  volumes:
+  - file_system: xfs
+    mount: /var/lib/docker
+    name: docker
+    size:
+      generator: calc_total_vg
+      generator_args: [vm]
+    type: lv
+volumes_roles_mapping:
+  ceph-osd:
+  - {allocate_size: min, id: os}
+  - {allocate_size: min, id: cephjournal}
+  - {allocate_size: full-disk, id: ceph}
+  - {allocate_size: min, id: docker}
+  master:
+  - {allocate_size: min, id: os}
+  - {allocate_size: min, id: logs}
+  - {allocate_size: min, id: docker}
+  other:
+  - {allocate_size: min, id: os}
+  - {allocate_size: min, id: docker}

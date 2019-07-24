@@ -1,0 +1,41 @@
+dpdk:
+  enabled:
+    description: The Data Plane Development Kit (DPDK) provides high-performance packet
+      processing libraries and user space drivers.
+    label: Enable DPDK
+    restrictions:
+    - {'settings:common.libvirt_type.value != ''kvm''': Only KVM hypervisor works
+        with DPDK}
+    type: checkbox
+    value: false
+    weight: 10
+  metadata:
+    label: DPDK
+    restrictions:
+    - {action: hide, condition: 'not (''experimental'' in version:feature_groups)'}
+    weight: 40
+lacp:
+  metadata: {label: Lacp, weight: 50}
+  value: {label: Lacp, type: select, value: '', weight: 10}
+lacp_rate:
+  metadata: {label: Lacp rate, weight: 60}
+  value: {label: Lacp rate, type: select, value: '', weight: 10}
+mode:
+  metadata: {label: Mode, weight: 10}
+  value: {label: Mode, type: select, value: '', weight: 10}
+mtu:
+  metadata: {label: MTU, weight: 30}
+  value: {label: Use Custom MTU, max: 65536, min: 42, nullable: true, type: number,
+    value: null, weight: 10}
+offloading:
+  disable: {label: Disable Offloading, type: checkbox, value: false, weight: 10}
+  metadata: {label: Offloading, weight: 20}
+  modes:
+    label: Offloading Modes
+    type: offloading_modes
+    value: {}
+    weight: 20
+type__: {type: hidden, value: null}
+xmit_hash_policy:
+  metadata: {label: Xmit hash policy, weight: 70}
+  value: {label: Xmit hash policy, type: select, value: '', weight: 10}

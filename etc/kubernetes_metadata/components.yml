@@ -1,0 +1,45 @@
+- bind:
+  - ['settings:common.libvirt_type.value', qemu]
+  compatible:
+  - {name: 'hypervisor:*'}
+  default: true
+  description: kubernetes backend
+  label: docker
+  name: hypervisor:docker
+  weight: 5
+- compatible:
+  - {name: 'hypervisor:*'}
+  - {name: 'network:docker:*'}
+  default: true
+  label: calico
+  name: network:docker:calico
+  weight: 1000
+- bind:
+  - ['settings:storage.volumes_ceph.value', true]
+  - ['settings:storage.volumes_lvm.value', false]
+  compatible:
+  - {name: 'hypervisor:docker'}
+  - {name: 'network:docker'}
+  - {name: 'network:docker:calico'}
+  label: dialog.create_cluster_wizard.storage.ceph
+  name: storage:block:ceph
+  weight: 10
+- bind:
+  - ['settings:storage.volumes_ceph.value', true]
+  - ['settings:storage.volumes_lvm.value', false]
+  compatible:
+  - {name: 'hypervisor:docker'}
+  - {name: 'network:docker'}
+  - {name: 'network:docker:calico'}
+  label: dialog.create_cluster_wizard.storage.ceph
+  name: storage:block:ceph
+  weight: 10
+- bind: ['settings:additional_components.helm.value', true]
+  compatible:
+  - {name: 'hypervisor:docker'}
+  - {name: 'network:docker'}
+  - {name: 'network:docker:calico'}
+  - {name: 'storage:block:ceph'}
+  label: helm
+  name: additional_service:helm
+  weight: 10

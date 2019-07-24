@@ -1,0 +1,3 @@
+base-os: {has_primary: false}
+master: {has_primary: true}
+node: {has_primary: false}
