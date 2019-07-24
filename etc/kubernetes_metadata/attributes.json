@@ -519,7 +519,14 @@
                         "type": "rpm", 
                         "name": "centos-centosplus", 
                         "uri": "http://{settings.MASTER_IP}:8080/mirrors/centos/7/centosplus/x86_64"
+                    },
+                    {
+                        "priority": null, 
+                        "type": "rpm", 
+                        "name": "epel", 
+                        "uri": "http://{settings.MASTER_IP}:8080/mirrors/epel/7/x86_64"
                     }
+                ], 
                 ], 
                 "extra_priority": null
             }, 
