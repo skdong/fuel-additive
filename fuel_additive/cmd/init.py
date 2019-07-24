@@ -15,13 +15,18 @@ def dire_init():
     init_dire()
 
 
+def init():
+    additive_init()
+    dire_init()
+
+
 def run():
     base.load_config()
     init()
 
 
 def main():
-    init()
+    run()
 
 
 if __name__ == '__main__':

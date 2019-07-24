@@ -19,12 +19,13 @@ cli_opts = [
                help="nexus auth user"),
     cfg.StrOpt(name="nexus_password",
                default="admin123",
-               help="nexus auth password")
+               help="nexus auth password"),
+    cfg.ListOpt(name="nexus_repos",
+                default=["docker", "pypi", "certs", "helm", "yum", "deb", "files"],
+                help="nexus repositorys")
 ]
 
 CONF.register_cli_opts(cli_opts)
-
-nexus_repositories = ["docker", "pypi"]
 
 
 def _get_nexus_session():
@@ -43,7 +44,7 @@ def _get_nexus_url():
 def _create_repositories():
     session = _get_nexus_session()
 
-    for repository in nexus_repositories:
+    for repository in CONF.nexus_repos:
         with open(os.path.join("/etc/fuel/additvie/nexus", repository)) as fp:
             data = fp.read()
         session.post(_get_nexus_url(), data=data)
@@ -63,7 +64,8 @@ def _init_servers():
 
 
 def _upload_packages():
-    utils.execute("bash", os.path.join(CONF.dire_boot_path, "tools/upload.sh"), "all")
+    for repo in CONF.nexus_repos:
+        utils.execute("bash", os.path.join(CONF.dire_boot_path, "tools/upload.sh"), repo)
 
 
 def init():
