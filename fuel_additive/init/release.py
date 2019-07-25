@@ -16,7 +16,8 @@ from fuel_additive.cmd.base import load_config
 LOG = logging.getLogger(__name__)
 CONF = cfg.CONF
 
-PATH = "/etc/fuel/additive"
+FUEL_PATH = u"/etc/fuel"
+PATH = os.path.join(FUEL_PATH, u"additive")
 METADATA_PATH = os.path.join(PATH, 'kubernetes_metadata')
 NAME = "Kubernetes on CentOS 7"
 VERSION = "kube-11.0"
@@ -42,10 +43,18 @@ def upload_release_graps():
 
 def reload_release_graph(release_id):
     try:
-        utils.execute('fuel2 graph delete', '-r', str(release_id), '-t provision')
+        utils.execute(u'fuel2 graph delete', u'-r', str(release_id), u'-t provision')
     except errors.ProcessExecutionError as err:
-        pass
-    utils.execute('fuel2 graph upload -r', str(release_id), '-d', os.path.join(PATH, 'graph', 'provision'), '-t provision')
+        LOG.warn(err)
+    utils.execute(u'fuel2 graph upload -r', str(release_id), '-d', os.path.join(PATH, 'graph', 'provision'), u'-t provision')
+
+    try:
+        utils.execute(u'fuel2 graph delete', u'-r', str(release_id), u'-t deletion')
+    except errors.ProcessExecutionError as err:
+        LOG.warn(err)
+    utils.execute(u'fuel2 graph upload -r', str(release_id), '-d', os.path.join(FUEL_PATH, 'graph', 'deletion'), u'-t deletion')
+
+
 
 
 def show_release_metadata(release_id):
