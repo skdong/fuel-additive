@@ -45,7 +45,7 @@ def reload_release_graph(release_id):
         utils.execute('fuel2 graph delete', '-r', str(release_id), '-t provision')
     except errors.ProcessExecutionError as err:
         pass
-    utils.execute('fuel2 graph upload -r', str(release_id), '-d', os.path.join(PATH, 'graph'), '-t provision')
+    utils.execute('fuel2 graph upload -r', str(release_id), '-d', os.path.join(PATH, 'graph', 'provision'), '-t provision')
 
 
 def show_release_metadata(release_id):
@@ -68,66 +68,50 @@ def add_deployment_sequences(release_id):
         sequence = DeploymentSequence()
     sequence.release_id = release_id
     sequence.name = "deploy-changes"
-    sequence.graphs = '[{"type": "provision"}, {"type": "default"}]'
+    sequence.graphs = [{"type": "provision"}, {"type": "default"}]
     session.add(sequence)
     session.commit()
 
 
+def load_data(name, form="yml"):
+    with open(os.path.join(METADATA_PATH, name+'.'+form )) as fp:
+        if form in ["yaml", "yml"]:
+            return yaml.safe_load(fp)
+        elif form == "json":
+            return json.load(fp)
+
+
 def add_release():
-    name = "Kubernetes 1.14.3 on Centos 7"
+    name = u"Kubernetes 1.14.3 on Centos 7"
     session = db()
     q = session.query(Release)
     release = q.filter(Release.name == name).first()
     if not release:
         release = Release()
     release.name = name
-    release.version = "fuel-11.0"
-    release.description = "This option will install the kubernetes 1.14.3 using a CentOS based operating system."
-    release.operating_system = "CentOs"
-    release.state = "available"
-
-    with open(os.path.join(METADATA_PATH, 'modes.yml')) as fp:
-        release.modes_metadata = yaml.safe_load(fp)
-
-    with open(os.path.join(METADATA_PATH, 'networks.yml')) as fp:
-        release.networks_metadata = yaml.safe_load(fp)
-
-    with open(os.path.join(METADATA_PATH, 'attributes.yml')) as fp:
-        release.attributes_metadata = yaml.safe_load(fp)
-
-    with open(os.path.join(METADATA_PATH, 'roles.yml')) as fp:
-        release.roles_metadata = yaml.safe_load(fp)
-
-    release.modes = '["ha_compact"]'
-
-    with open(os.path.join(METADATA_PATH, 'network_roles.yml')) as fp:
-        release.network_roles_metadata = yaml.safe_load(fp)
-
-    release.extensions = '{volume_manager,network_manager}'
-
-    with open(os.path.join(METADATA_PATH, 'components.yml')) as fp:
-        release.components_metadata = yaml.safe_load(fp)
-
-    release.node_attributes = "{}"
-
-    with open(os.path.join(METADATA_PATH, 'nic.yml')) as fp:
-        release.nic_attributes = yaml.safe_load(fp)
-
-    with open(os.path.join(METADATA_PATH, 'bond.yml')) as fp:
-        release.bond_attributes = yaml.safe_load(fp)
-
-    with open(os.path.join(METADATA_PATH, 'tags.yml')) as fp:
-        release.tags_metadata = yaml.safe_load(fp)
-
-    release.required_component_types = '["hypervisor", "network"]'
-
-    with open(os.path.join(METADATA_PATH, 'volumes.yml')) as fp:
-        release.volumes_metadata = yaml.safe_load(fp)
-
+    release.version = u"fuel-11.0"
+    release.description = u"This option will install the kubernetes 1.14.3 using a CentOS based operating system."
+    release.operating_system = u"CentOS"
+    release.state = u"available"
+    release.modes_metadata = load_data("modes")
+    release.networks_metadata = load_data("networks")
+    release.attributes_metadata = load_data("attributes")
+    release.roles_metadata = load_data("roles")
+    release.modes = [u"ha_compact"]
+    release.network_roles_metadata = load_data("network_roles")
+    release.extensions = {u'volume_manager',u'network_manager'}
+    release.components_metadata = load_data("components")
+    release.node_attributes = {}
+    release.nic_attributes = load_data("nic")
+    release.bond_attributes = load_data("bond")
+    release.tags_metadata = load_data("tags")
+    release.required_component_types = ["hypervisor", "network"]
+    release.volumes_metadata = load_data("volumes")
     session.add(release)
     session.commit()
+    release_id = release.id
     session.close()
-    return release.id
+    return release_id
 
 
 def init_release():
