@@ -12,5 +12,5 @@
 
 [mos]
 name=mos-centos
-baseurl=http://127.0.0.1:8080/mos-centos/x86_64
+baseurl=http://2.6.1.2:8080/mos-centos/x86_64
 gpgcheck=0
