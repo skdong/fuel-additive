@@ -1,5 +1,5 @@
 [epel]
 name=Docker CE Stable - $basearch
-baseurl=http://127.0.0.1:8080/mirrors/epel/7/x86_64
+baseurl=http://mirrors.aliyun.com/epel/7/x86_64
 enabled=1
 gpgcheck=0
