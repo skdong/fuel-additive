@@ -6,13 +6,18 @@ from fuel_agent.utils import build as bu
 from fuel_agent.utils import utils
 from oslo_config import cfg
 
-from fuel_additive.os.repo import RPMRepo
+from fuel_additive.drivers.os.repo import RPMRepo
 
 CONF = cfg.CONF
 
 
 def install_base_centos(target):
     cmd = ["docker", "cp", CONF.centos_docker_container + ":/", target]
+    utils.execute(*cmd)
+
+
+def install_base_ubuntu(target):
+    cmd = ["docker", "cp", CONF.ubuntu_docker_container + ":/", target]
     utils.execute(*cmd)
 
 

@@ -17,7 +17,7 @@ from fuel_agent.utils import build as bu
 from fuel_agent.utils import fs as fu
 from fuel_agent.utils import utils
 
-from fuel_additive.os import build as add_build
+from fuel_additive.drivers.os import build as add_build
 
 cli_opts = [
     cfg.StrOpt(
@@ -35,8 +35,13 @@ cli_opts = [
 opts = [
     cfg.StrOpt(
         "centos_docker_container",
-        default="os_image",
+        default="centos_image",
         help="Centos Base Os Dcoker Container"
+    ),
+cfg.StrOpt(
+        "centos_docker_container",
+        default="ubuntu_image",
+        help="Ubuntu Base Os Dcoker Container"
     )
 ]
 
