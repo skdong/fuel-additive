@@ -1,0 +1,38 @@
+[
+    {
+        "version": "1.0.0", 
+        "type": "stage", 
+        "id": "provision_start", 
+        "task_name": "provision_start"
+    }, 
+    {
+        "requires": [
+            "provision_start"
+        ], 
+        "version": "1.0.0", 
+        "type": "stage", 
+        "id": "provision_end", 
+        "task_name": "provision_end"
+    }, 
+    {
+        "version": "2.1.0", 
+        "role": [
+            "master"
+        ], 
+        "parameters": {
+            "path": "/tmp/bright/debug/provision.yaml",
+            "data": {
+                "yaql_exp": " dict($.items()).toYaml()"
+            }, 
+            "timeout": 180
+        }, 
+        "required_for": [
+            "build_deploy_image"
+        ], 
+        "type": "upload_file", 
+        "requires": [
+            "provision_start"
+        ], 
+        "id": "upload_provision_info_master"
+    }
+]

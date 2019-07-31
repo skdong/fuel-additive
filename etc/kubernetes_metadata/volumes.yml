@@ -48,7 +48,7 @@ volumes:
   partition_guid: 45b0969e-9b03-4f30-b4c6-b4b80ceff106
   type: partition
 - id: docker
-  label: Docker Work Storage
+  label: Docker Local Storage
   min_size: {generator: calc_min_vm_size}
   type: vg
   volumes:
@@ -65,7 +65,15 @@ volumes_roles_mapping:
   - {allocate_size: min, id: cephjournal}
   - {allocate_size: full-disk, id: ceph}
   - {allocate_size: min, id: docker}
-  master:
+  kube-master:
+  - {allocate_size: min, id: os}
+  - {allocate_size: min, id: logs}
+  - {allocate_size: min, id: docker}
+  kube-node:
+  - {allocate_size: min, id: os}
+  - {allocate_size: min, id: logs}
+  - {allocate_size: min, id: docker}
+  etcd:
   - {allocate_size: min, id: os}
   - {allocate_size: min, id: logs}
   - {allocate_size: min, id: docker}

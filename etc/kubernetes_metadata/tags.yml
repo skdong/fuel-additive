@@ -1,3 +1,4 @@
 base-os: {has_primary: false}
-master: {has_primary: true}
-node: {has_primary: false}
+kube-master: {has_primary: false}
+ectd: {has_primary: false}
+kube-node: {has_primary: false}
