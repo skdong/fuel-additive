@@ -1,10 +1,11 @@
 [master]
-node-5 ansible_host=2.6.1.4 ansible_user=fueladmin ansible_become=True
+node-14 ansible_host=2.6.1.9 ansible_user=fueladmin ansible_become=True
 
 [node]
-node-6 ansible_host=2.6.1.5 ansible_user=fueladmin ansible_become=True
-node-7 ansible_host=2.6.1.6 ansible_user=fueladmin ansible_become=True
-node-9 ansible_host=2.6.1.7 ansible_user=fueladmin ansible_become=True
+node-15 ansible_host=2.6.1.8 ansible_user=fueladmin ansible_become=True
+node-16 ansible_host=2.6.1.10 ansible_user=fueladmin ansible_become=True
+node-17 ansible_host=2.6.1.11 ansible_user=fueladmin ansible_become=True
+
 
 [kube-master:children]
 master

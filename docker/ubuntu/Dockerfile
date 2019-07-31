@@ -1,4 +1,4 @@
-FROM centos:latest
+FROM ubuntu:16.04
 RUN rm -f /etc/yum.repos.d/*
 ADD ./config/* /tmp/config/
 RUN mv /tmp/config/CentOS-Base.repo /etc/yum.repos.d/ ; \
@@ -7,9 +7,4 @@ RUN mv /tmp/config/CentOS-Base.repo /etc/yum.repos.d/ ; \
 
 RUN yum update -y && yum install -y $(cat /tmp/config/packages) \
     && yum clean all && rm -f /etc/yum.repos.d/*
-
-RUN mv /tmp/config/Epel.repo /etc/yum.repos.d/ && yum install -y python-pip ;\
-    yum clean all && rm -f /etc/yum.repos.d/*
-
-RUN systemctl enable docker ; \
-    mv /tmp/config/grub.cfg /etc/default/grub
+RUN mv /tmp/config/grub.cfg /etc/default/grub

@@ -12,6 +12,7 @@
     - daemonize
     - fuel-agent
     - hwloc
+    - lshw
     - i40e-dkms
     - linux-firmware
     - linux-headers-generic
@@ -70,24 +71,6 @@
       uri: "http://127.0.0.1:8080/ubuntu/x86_64"
       priority: 1050
       suite: mos11.0
-      type: deb
-    - name: mos-updates
-      section: "main restricted"
-      uri: *mos_baseurl
-      priority: 1050
-      suite: mos11.0-updates
-      type: deb
-    - name: mos-security
-      section: "main restricted"
-      uri: *mos_baseurl
-      priority: 1050
-      suite: mos11.0-security
-      type: deb
-    - name: mos-holdback
-      section: "main restricted"
-      uri: *mos_baseurl
-      priority: 1100
-      suite: mos11.0-holdback
       type: deb
   skip_default_img_build: true
   direct_repo_addresses: 
