@@ -81,7 +81,7 @@ class RPMManager(object):
         scripts = Scripts(self._get_scripts())
         with open(os.path.join(self._chroot, cmd_path), 'w') as fp:
             fp.write(scripts.get_trans_post())
-        os.chmod(os.path.join(self._chroot, cmd_path), 0700)
+        os.chmod(os.path.join(self._chroot, cmd_path), 0o700)
         self.chroot_execute('sh', os.path.join('/', cmd_path))
         os.unlink(os.path.join(self._chroot, cmd_path))
 
