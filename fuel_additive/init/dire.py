@@ -21,7 +21,7 @@ cli_opts = [
                default="admin123",
                help="nexus auth password"),
     cfg.ListOpt(name="nexus_repos",
-                default=["docker", "pypi", "certs", "helm", "yum", "deb", "files"],
+                default=["docker", "pypi", "certs", "helm", "files"],
                 help="nexus repositorys")
 ]
 

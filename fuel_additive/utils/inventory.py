@@ -1,13 +1,8 @@
-#!/usr/bin/env python
+import copy
 
-import argparse
-
-import json
 import yaml
-import sys
 
-
-steam = {'apt_repo_host': '{{deploy_host}}',
+STEAM = {'apt_repo_host': '{{deploy_host}}',
          'apt_sources_url': 'http://{{apt_repo_host}}/repository',
          'certs_repo_host': '{{deploy_host}}',
          'certs_repo_url': 'http://{{certs_repo_host}}/repository/certs',
@@ -30,7 +25,7 @@ steam = {'apt_repo_host': '{{deploy_host}}',
          'yum_repo_host': '{{deploy_host}}',
          'yum_repo_url': 'http://{{yum_repo_host}}/repository/yum'}
 
-kubespray = {'calico_cni_image_repo': '{{ deploy_host }}/calico/cni',
+KUBESPRAY = {'calico_cni_image_repo': '{{ deploy_host }}/calico/cni',
              'calico_cni_version': 'v3.4.0',
              'calico_ctl_version': 'v3.4.4',
              'calico_node_image_repo': '{{ deploy_host }}/calico/node',
@@ -39,7 +34,8 @@ kubespray = {'calico_cni_image_repo': '{{ deploy_host }}/calico/cni',
              'calico_version': 'v3.4.0',
              'calicoctl_download_url': 'http://{{ deploy_host }}/repository/files/{{ kube_version }}/calicoctl-linux-{{ image_arch }}',
              'cluster_domain': 'domain.tld',
-             'cluster_name': 'cluster.local',
+             'cluster_name': '{{ cluster_domain }}',
+             'helm_stable_repo_url': 'http://{{ deploy_host }}/repository/helm',
              'cni_binary_checksum': 'f04339a21b8edf76d415e7f17b620e63b8f37a76b2f706671587ab6464411f2d',
              'cni_download_url': 'http://{{ deploy_host }}/repository/files/{{ kube_version }}/cni-plugins-{{ image_arch }}-{{ cni_version }}.tgz',
              'cni_version': 'v0.6.0',
@@ -72,62 +68,48 @@ kubespray = {'calico_cni_image_repo': '{{ deploy_host }}/calico/cni',
              'pod_infra_image_repo': '{{ deploy_host }}/google_containers/pause-{{ image_arch }}',
              'tiller_image_repo': '{{ deploy_host }}/k8s/tiller'}
 
+INVENTORY = {'_meta': {'hostvars': {}},
+             'all': {'children': ['kube-master', 'etcd', 'kube-node', 'k8s-cluster']},
+             'etcd': {'hosts': []},
+             'k8s-cluster': {'children': ['kube-master', 'kube-node']},
+             'kube-master': {'hosts': []},
+             'kube-node': {'hosts': []}}
+
+
 def get_host_groups():
-    inventory = {'_meta': {'hostvars': {}},
-                 'all': {'children': ['kube-master', 'etcd', 'kube-node', 'k8s-cluster']},
-                 'etcd': {'hosts': []},
-                 'k8s-cluster': {'children': ['kube-master', 'kube-node']},
-                 'kube-master': {'hosts': []},
-                 'kube-node': {'hosts': []}}
-    
-
-    with open('/tmp/provision.yaml') as fp:
-        provision = yaml.load(fp)
-
-    with open('/etc/nailgun/settings.yaml') as fp:
-        nailgun = yaml.load(fp)
-    
-    
+    provision = get_provision()
+    inventory = copy.deepcopy(INVENTORY)
     nodes = provision['network_metadata']['nodes']
     user = provision['operator_user']['name']
-    inventory['_meta']['hostvars'] = { name: {"ansible_host": node['network_roles']['admin/pxe'], "ansible_user": user, "ansible_become":"True"} for name, node in nodes.items()}
-    inventory['kube-master']['hosts'] = [ name for name, node in nodes.items() if "kube-master" in node['node_roles'] ]
-    inventory['kube-node']['hosts'] = [ name for name, node in nodes.items() if "kube-node" in node['node_roles'] ]
-    inventory['etcd']['hosts'] = [ name for name, node in nodes.items() if "etcd" in node['node_roles'] ]
-    all_vars = {}
-    all_vars.update(steam)
-    all_vars.update(kubespray)
-    all_vars['deploy_ip'] = provision["master_ip"]
-    all_vars['cluster_name'] = nailgun["DNS_DOMAIN"]
-    inventory['all']['vars'] = all_vars
+    inventory['_meta']['hostvars'] = {
+        name: {"ansible_host": node['network_roles']['admin/pxe'], "ansible_user": user, "ansible_become": "True"} for
+        name, node in nodes.items()}
+    inventory['kube-master']['hosts'] = [name for name, node in nodes.items() if "kube-master" in node['node_roles']]
+    inventory['kube-node']['hosts'] = [name for name, node in nodes.items() if "kube-node" in node['node_roles']]
+    inventory['etcd']['hosts'] = [name for name, node in nodes.items() if "etcd" in node['node_roles']]
     return inventory
 
 
-
-def to_json(in_dict):
-    return json.dumps(in_dict, sort_keys=True, indent=2)
-
-
-def parse_args():
-    parser = argparse.ArgumentParser(description='OpenStack Inventory Module')
-    parser.add_argument('--list', action='store_true',
-                       help='List active servers')
-    parser.add_argument('--host', help='List details about the specific host')
-
-    return parser.parse_args()
+def get_provision():
+    with open('/tmp/provision.yaml') as fp:
+        return yaml.load(fp)
 
 
-def main():
-    args = parse_args()
-    inventory = get_host_groups()
-    if args.list:
-        yaml.safe_dump(inventory, sys.stdout)
-    elif args.host:
-        yaml.safe_dump(inventory["_meta"]["hostvars"][args.host], sys.stdout)
-    sys.exit(0)
+def get_nailgun():
+    with open('/etc/nailgun/settings.yaml') as fp:
+        return yaml.load(fp)
 
 
-if __name__ == '__main__':
-    main()
+def get_steam():
+    steam = copy.deepcopy(STEAM)
+    provision = get_provision()
+
+    steam["deploy_ip"] = provision["master_ip"]
+    return steam
 
 
+def get_kubespray():
+    kubespray = copy.deepcopy(KUBESPRAY)
+    nailgun = get_nailgun()
+    kubespray['cluster_name'] = nailgun["DNS_DOMAIN"]
+    return kubespray

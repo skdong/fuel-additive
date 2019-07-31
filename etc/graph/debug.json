@@ -20,7 +20,9 @@
             "master"
         ], 
         "parameters": {
-            "path": "/tmp/bright/debug/provision.yaml",
+            "path": {
+                "yaql_exp": "concat('/tmp/', $.cluster.id, '/provision.yaml')"
+            },
             "data": {
                 "yaql_exp": " dict($.items()).toYaml()"
             }, 

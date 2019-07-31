@@ -6,20 +6,8 @@
   type: stage
   version: 1.0.0
 
-- id: inventory
-  type: upload_file
-  version: 2.1.0
-  role: ['master']
-  requires: [deploy_start]
-  required_for: [build_deploy_image]
-  parameters:
-    path: /tmp/dire/inventory
-    timeout: 180
-    data:
-      yaql_exp: "($.provision.set('packages', $.provision.packages) + $.repo_setup + dict('output' => '/var/www/nailgun/targetimages') + dict($.items())).toYaml()"
-
 - id: steam_start
-  requires: inventory
+  requires: deploy_start
   task_name: steam_start
   type: stage
   version: 1.0.0
@@ -46,13 +34,22 @@
   type: master_shell
   version: 2.1.0
   role: ['/.*/']
-  requires: [inventory]
-  required_for: [kubespray]
+  requires: [steam_start]
+  required_for: [steam_end]
   parameters:
     strategy:
       type: one_by_one
-    cmd:
-      yaql_exp: 'concat("sh /etc/puppet/modules/osnailyfacter/modular/provision/netboot disable ", $.provision.name)'
+    cmd: ansible-playbook -i /usr/sbin/steam_inventory.py /user/share/additive/playbook/steam.yml
     timeout: 180
 
 - id: kubespray
+  type: master_shell
+  version: 2.1.0
+  role: ['/.*/']
+  requires: [kubespray_start]
+  required_for: [kubespray_end]
+  parameters:
+    strategy:
+      type: one_by_one
+    cmd: ansible-playbook -i /usr/sbin/kubespray_inventory.py /usr/usr/share/kubespray/playbooks/cluster.yml
+    timeout: 180

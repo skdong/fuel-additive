@@ -39,6 +39,7 @@ def _set_nailgun_setting():
         fp.write(conf_info)
     utils.execute("systemctl restart nailgun")
 
+
 def _set_http_port():
     conf_path = u"/etc/httpd/conf.ports.d/cobbler.conf"
     with open(conf_path) as fp:
@@ -69,11 +70,20 @@ def _set_https_conf():
 
 def _set_cobbler_settings():
     """for cobbler cli config"""
-    conf_path = u"/etc/cobbler/settings"
+    conf_paths = [u"/etc/cobbler/settings", u"/etc/puppet/modules/cobbler/templates/settings.erb"]
+    for conf_path in conf_paths:
+        with open(conf_path) as fp:
+            conf_info = fp.read()
+        conf_info = conf_info.replace("http_port: 80", "http_port: "+CONF.cobbler_http_port)
+        with open(conf_path, 'w') as fp:
+            fp.write(conf_info)
+
+def _set_puppet_apache():
+    conf_path = u"/etc/puppet/modules/cobbler/manifests/apache.pp"
     with open(conf_path) as fp:
         conf_info = fp.read()
-    conf_info = conf_info.replace("http_port: 80", "http_port: "+CONF.cobbler_http_port)
-    with open(conf_path, 'w') as fp:
+    conf_info = conf_info.replace("<VirtualHost *:80", "<VirtualHost *" + CONF.cobbler_http_port)
+    conf_info = conf_info.replace("<VirtualHost *:443", "<VirtualHost *" + CONF.cobbler_https_port)
+    with open(conf_path, "w") as fp:
         fp.write(conf_info)
-
 
