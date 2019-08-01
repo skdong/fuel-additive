@@ -30,6 +30,18 @@
   type: stage
   version: 1.0.0
 
+- id: app_start
+  requires: [kubespary_end]
+  task_name: app_start
+  type: stage
+  version: 1.0.0
+
+- id: app_end
+  requires: [app_start]
+  task_name: app_end
+  type: stage
+  version: 1.0.0
+
 - id: clean_ansible_cache
   type: shell
   version: 2.1.0
@@ -64,4 +76,16 @@
     strategy:
       type: one_by_one
     cmd: ansible-playbook -i /usr/bin/kubespray_inventory /usr/usr/share/kubespray/playbooks/cluster.yml
+    timeout: 3600
+
+- id: kubespray
+  type: shell
+  version: 2.1.0
+  role: [/.*/]
+  requires: [app_start]
+  required_for: [app_end]
+  parameters:
+    strategy:
+      type: one_by_one
+    cmd: echo kubernetes deploy over > /etc/dire_state
     timeout: 3600
