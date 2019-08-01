@@ -1,17 +1,14 @@
-import os
 import json
+import os
+
 import yaml
-
-from oslo_config import cfg
-from oslo_log import log as logging
-from nailgun.db import db
-from nailgun.db.sqlalchemy.models.release import Release
-from nailgun.db.sqlalchemy.models.deployment_sequence import DeploymentSequence
-
 from fuel_agent import errors
 from fuel_agent.utils import utils
-
-from fuel_additive.cmd.base import load_config
+from nailgun.db import db
+from nailgun.db.sqlalchemy.models.deployment_sequence import DeploymentSequence
+from nailgun.db.sqlalchemy.models.release import Release
+from oslo_config import cfg
+from oslo_log import log as logging
 
 LOG = logging.getLogger(__name__)
 CONF = cfg.CONF
@@ -19,7 +16,7 @@ CONF = cfg.CONF
 FUEL_PATH = u"/etc/fuel"
 PATH = os.path.join(FUEL_PATH, u"additive")
 METADATA_PATH = os.path.join(PATH, 'kubernetes_metadata')
-NAME = "Kubernetes on CentOS 7"
+NAME = "Kubernetes 1.14.3 on Centos 7"
 VERSION = "kube-11.0"
 DESCRIPTION = "install kubernetes"
 OPERATING_SYSTEM = "Centos"
@@ -27,18 +24,12 @@ STATE = "available"
 NETWORK_METADATE = None
 ATTRIBUTES_METADATE = None
 
-
-def add_kubernetes_release():
-    # TODO add release
-    # TODO set attr
-    # TODO add deployment sequence
-    pass
-
-
-def upload_release_graps():
-    # TODO provision
-    # TODO delete
-    pass
+cli_opts = [
+    cfg.StrOpt(name="kubernetes_release_name",
+               default=NAME,
+               help="the name of kubernetes release")
+]
+CONF.register_cli_opts(cli_opts)
 
 
 def reload_release_graph(release_id):
@@ -46,15 +37,22 @@ def reload_release_graph(release_id):
         utils.execute(u'fuel2 graph delete', u'-r', str(release_id), u'-t provision')
     except errors.ProcessExecutionError as err:
         LOG.warn(err)
-    utils.execute(u'fuel2 graph upload -r', str(release_id), '-d', os.path.join(PATH, 'graph', 'provision'), u'-t provision')
+    utils.execute(u'fuel2 graph upload -r', str(release_id), '-d', os.path.join(PATH, 'graph', 'provision'),
+                  u'-t provision')
 
     try:
         utils.execute(u'fuel2 graph delete', u'-r', str(release_id), u'-t deletion')
     except errors.ProcessExecutionError as err:
         LOG.warn(err)
-    utils.execute(u'fuel2 graph upload -r', str(release_id), '-d', os.path.join(FUEL_PATH, 'graphs', 'deletion'), u'-t deletion')
+    utils.execute(u'fuel2 graph upload -r', str(release_id), '-d', os.path.join(FUEL_PATH, 'graphs', 'deletion'),
+                  u'-t deletion')
 
-
+    try:
+        utils.execute(u'fuel2 graph delete', u'-r', str(release_id), u'-t default')
+    except errors.ProcessExecutionError as err:
+        LOG.warn(err)
+    utils.execute(u'fuel2 graph upload -r', str(release_id), '-d', os.path.join(PATH, 'graphs', 'default'),
+                  u'-t default')
 
 
 def show_release_metadata(release_id):
@@ -83,7 +81,7 @@ def add_deployment_sequences(release_id):
 
 
 def load_data(name, form="yml"):
-    with open(os.path.join(METADATA_PATH, name+'.'+form )) as fp:
+    with open(os.path.join(METADATA_PATH, name + '.' + form)) as fp:
         if form in ["yaml", "yml"]:
             return yaml.safe_load(fp)
         elif form == "json":
@@ -108,7 +106,7 @@ def add_release():
     release.roles_metadata = load_data("roles")
     release.modes = [u"ha_compact"]
     release.network_roles_metadata = load_data("network_roles")
-    release.extensions = {u'volume_manager',u'network_manager'}
+    release.extensions = {u'volume_manager', u'network_manager'}
     release.components_metadata = load_data("components")
     release.node_attributes = {}
     release.nic_attributes = load_data("nic")
