@@ -1,0 +1,23 @@
+apt_repo_host: '{{deploy_host}}'
+apt_sources_url: http://{{apt_repo_host}}/repository
+certs_repo_host: '{{deploy_host}}'
+certs_repo_url: http://{{certs_repo_host}}/repository/certs
+cluster_domain: domain.tld
+deploy_host: fuel.{{cluster_domain}}
+deploy_ip: 2.6.1.2
+docker_common_options:
+  auth_password: '{{ docker_registry_password }}'
+  auth_registry: '{{ docker_registry }}'
+  auth_username: '{{ docker_registry_username }}'
+  environment: {KOLLA_CONFIG_STRATEGY: '{{ config_strategy }}'}
+  restart_policy: '{{ docker_restart_policy }}'
+  restart_retries: '{{ docker_restart_policy_retry }}'
+docker_registry: '{{deploy_host}}'
+docker_registry_password: admin123
+docker_registry_username: admin
+pip_repo_host: '{{deploy_host}}'
+pip_repo_url: http://{{pip_repo_host}}/repository/pypi/simple
+python_pkg_install: [ansible, docker]
+timezone: Asia/Shanghai
+yum_repo_host: '{{deploy_host}}'
+yum_repo_url: http://{{yum_repo_host}}/repository/yum
