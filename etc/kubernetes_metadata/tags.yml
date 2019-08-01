@@ -1,4 +1,4 @@
 base-os: {has_primary: false}
 kube-master: {has_primary: false}
-ectd: {has_primary: false}
+etcd: {has_primary: false}
 kube-node: {has_primary: false}
