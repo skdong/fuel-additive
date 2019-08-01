@@ -7,7 +7,7 @@
   version: 1.0.0
 
 - id: steam_start
-  requires: deploy_start
+  requires: [deploy_start]
   task_name: steam_start
   type: stage
   version: 1.0.0
@@ -19,7 +19,7 @@
   version: 1.0.0
 
 - id: kubespray_start
-  requires: steam_end
+  requires: [steam_end]
   task_name: kubespray_start
   type: stage
   version: 1.0.0
@@ -31,37 +31,37 @@
   version: 1.0.0
 
 - id: clean_ansible_cache
-  type: master_shell
+  type: shell
   version: 2.1.0
-  role: ['/.*/']
+  role: ['master']
   requires: [steam_start]
   required_for: [steam_end]
   parameters:
     strategy:
       type: one_by_one
-    cmd: rm /tmp/dire/*
+    cmd: rm -rf /tmp/dire/*
     timeout: 180
 
 - id: steam
-  type: master_shell
+  type: shell
   version: 2.1.0
-  role: ['/.*/']
+  role: ['master']
   requires: [clean_ansible_cache]
   required_for: [steam_end]
   parameters:
     strategy:
       type: one_by_one
-    cmd: ansible-playbook -i /usr/sbin/steam_inventory.py /user/share/additive/playbook/steam/site.yml
+    cmd: ansible-playbook -i /usr/bin/steam_inventory /usr/share/additive/playbook/steam/site.yml
     timeout: 180
 
 - id: kubespray
-  type: master_shell
+  type: shell
   version: 2.1.0
-  role: ['/.*/']
+  role: ['master']
   requires: [kubespray_start]
   required_for: [kubespray_end]
   parameters:
     strategy:
       type: one_by_one
-    cmd: ansible-playbook -i /usr/sbin/kubespray_inventory.py /usr/usr/share/kubespray/playbooks/cluster.yml
-    timeout: 180
+    cmd: ansible-playbook -i /usr/bin/kubespray_inventory /usr/usr/share/kubespray/playbooks/cluster.yml
+    timeout: 3600
