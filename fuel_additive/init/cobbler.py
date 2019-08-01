@@ -28,6 +28,7 @@ def set_cobbler():
     restart_httpd()
     _set_cobbler_settings()
     _set_nailgun_setting()
+    _set_puppet_apache()
 
 
 def _set_nailgun_setting():
@@ -78,12 +79,13 @@ def _set_cobbler_settings():
         with open(conf_path, 'w') as fp:
             fp.write(conf_info)
 
+
 def _set_puppet_apache():
     conf_path = u"/etc/puppet/modules/cobbler/manifests/apache.pp"
     with open(conf_path) as fp:
         conf_info = fp.read()
-    conf_info = conf_info.replace("<VirtualHost *:80", "<VirtualHost *" + CONF.cobbler_http_port)
-    conf_info = conf_info.replace("<VirtualHost *:443", "<VirtualHost *" + CONF.cobbler_https_port)
+    conf_info = conf_info.replace("port        => 80", "port        => " + CONF.cobbler_http_port)
+    conf_info = conf_info.replace("port            => 443", "port            => " + CONF.cobbler_https_port)
     with open(conf_path, "w") as fp:
         fp.write(conf_info)
 
