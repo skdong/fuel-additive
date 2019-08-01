@@ -4,8 +4,8 @@
     - all
   gather_facts: false
   roles:
-    - {role: hosts, kolla_action: deploy, tags: hosts }
-    - {role: timezone, tags: timezone }
-    - {role: repository, action: hosts, tags: repository }
-    - {role: docker, action: registry, tags: docker }
-    - {role: python, tags: python }
+    - {role: steam/hosts, kolla_action: deploy, tags: hosts }
+    - {role: steam/timezone, tags: timezone }
+    - {role: steam/repository, action: hosts, tags: repository }
+    - {role: steam/docker, action: registry, tags: docker }
+    - {role: steam/python, tags: python }

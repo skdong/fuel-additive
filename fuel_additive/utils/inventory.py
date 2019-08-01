@@ -101,7 +101,8 @@ def get_nailgun():
 
 
 def get_steam():
-    steam = copy.deepcopy(STEAM)
+    with open("/etc/fuel/additive/ansible/steam.yaml") as fp:
+        steam = yaml.load(fp)
     provision = get_provision()
 
     steam["deploy_ip"] = provision["master_ip"]
@@ -109,7 +110,8 @@ def get_steam():
 
 
 def get_kubespray():
-    kubespray = copy.deepcopy(KUBESPRAY)
+    with open("/etc/fuel/additive/ansible/kubespray.yaml") as fp:
+        kubespray = yaml.load(fp)
     nailgun = get_nailgun()
     kubespray['cluster_name'] = nailgun["DNS_DOMAIN"]
     return kubespray

@@ -39,7 +39,7 @@ opts = [
         help="Centos Base Os Dcoker Container"
     ),
 cfg.StrOpt(
-        "centos_docker_container",
+        "ubuntu_docker_container",
         default="ubuntu_image",
         help="Ubuntu Base Os Dcoker Container"
     )
