@@ -24,14 +24,14 @@
   type: stage
   version: 1.0.0
 
-- id: kubespary_end
-  requires: [kubespary_start]
-  task_name: kubespary_end
+- id: kubespray_end
+  requires: [kubespray_start]
+  task_name: kubespray_end
   type: stage
   version: 1.0.0
 
 - id: app_start
-  requires: [kubespary_end]
+  requires: [kubespray_end]
   task_name: app_start
   type: stage
   version: 1.0.0
