@@ -78,7 +78,7 @@
     cmd: ansible-playbook -i /usr/bin/kubespray_inventory /usr/usr/share/kubespray/playbooks/cluster.yml
     timeout: 3600
 
-- id: kubespray
+- id: kubespray_over
   type: shell
   version: 2.1.0
   role: [/.*/]
