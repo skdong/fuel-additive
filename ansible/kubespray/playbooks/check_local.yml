@@ -1,0 +1,13 @@
+- hosts: localhost
+  gather_facts: false
+  become: no
+  tasks:
+    - name: "Check ansible version >=2.7.8"
+      assert:
+        msg: "Ansible must be v2.7.8 or higher"
+        that:
+          - ansible_version.string is version("2.7.8", ">=")
+      tags:
+        - check
+  vars:
+    ansible_connection: local

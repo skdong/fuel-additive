@@ -2,3 +2,4 @@ PyYAML
 six
 fuel-agent
 pbr
+python-fuelclient

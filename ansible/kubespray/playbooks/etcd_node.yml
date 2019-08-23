@@ -1,0 +1,10 @@
+- hosts: k8s-cluster:calico-rr
+  any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
+  roles:
+    - { role: kubespray-defaults}
+    - role: etcd
+      tags: etcd
+      vars:
+        etcd_cluster_setup: false
+        etcd_events_cluster_setup: false
+      when: not etcd_kubeadm_enabled| default(false)
